@@ -436,6 +436,7 @@ public class GameBoard : MonoBehaviour
         EnemyAI();
     }
 
+/* Fight functions */
     public void DestroyUnit(GameObject Unit)
     {
         GetTileAtPosition(Unit.transform.position).unitLinked = null;
