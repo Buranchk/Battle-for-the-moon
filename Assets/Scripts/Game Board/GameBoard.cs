@@ -36,11 +36,11 @@ public class GameBoard : MonoBehaviour
     private GameObject PermFlag = null;
     private GameObject PermDecoy = null;
     private bool DecoyAlive = true;
-    private bool FlagAlive = true;
     private Dictionary<Vector2, Tile> tiles;
     private GameObject lastSelectedUnit;
     [HideInInspector] public List<GameObject> units = new List<GameObject>();
     public List<GameObject> enemyUnits = new List<GameObject>();
+    public bool gameWin;
 
     void Start()
     {
@@ -320,28 +320,27 @@ public class GameBoard : MonoBehaviour
             break;
 
             case 5:
-            if(FlagAlive)
-                if(PermFlag)
-                {
-                    print("GameResult: Win");
-                    PlayerPrefs.SetInt("GameResult", 1);
-                }
-                else if(units.Count == 0)
-                {
-                    print("GameResult: Loose");
-                    PlayerPrefs.SetInt("GameResult", 0);
-                }
-            else
-                if(enemyUnits.Count == 0)
-                {
-                    print("GameResult: Win");
-                    PlayerPrefs.SetInt("GameResult", 1);
-                }
-                else
-                {
-                    PlayerPrefs.SetInt("GameResult", 0);
-                    print("GameResult: Loose");
-                }
+            if(gameWin == true)
+            {
+                print("GameResult: Win");
+                PlayerPrefs.SetInt("GameResult", 1);
+            }
+            if (gameWin == false)
+            {
+                print("GameResult: Loose");
+                PlayerPrefs.SetInt("GameResult", 0);
+            }
+
+            // if(enemyUnits.Count == 0)
+            // {
+            //     print("GameResult: Win");
+            //     PlayerPrefs.SetInt("GameResult", 1);
+            // }
+            // else if(units.Count == 0)
+            // {
+            //     print("GameResult: Loose");
+            //     PlayerPrefs.SetInt("GameResult", 0);
+            // }
             GameResult();
             break;
         }
@@ -444,11 +443,22 @@ public class GameBoard : MonoBehaviour
         if(Unit.tag == "Enemy")
         {
             enemyUnits.Remove(Unit);
-            if(enemyUnits.Count == 0 || units.Count == 0)
+            if(enemyUnits.Count == 0)
+            {
+                gameWin = true;
                 NewStage();
+            }
+
         }
         else
+        {
             units.Remove(Unit);
+            if(units.Count == 0)
+            {
+                gameWin = false;
+                NewStage();
+            }
+        }
         Destroy(Unit);
         print (Unit.name + " was destroyed");
     }
@@ -458,6 +468,38 @@ public class GameBoard : MonoBehaviour
         print("Units duel now");
         GameObject fUnitObj = GameObject.Find(fUnit.name); //f
         GameObject eUnitObj = GameObject.Find(eUnit.name); //e
+
+        print("Enemy was - " + eUnit.type + "    Friend was - " + fUnit.type);
+
+
+        if(eUnit.type == "flag")
+        {
+            print("Enemy Flag is fucked");
+            DestroyUnit(eUnitObj);
+            fUnit.highlight.SetActive(false);
+            gameWin = true;
+            NewStage();
+        }
+
+        if(fUnit.type == "flag")
+        {
+            print("Friendly Flag is fucked");
+            DestroyUnit(fUnitObj);
+            eUnit.highlight.SetActive(false);
+            gameWin = false;
+            NewStage();
+        }
+
+        if(eUnit.type == "decoy" || fUnit.type == "decoy")
+        {
+            fUnit.highlight.SetActive(false);
+            eUnit.highlight.SetActive(false);
+            DestroyUnit(fUnitObj);
+            DestroyUnit(eUnitObj);
+            turn = !turn;
+            if(!turn)
+                EnemyAI();
+        }
 
         if (eUnit.type == fUnit.type)
         {
@@ -486,6 +528,7 @@ public class GameBoard : MonoBehaviour
             if(!turn)
                 EnemyAI();
         }
+
     }
 
     public void AttackEnemy(GameObject UnitOn)
@@ -520,11 +563,6 @@ public class GameBoard : MonoBehaviour
                 win = true;
                 break;
 
-                case "flag":
-                FlagAlive = false;
-                NewStage();
-                win = true;
-                break;
             }
             break;
 
@@ -543,12 +581,6 @@ public class GameBoard : MonoBehaviour
                 DecoyAlive = false;
                 win = true;
                 break;
-
-                case "flag":
-                FlagAlive = false;
-                NewStage();
-                win = true;
-                break;
             }
             break;
 
@@ -565,12 +597,6 @@ public class GameBoard : MonoBehaviour
 
                 case "decoy":
                 DecoyAlive = false;
-                win = true;
-                break;
-
-                case "flag":
-                FlagAlive = false;
-                NewStage();
                 win = true;
                 break;
             }
