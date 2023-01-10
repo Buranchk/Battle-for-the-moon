@@ -20,9 +20,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: c94945b39cc7e794d80b6a6bfd14550a, type: 3}
     - target: {fileID: 1691166331064683932, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
+      propertyPath: flag
+      value: 
+      objectReference: {fileID: 21300000, guid: 01120610c65e9ff458cd951d79aaee4f, type: 3}
+    - target: {fileID: 1691166331064683932, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
       propertyPath: rock
       value: 
       objectReference: {fileID: 21300000, guid: 00062af0628c67b4f8e2d00d6dd37627, type: 3}
+    - target: {fileID: 1691166331064683932, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
+      propertyPath: decoy
+      value: 
+      objectReference: {fileID: 21300000, guid: df2b35632f39fc547a60bebec67cc19a, type: 3}
     - target: {fileID: 1691166331064683932, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
       propertyPath: paper
       value: 
@@ -97,7 +105,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: c94945b39cc7e794d80b6a6bfd14550a, type: 3}
     - target: {fileID: 1691166331064683935, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
       propertyPath: m_Name
-      value: Unit
+      value: Unit XP
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5b4fd33294406343bd99c280d400be7, type: 3}

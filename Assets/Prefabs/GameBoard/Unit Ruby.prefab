@@ -20,9 +20,17 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 21300000, guid: 669afdfca10aac643b526d4f4f4ae201, type: 3}
     - target: {fileID: 1691166331064683932, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
+      propertyPath: flag
+      value: 
+      objectReference: {fileID: 21300000, guid: 879f4a2199972f24299eb1d4bd0aaa16, type: 3}
+    - target: {fileID: 1691166331064683932, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
       propertyPath: rock
       value: 
       objectReference: {fileID: 21300000, guid: 2e1455620cfbc3b4db797b2526bb06b9, type: 3}
+    - target: {fileID: 1691166331064683932, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
+      propertyPath: decoy
+      value: 
+      objectReference: {fileID: 21300000, guid: ccba42b7b9e3e0242a78c7d52e563b61, type: 3}
     - target: {fileID: 1691166331064683932, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
       propertyPath: paper
       value: 
@@ -97,7 +105,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: 669afdfca10aac643b526d4f4f4ae201, type: 3}
     - target: {fileID: 1691166331064683935, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
       propertyPath: m_Name
-      value: Unit
+      value: Unit Ruby
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
