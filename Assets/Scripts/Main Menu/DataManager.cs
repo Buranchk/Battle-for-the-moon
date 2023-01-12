@@ -75,6 +75,14 @@ public class DataManager : MonoBehaviour
         LoadSave();
         return save.selectedSkin;
     }
+
+    public void TakePower()
+    {
+        save = GetSave();
+        save.power = save.power - 1;
+        SetSave(save);
+    }
+
 }
 
 [Serializable]

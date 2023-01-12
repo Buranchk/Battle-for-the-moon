@@ -948,8 +948,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 401661219}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -2, z: -11.33}
-  m_LocalScale: {x: 96.55683, y: 96.55683, z: 0}
+  m_LocalPosition: {x: 0, y: -2, z: -2.18}
+  m_LocalScale: {x: 96.55683, y: 96.55683, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 251580826}
@@ -1053,7 +1053,7 @@ RectTransform:
   m_Children:
   - {fileID: 401661220}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -1293,7 +1293,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &527691906
 GameObject:
@@ -2216,58 +2216,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 896852953}
   m_CullTransparentMesh: 1
---- !u!1 &935798122
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 935798124}
-  - component: {fileID: 935798123}
-  m_Layer: 0
-  m_Name: Data Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &935798123
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 935798122}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7523a7dd29b5294b9e63d01d9ee9013, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  save:
-    name: 
-    coins: 0
-    emeralds: 0
-    power: 0
-    lvl: 0
-    skins: 
-    selectedSkin: 0
---- !u!4 &935798124
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 935798122}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.2830567, y: 4.833667, z: 89.53549}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 4
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1009891744 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2762795576668180889, guid: b6670240b5ec3a34ea9e35e7cb9c08a0, type: 3}
@@ -2466,14 +2414,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e324b08b82db4f4d8e95f4aa74fce14, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  save:
-    name: 
-    coins: 0
-    emeralds: 0
-    power: 0
-    lvl: 0
-    skins: 
-    selectedSkin: 0
   currentSkin: 0
   skin1: {fileID: 251580825}
   skin2: {fileID: 380736859}
@@ -3108,14 +3048,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 298c9d065c1e03c4890d7237b54924c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  save:
-    name: 
-    coins: 0
-    emeralds: 0
-    power: 0
-    lvl: 0
-    skins: 
-    selectedSkin: 0
   Skins: {fileID: 401661219}
   nameEntry: {fileID: 896852953}
   applyButton: {fileID: 1064962809}
@@ -4272,7 +4204,7 @@ PrefabInstance:
       objectReference: {fileID: 519420031}
     - target: {fileID: 2762795576668180888, guid: b6670240b5ec3a34ea9e35e7cb9c08a0, type: 3}
       propertyPath: m_RootOrder
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2762795576668180888, guid: b6670240b5ec3a34ea9e35e7cb9c08a0, type: 3}
       propertyPath: m_LocalPosition.x

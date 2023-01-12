@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-public class MenuManager : DataManager
+public class MenuManager : MonoBehaviour
 {
     public GameObject Skins;
     public GameObject nameEntry;
@@ -25,9 +25,9 @@ public class MenuManager : DataManager
 
     private void Start()
     {
-        if (LoadSave())
+        if (Data().LoadSave())
         {
-            LoadSave();
+            Data().LoadSave();
             LoadMenuValues();
         }
         else
@@ -37,9 +37,10 @@ public class MenuManager : DataManager
         }
     }
 
+    //remake this
     public void LoadMenuValues()
     {
-        sv = GetSave();
+        sv = Data().GetSave();
         nameSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.name;
         coinsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.coins.ToString();
         emeraldsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.emeralds.ToString();
@@ -47,7 +48,7 @@ public class MenuManager : DataManager
             sv.power = 100;
         powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.power.ToString() + "/100");
         lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = ((int)sv.lvl).ToString();
-        SetSave(sv);
+        Data().SetSave(sv);
         SetSkinsActive(true);
     }
 
@@ -67,20 +68,24 @@ public class MenuManager : DataManager
 
     public void NewAccount()
     {
-        InitializeAccount(naming);
+        //find the data manager
+        Data().InitializeAccount(naming);
     }
 
+    //take to the data manager
     public void TakePower()
     {
-        sv = GetSave();
-        sv.power = sv.power - 33;
-        SetSave(sv);
+        Data().TakePower();
     }
 
     public void SetSkinsActive(bool result)
     {
         Skins.SetActive(result);
-
+    }
+    
+    private DataManager Data()
+    {
+        return GameObject.Find("Data Manager").GetComponent<DataManager>();
     }
 /*  
 ++    //Add coin/emerald/power/lvl data

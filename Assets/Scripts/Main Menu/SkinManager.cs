@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SkinManager : DataManager
+public class SkinManager : MonoBehaviour
 {
     private int skinAmount = 3;
     private List<bool> skins;
@@ -106,18 +106,26 @@ public class SkinManager : DataManager
         //LoadSkin();
     }
 
-    private void LoadSkin()
+    private DataManager Data()
     {
-        int smth = save.selectedSkin;
-        currentSkin = smth;
-        leftSkin = GetPrev(currentSkin);
-        rightSkin = GetNext(currentSkin);
+        return GameObject.Find("Data Manager").GetComponent<DataManager>();
     }
 
+
+    /*
+        private void LoadSkin()
+        {
+            int smth = save.selectedSkin;
+            currentSkin = smth;
+            leftSkin = GetPrev(currentSkin);
+            rightSkin = GetNext(currentSkin);
+        }
+    */
     private void SaveSkinChange()
     {
-        Save sv = GetSave();
+        Save sv = Data().GetSave();
         sv.selectedSkin = currentSkin;
-        SetSave(sv);
+        Data().SetSave(sv);
     }
+
 }
