@@ -99,11 +99,20 @@ public class SkinManager : MonoBehaviour
     }
 
 
-    private void Start()
+    private void Awake()
     {
-        //skinAmount = save.skins.Count;
-        //skins = save.skins;
-        //LoadSkin();
+        List<bool> skins = new List<bool>();
+        skins = Data().GetSkins();
+
+        print(skins.Count);
+        print(skins[0]);
+        print(skins[1]);
+        print(skins[2]);
+        print(skins[3]);
+        skin1.GetComponent<Skin>().available = skins[0];
+        skin2.GetComponent<Skin>().available = skins[1];
+        skin3.GetComponent<Skin>().available = skins[2];
+        skin4.GetComponent<Skin>().available = skins[3];
     }
 
     private DataManager Data()

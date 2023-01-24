@@ -83,6 +83,13 @@ public class DataManager : MonoBehaviour
         SetSave(save);
     }
 
+    public List<bool> GetSkins()
+    {
+        LoadSave();
+        return save.skins;
+    }
+    
+
 }
 
 [Serializable]
