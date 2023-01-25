@@ -31,7 +31,10 @@ public class SkinManager : MonoBehaviour
     make movement!
     */
 
-
+    public void SetCurrentSkin()
+    {
+        Data().SetSelectedSkin(currentSkin);
+    }
     public void RightSwipe()
     {
         //pos 1 , 2 , 3 , 4
@@ -104,11 +107,6 @@ public class SkinManager : MonoBehaviour
         List<bool> skins = new List<bool>();
         skins = Data().GetSkins();
 
-        print(skins.Count);
-        print(skins[0]);
-        print(skins[1]);
-        print(skins[2]);
-        print(skins[3]);
         skin1.GetComponent<Skin>().available = skins[0];
         skin2.GetComponent<Skin>().available = skins[1];
         skin3.GetComponent<Skin>().available = skins[2];

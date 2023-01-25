@@ -9,6 +9,8 @@ public class Skin : MonoBehaviour
     public bool available;
     public Sprite unlocked;
     public Sprite locked;
+    public SkinManager Data;
+
     private void Start()
     {
         if(available)
@@ -17,6 +19,26 @@ public class Skin : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().sprite = locked;
     }
 
+    void OnMouseOver()
+    {
+        if (Input.GetMouseButtonDown(0) && unlocked)
+        {
+            if (queue == 0)
+            {
+                Data.SetCurrentSkin();
+                Outline();
+            }else
+            {
+
+            }
+        }
+    }
+
+
+    private void Outline()
+    {
+
+    }
     public void RightSwipe()
     {
         switch(queue)

@@ -89,6 +89,11 @@ public class DataManager : MonoBehaviour
         return save.skins;
     }
     
+    public void SetSelectedSkin(int num)
+    {
+        save.selectedSkin = num;
+        SaveChanges();
+    }
 
 }
 
