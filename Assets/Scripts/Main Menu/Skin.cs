@@ -9,7 +9,7 @@ public class Skin : MonoBehaviour
     public bool available;
     public Sprite unlocked;
     public Sprite locked;
-    public SkinManager Data;
+    public SkinManager skinManager;
 
     private void Start()
     {
@@ -21,24 +21,43 @@ public class Skin : MonoBehaviour
 
     void OnMouseOver()
     {
-        if (Input.GetMouseButtonDown(0) && unlocked)
+        if (Input.GetMouseButtonDown(0))
         {
             if (queue == 0)
             {
-                Data.SetCurrentSkin();
-                Outline();
-            }else
+                if (available)
+                {
+                    Select();
+                }
+                else if (!available)
+                {
+                    //Shop PopUp
+                    print("BuyOption");
+                }
+            }
+            else if (queue == 1)
             {
-
+                skinManager.LeftSwipe();
+            }
+            else if (queue == 3)
+            {
+                skinManager.RightSwipe();
             }
         }
     }
 
-
-    private void Outline()
+    public void Select()
     {
-
+        skinManager.SetCurrentSkin(gameObject.GetComponent<Skin>());
+        print("new skin is selected");
+        //setactive backguy? (true)
     }
+
+    public void Unselect()
+    {
+        //setactive backguy? (false)
+    }
+
     public void RightSwipe()
     {
         switch(queue)

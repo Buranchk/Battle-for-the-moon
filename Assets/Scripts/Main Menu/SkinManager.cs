@@ -10,6 +10,7 @@ public class SkinManager : MonoBehaviour
     private int leftSkin = 4;
     private int rightSkin = 2;
 
+    public Skin storedSelectedSkin;
     public GameObject skin1;
     public GameObject skin2;
     public GameObject skin3;
@@ -31,8 +32,13 @@ public class SkinManager : MonoBehaviour
     make movement!
     */
 
-    public void SetCurrentSkin()
+    public void SetCurrentSkin(Skin skin)
     {
+        if(storedSelectedSkin)
+        {
+            storedSelectedSkin.Unselect();
+        }
+        storedSelectedSkin = skin;
         Data().SetSelectedSkin(currentSkin);
     }
     public void RightSwipe()
@@ -42,12 +48,6 @@ public class SkinManager : MonoBehaviour
         leftSkin = GetPrev(leftSkin);
         rightSkin = GetPrev(rightSkin);
 
-        // if(skins[currentSkin])
-        // {
-        //     save.selectedSkin = currentSkin;
-        //     //Json UPD
-        // }
-        //GameObject.Find("BackSkin").GetComponent<Skin>();
         
         skin1.GetComponent<Skin>().RightSwipe();
         skin1.GetComponent<Skin>().queue = GetNext(skin1.GetComponent<Skin>().queue);
@@ -131,7 +131,6 @@ public class SkinManager : MonoBehaviour
     private void SaveSkinChange()
     {
         Save sv = Data().GetSave();
-        sv.selectedSkin = currentSkin;
         Data().SetSave(sv);
     }
 

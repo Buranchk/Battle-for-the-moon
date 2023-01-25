@@ -604,6 +604,7 @@ GameObject:
   - component: {fileID: 251580826}
   - component: {fileID: 251580827}
   - component: {fileID: 251580828}
+  - component: {fileID: 251580829}
   m_Layer: 0
   m_Name: SpaceMan
   m_TagString: Untagged
@@ -694,7 +695,33 @@ MonoBehaviour:
   available: 0
   unlocked: {fileID: 21300000, guid: 824badfcef58c1b43ad27e9f76de1f48, type: 3}
   locked: {fileID: 21300000, guid: 871e0f73c78669941be78fbda03c29d2, type: 3}
-  Data: {fileID: 1076043367}
+  skinManager: {fileID: 1076043367}
+--- !u!61 &251580829
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 251580825}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.48, y: 2.96}
+    newSize: {x: 2.48, y: 2.96}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.48, y: 2.96}
+  m_EdgeRadius: 0
 --- !u!1 &325635369
 GameObject:
   m_ObjectHideFlags: 0
@@ -841,6 +868,7 @@ GameObject:
   - component: {fileID: 380736860}
   - component: {fileID: 380736861}
   - component: {fileID: 380736862}
+  - component: {fileID: 380736863}
   m_Layer: 0
   m_Name: XP
   m_TagString: Untagged
@@ -931,7 +959,33 @@ MonoBehaviour:
   available: 0
   unlocked: {fileID: 21300000, guid: a6ad069f4e05a914eb7c037e32439e4a, type: 3}
   locked: {fileID: 21300000, guid: 22acda331ff94ba48aecaeb47352f866, type: 3}
-  Data: {fileID: 1076043367}
+  skinManager: {fileID: 1076043367}
+--- !u!61 &380736863
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 380736859}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.48, y: 2.96}
+    newSize: {x: 2.48, y: 2.96}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.48, y: 2.96}
+  m_EdgeRadius: 0
 --- !u!1 &401661219
 GameObject:
   m_ObjectHideFlags: 0
@@ -1266,6 +1320,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f231c4fb786f3946a6b90b886c48677, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_SendPointerHoverToParent: 1
   m_HorizontalAxis: Horizontal
   m_VerticalAxis: Vertical
   m_SubmitButton: Submit
@@ -1726,6 +1781,7 @@ GameObject:
   - component: {fileID: 638178500}
   - component: {fileID: 638178501}
   - component: {fileID: 638178502}
+  - component: {fileID: 638178503}
   m_Layer: 0
   m_Name: Ruby
   m_TagString: Untagged
@@ -1816,7 +1872,33 @@ MonoBehaviour:
   available: 0
   unlocked: {fileID: 21300000, guid: 60451ff5fc1197f4cb1449618357ce80, type: 3}
   locked: {fileID: 21300000, guid: 831d52a987f71fb4a95e38108435e270, type: 3}
-  Data: {fileID: 1076043367}
+  skinManager: {fileID: 1076043367}
+--- !u!61 &638178503
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 638178499}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.48, y: 2.96}
+    newSize: {x: 2.48, y: 2.96}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.48, y: 2.96}
+  m_EdgeRadius: 0
 --- !u!1 &718320920
 GameObject:
   m_ObjectHideFlags: 0
@@ -2457,6 +2539,7 @@ GameObject:
   - component: {fileID: 1174829965}
   - component: {fileID: 1174829966}
   - component: {fileID: 1174829967}
+  - component: {fileID: 1174829968}
   m_Layer: 0
   m_Name: Gold
   m_TagString: Untagged
@@ -2547,7 +2630,33 @@ MonoBehaviour:
   available: 0
   unlocked: {fileID: 21300000, guid: 2b41fe7dff0457042a229a1ed0d7225d, type: 3}
   locked: {fileID: 21300000, guid: 97a31f544d005a748baa1e16c3b3d60e, type: 3}
-  Data: {fileID: 1076043367}
+  skinManager: {fileID: 1076043367}
+--- !u!61 &1174829968
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1174829964}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 2.48, y: 2.96}
+    newSize: {x: 2.48, y: 2.96}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 2.48, y: 2.96}
+  m_EdgeRadius: 0
 --- !u!1 &1299374126
 GameObject:
   m_ObjectHideFlags: 0
