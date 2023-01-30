@@ -95,6 +95,30 @@ public class DataManager : MonoBehaviour
         SaveChanges();
     }
 
+    public void GiveGold(int amount)
+    {
+        save = GetSave();
+
+        SaveChanges();
+    }
+
+    public void EndGame(bool status)
+    {
+        save = GetSave();
+        if(status)
+        {
+            save.coins += 20;
+            save.lvl += 3;
+            save.emeralds += 2;
+        }
+        else
+        {
+            save.coins += 5;
+            save.lvl += 1;
+        }
+        SaveChanges();
+    }
+
 }
 
 [Serializable]

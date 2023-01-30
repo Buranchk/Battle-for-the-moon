@@ -9,6 +9,7 @@ public class Skin : MonoBehaviour
     public bool available;
     public Sprite unlocked;
     public Sprite locked;
+    public GameObject outliner;
     public SkinManager skinManager;
 
     private void Start()
@@ -50,11 +51,12 @@ public class Skin : MonoBehaviour
     {
         skinManager.SetCurrentSkin(gameObject.GetComponent<Skin>());
         print("new skin is selected");
-        //setactive backguy? (true)
+        outliner.SetActive(true);
     }
 
     public void Unselect()
     {
+        outliner.SetActive(false);
         //setactive backguy? (false)
     }
 

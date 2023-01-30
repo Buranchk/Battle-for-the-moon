@@ -9,6 +9,7 @@ public class GameResult : MonoBehaviour
     public Sprite Player;
     public Sprite Win;
     public Sprite Loose;
+    public DataManager Data;
     // Start is called before the first frame update
     void Start()
     {
@@ -16,11 +17,13 @@ public class GameResult : MonoBehaviour
         if(gameResult == 1){
             GameObject.Find("Winner").GetComponent<Image>().sprite = Player;
             GameObject.Find("Result").GetComponent<Image>().sprite = Win;
+            
         }
         else 
         {
             GameObject.Find("Winner").GetComponent<Image>().sprite = Enemy;
             GameObject.Find("Result").GetComponent<Image>().sprite = Loose;
+            
         }  
     }
 }
