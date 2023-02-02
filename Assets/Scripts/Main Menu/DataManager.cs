@@ -46,7 +46,8 @@ public class DataManager : MonoBehaviour
         save.coins = 0;
         save.emeralds = 0;
         save.power = 100;
-        save.lvl = 0.0f;
+        save.xp = 0;
+        save.lvl = 0;
         save.skins = new List<bool>(){true, false, true, false};
         save.selectedSkin = 0;
         SaveChanges();
@@ -78,9 +79,9 @@ public class DataManager : MonoBehaviour
 
     public void TakePower()
     {
-        save = GetSave();
+        LoadSave();
         save.power = save.power - 1;
-        SetSave(save);
+        SaveChanges();
     }
 
     public List<bool> GetSkins()
@@ -89,37 +90,63 @@ public class DataManager : MonoBehaviour
         return save.skins;
     }
     
-    public void SetSelectedSkin(int num)
+    public void SetSelectedSkin(int num, Skin skin)
     {
+        LoadSave();
+        save.skinSeletion = skin;
         save.selectedSkin = num;
         SaveChanges();
     }
 
     public void GiveGold(int amount)
     {
-        save = GetSave();
-
+        LoadSave();
+        save.coins += amount;
         SaveChanges();
     }
 
     public void EndGame(bool status)
     {
-        save = GetSave();
+        LoadSave();
         if(status)
         {
-            save.coins += 20;
-            save.lvl += 3;
+            print("u won");
+            save.coins = save.coins + 20;
+            save.xp = save.xp + 5;
             save.emeralds += 2;
         }
-        else
+        else if(!status)
         {
-            save.coins += 5;
-            save.lvl += 1;
+            print("u lost");
+            save.coins = save.coins + 5;
+            save.xp += 2;
         }
+        save.lvl = LevelUpdate();
         SaveChanges();
     }
 
+    public int LevelUpdate()
+    {
+        LoadSave();
+        int[] lvls = new int[10]{5, 10, 15, 25, 35, 50, 70, 90, 120, 150};
+        for(int i = 0; i < 10; i ++)
+        {
+            if(save.xp >= lvls[i])
+            {
+                return i;
+            }
+        }
+        return 0;
+    }
+
+    public Skin GiveSkinSelection()
+    {
+        LoadSave();
+        return save.skinSeletion;
+    }
+
 }
+
 
 [Serializable]
 public class Save
@@ -129,9 +156,11 @@ public class Save
     public int coins;
     public int emeralds;
     public int power;
-    public float lvl;
+    public int lvl;
+    public int xp;
 
     //Skin data
+    public Skin skinSeletion;
     public List<bool> skins;
     public int selectedSkin;
 }

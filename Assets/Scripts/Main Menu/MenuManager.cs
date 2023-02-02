@@ -20,11 +20,13 @@ public class MenuManager : MonoBehaviour
     public GameObject XP;
 
 
+    private DataManager DataMan;
     private string naming;
     private Save sv = new Save();
 
     private void Start()
     {
+        DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         if (Data().LoadSave())
         {
             Data().LoadSave();
@@ -85,7 +87,7 @@ public class MenuManager : MonoBehaviour
     
     private DataManager Data()
     {
-        return GameObject.Find("Data Manager").GetComponent<DataManager>();
+        return DataMan;
     }
 /*  
 ++    //Add coin/emerald/power/lvl data
