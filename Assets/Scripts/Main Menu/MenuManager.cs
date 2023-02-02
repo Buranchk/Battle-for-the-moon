@@ -49,7 +49,7 @@ public class MenuManager : MonoBehaviour
         if(sv.power > 100)
             sv.power = 100;
         powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.power.ToString() + "/100");
-        lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = ((int)sv.lvl).ToString();
+        lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.lvl).ToString();
         Data().SetSave(sv);
         SetSkinsActive(true);
     }

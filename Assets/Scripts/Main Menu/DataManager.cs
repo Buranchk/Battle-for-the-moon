@@ -127,16 +127,18 @@ public class DataManager : MonoBehaviour
 
     public int LevelUpdate()
     {
-        LoadSave();
-        int[] lvls = new int[10]{5, 10, 15, 25, 35, 50, 70, 90, 120, 150};
+        int[] lvls = new int[11]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150};
         for(int i = 0; i < 10; i ++)
         {
-            if(save.xp >= lvls[i])
+            print("in loop of i - " + i);
+            print("there is xp " + save.xp + " and lvl selection is " + lvls[i]);
+            if(save.xp < lvls[i])
             {
-                return i;
+                print("worked on - " + i);
+                return i-1;
             }
         }
-        return 0;
+        return 10;
     }
 
     public Skin GiveSkinSelection()
