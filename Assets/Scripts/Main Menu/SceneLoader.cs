@@ -19,7 +19,7 @@ public class SceneLoader : MonoBehaviour
     {
         print(GameObject.Find("Data Manager").GetComponent<DataManager>().GivePower());
         if(GameObject.Find("Data Manager").GetComponent<DataManager>().GivePower() > 33){
-            GameObject.Find("Menu Manager").GetComponent<MenuManager>().TakePower();
+            GameObject.Find("Data Manager").GetComponent<DataManager>().TakePower();
             SceneManager.LoadScene("Game Board");
         }
     }
@@ -27,5 +27,11 @@ public class SceneLoader : MonoBehaviour
     public void LoadProfile()
     {
         SceneManager.LoadScene("Profile");
+    }
+
+    public void ReloadScene()
+    {
+        Scene scene = SceneManager.GetActiveScene();
+        SceneManager.LoadScene(scene.name);
     }
 }

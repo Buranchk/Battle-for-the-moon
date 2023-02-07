@@ -112,8 +112,8 @@ public class DataManager : MonoBehaviour
         {
             print("u won");
             save.coins = save.coins + 20;
-            save.xp = save.xp + 5;
             save.emeralds += 2;
+            save.xp = save.xp + 5;
         }
         else if(!status)
         {

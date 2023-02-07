@@ -105,6 +105,11 @@ public class SkinManager : MonoBehaviour
 
     private void Awake()
     {
+        SetUpAllSkins();
+    }
+
+    public void SetUpAllSkins()
+    {
         List<bool> skins = new List<bool>();
         skins = Data().GetSkins();
 
@@ -117,7 +122,6 @@ public class SkinManager : MonoBehaviour
             skin1.GetComponent<Skin>().Select();
         }
         Data().GiveSkinSelection().Select();
-        
     }
 
     private DataManager Data()
