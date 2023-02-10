@@ -14,6 +14,9 @@ public class GameResult : MonoBehaviour
     public GameObject emeraldsSpace;
     public GameObject powerSpace;
     public GameObject xpSpace;
+    public GameObject coinsRewards;
+    public GameObject emeraldsRewards;
+
     private Save sv = new Save();
 
 
@@ -22,21 +25,79 @@ public class GameResult : MonoBehaviour
     {
         Data = GameObject.Find("Data Manager").GetComponent<DataManager>();
         int gameResult = PlayerPrefs.GetInt("GameResult");
+
+        RewardCalculation(gameResult);
+
         if(gameResult == 1){
             GameObject.Find("Winner").GetComponent<Image>().sprite = Player;
             GameObject.Find("Result").GetComponent<Image>().sprite = Win;
             //20 2 5
-            Data.EndGame(true);
+            Data.EndGame(true, Data.GiveSelectedSkin());
         }
         else 
         {
             GameObject.Find("Winner").GetComponent<Image>().sprite = Enemy;
             GameObject.Find("Result").GetComponent<Image>().sprite = Loose;
             //5 0 2
-            Data.EndGame(false);
+            Data.EndGame(false, Data.GiveSelectedSkin());
         }
         LoadUI();
     }
+
+
+    private void RewardCalculation(int gameResult)
+    {
+        int coinReward = 0;
+        int emeraldReward = 0;
+        int xpReward = 0;
+
+        if(gameResult == 1)
+        {
+            print("u won");
+            coinReward = 20;
+            emeraldReward = 2;
+            xpReward = 5;
+                
+
+            switch (Data.GiveSelectedSkin()){
+                case 1:
+                xpReward += 5;
+                break;
+
+                case 2:
+                coinReward += 20;
+                break;
+
+                case 3:
+                emeraldReward += 2;
+                break;
+            }
+        }
+        else
+        {
+            print("u lost");
+            coinReward = 5;
+            xpReward = 2;
+            emeraldReward = 0;
+            switch (Data.GiveSelectedSkin()){
+                case 1:
+                xpReward += 2;
+                break;
+
+                case 2:
+                coinReward += 5;
+                break;
+
+                case 3:
+                emeraldReward += 1;
+                break;
+            }  
+        }
+
+        coinsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + coinReward.ToString());
+        emeraldsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + emeraldReward.ToString());
+    }
+
 
     public void LoadUI()
     {

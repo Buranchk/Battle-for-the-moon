@@ -105,22 +105,66 @@ public class DataManager : MonoBehaviour
         SaveChanges();
     }
 
-    public void EndGame(bool status)
+    public void GiveXP(int amount)
     {
         LoadSave();
+        save.xp += amount;
+        SaveChanges();
+    }
+
+    public void GiveRuby(int amount)
+    {
+        LoadSave();
+        save.emeralds += amount;
+        SaveChanges();
+    }
+
+    public void EndGame(bool status, int selectedSkin)
+    {
+        LoadSave();
+        
         if(status)
         {
             print("u won");
             save.coins = save.coins + 20;
             save.emeralds += 2;
             save.xp = save.xp + 5;
+                
+
+            switch (selectedSkin){
+                case 1:
+                save.xp = save.xp + 5;
+                break;
+
+                case 2:
+                save.coins = save.coins + 20;
+                break;
+
+                case 3:
+                save.emeralds += 2;
+                break;
+            }  
         }
         else if(!status)
         {
             print("u lost");
             save.coins = save.coins + 5;
             save.xp += 2;
+            switch (selectedSkin){
+                case 1:
+                save.xp = save.xp + 2;
+                break;
+
+                case 2:
+                save.coins = save.coins + 5;
+                break;
+
+                case 3:
+                save.emeralds += 1;
+                break;
+            }  
         }
+
         save.lvl = LevelUpdate();
         SaveChanges();
     }
