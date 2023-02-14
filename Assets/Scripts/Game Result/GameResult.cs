@@ -16,7 +16,9 @@ public class GameResult : MonoBehaviour
     public GameObject xpSpace;
     public GameObject coinsRewards;
     public GameObject emeraldsRewards;
-    public GameObject xpRewards;
+    public Slider XPSlider;
+    public Animator AnimatedPart;
+    private float updXP;
 
     private Save sv = new Save();
 
@@ -26,6 +28,7 @@ public class GameResult : MonoBehaviour
     {
         Data = GameObject.Find("Data Manager").GetComponent<DataManager>();
         int gameResult = PlayerPrefs.GetInt("GameResult");
+
 
         LoadUI();
         RewardCalculation(gameResult);
@@ -98,9 +101,52 @@ public class GameResult : MonoBehaviour
 
         coinsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + coinReward.ToString());
         emeraldsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + emeraldReward.ToString());
-        //xpRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + xpReward.ToString());
+        FillXP(xpReward);
+        xpSpace.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + xpReward.ToString());
     }
 
+
+
+
+    private void SetUpXPSlider(int lvl, int xp)
+    {
+        int[] lvls = new int[12]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150, 100000};
+        
+
+        XPSlider.maxValue = lvls[lvl + 1] - lvls[lvl];
+        print("maxValue is " + (lvls[lvl + 1] - lvls[lvl]) + " lvl is " + lvl);
+        XPSlider.value = xp - lvls[lvl];
+        print("value is " + XPSlider.value + " xp is " + xp);
+
+  
+
+    }
+
+    public void FillXP(int xp)
+    {
+        int[] lvls = new int[12]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150, 100000};
+        sv = Data.GetSave();
+
+        LeanTween.value(GameObject.Find("XPSlider"), XPSlider.value, XPSlider.value + xp, 1.0f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
+            print(val);
+            updXP = val;
+            if(val >= XPSlider.maxValue)
+            {
+               //lvlUpAnimation.Play(true);
+            }
+        });
+
+
+
+        // AnimatedPart.GetComponent<AnimationClip>().events
+        // XPSlider.GetComponent<Slider>().value + xp
+    }
+
+
+    private void Update()
+    {
+        XPSlider.value = updXP;
+    }
 
     public void LoadUI()
     {
@@ -110,7 +156,7 @@ public class GameResult : MonoBehaviour
         if(sv.power > 100)
             sv.power = 100;
         powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.power.ToString() + "/100");
-        xpSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.xp).ToString();
+        SetUpXPSlider(sv.lvl, sv.xp);
     }
 
 

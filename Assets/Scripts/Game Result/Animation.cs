@@ -10,4 +10,5 @@ public class Animation : MonoBehaviour
     {
         Resuts.LoadUI();
     }
+
 }

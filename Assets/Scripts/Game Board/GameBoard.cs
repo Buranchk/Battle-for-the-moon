@@ -40,7 +40,7 @@ public class GameBoard : MonoBehaviour
     private GameObject lastSelectedUnit;
     [HideInInspector] public List<GameObject> units = new List<GameObject>();
     public List<GameObject> enemyUnits = new List<GameObject>();
-    public bool gameWin;
+    public bool gameWin = true;
 
     void Start()
     {
@@ -229,6 +229,16 @@ public class GameBoard : MonoBehaviour
     }
 
 /* UI related functions */
+
+//TEMP!!!!
+    public void WIN()
+    {
+        NewStage();
+        NewStage();
+        NewStage();
+        NewStage();
+    }
+
     public void UnitRandomize()
     {
         Shuffle(units);
