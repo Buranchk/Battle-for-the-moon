@@ -143,7 +143,7 @@ public class DataManager : MonoBehaviour
                 case 3:
                 save.emeralds += 2;
                 break;
-            }  
+            }
         }
         else if(!status)
         {

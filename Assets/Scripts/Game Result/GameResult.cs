@@ -16,6 +16,7 @@ public class GameResult : MonoBehaviour
     public GameObject xpSpace;
     public GameObject coinsRewards;
     public GameObject emeraldsRewards;
+    public GameObject xpRewards;
 
     private Save sv = new Save();
 
@@ -26,8 +27,9 @@ public class GameResult : MonoBehaviour
         Data = GameObject.Find("Data Manager").GetComponent<DataManager>();
         int gameResult = PlayerPrefs.GetInt("GameResult");
 
+        LoadUI();
         RewardCalculation(gameResult);
-
+        
         if(gameResult == 1){
             GameObject.Find("Winner").GetComponent<Image>().sprite = Player;
             GameObject.Find("Result").GetComponent<Image>().sprite = Win;
@@ -41,7 +43,7 @@ public class GameResult : MonoBehaviour
             //5 0 2
             Data.EndGame(false, Data.GiveSelectedSkin());
         }
-        LoadUI();
+
     }
 
 
@@ -96,6 +98,7 @@ public class GameResult : MonoBehaviour
 
         coinsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + coinReward.ToString());
         emeraldsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + emeraldReward.ToString());
+        //xpRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + xpReward.ToString());
     }
 
 
