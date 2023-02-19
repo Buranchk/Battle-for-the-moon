@@ -74,4 +74,23 @@ public class EnemyAI : MonoBehaviour
         return GameObject.Find("Game Board").GetComponent<GameBoard>();
     }
 
+    public void setAlpha(float opacity)
+    {
+        Color colour;
+        colour = GetComponent<SpriteRenderer>().color;
+        colour.a = opacity;
+        GetComponent<SpriteRenderer>().color = colour;
+    }
+
+    public void SpawnAnimation()
+    {
+        setAlpha(0);
+        transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        LeanTween.scale(gameObject, new Vector3(0.85f, 0.85f), 0.7f).setEaseOutElastic();
+
+        //gameObject.LeanAlpha(1, 0.75f).setEaseOutBack();
+        //gameObject.LeanScale(new Vector3(1f, 1f), 0.5f).setEaseInCubic();
+        //gameObject.LeanScale(new Vector3(0.85f, 0.85f), 0.5f).setEaseOutBack();
+    }
+
 }

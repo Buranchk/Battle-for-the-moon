@@ -42,6 +42,7 @@ public class SkinManager : MonoBehaviour
         Data().SetSelectedSkin(currentSkin, storedSelectedSkin);
 
     }
+
     public void RightSwipe()
     {
         //pos 1 , 2 , 3 , 4

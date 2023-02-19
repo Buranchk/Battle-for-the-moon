@@ -191,7 +191,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &122075434
 RectTransform:
   m_ObjectHideFlags: 0
@@ -962,7 +962,7 @@ MonoBehaviour:
   available: 0
   unlocked: {fileID: 21300000, guid: a6ad069f4e05a914eb7c037e32439e4a, type: 3}
   locked: {fileID: 21300000, guid: 22acda331ff94ba48aecaeb47352f866, type: 3}
-  outliner: {fileID: 0}
+  outliner: {fileID: 996532754}
   skinManager: {fileID: 1076043367}
 --- !u!61 &380736863
 BoxCollider2D:
