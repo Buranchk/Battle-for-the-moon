@@ -15,6 +15,7 @@ public class MenuManager : MonoBehaviour
     public GameObject emeraldsSpace;
     public GameObject powerSpace;
     public GameObject lvlSpace;
+    public GameObject showCase;
 
     public GameObject Ruby;
     public GameObject XP;
@@ -65,6 +66,11 @@ public class MenuManager : MonoBehaviour
             applyButton.SetActive(false);
             Debug.Log("Enter a proper name!");
         }
+    }
+
+    public void ShowCaseSkin()
+    {
+        showCase.SetActive(true);
     }
 
     public void NewAccount()

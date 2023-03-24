@@ -32,7 +32,7 @@ public class Skin : MonoBehaviour
                 }
                 else if (!available)
                 {
-                    //Shop PopUp
+                    GameObject.Find("Menu Manager").GetComponent<MenuManager>().ShowCaseSkin();
                     print("BuyOption");
                 }
             }
