@@ -39,8 +39,10 @@ public class SkinManager : MonoBehaviour
             storedSelectedSkin.Unselect();
         }
         storedSelectedSkin = skin;
-        Data().SetSelectedSkin(currentSkin);
+        Data().SetSelectedSkin(currentSkin, storedSelectedSkin);
+
     }
+
     public void RightSwipe()
     {
         //pos 1 , 2 , 3 , 4
@@ -104,6 +106,11 @@ public class SkinManager : MonoBehaviour
 
     private void Awake()
     {
+        SetUpAllSkins();
+    }
+
+    public void SetUpAllSkins()
+    {
         List<bool> skins = new List<bool>();
         skins = Data().GetSkins();
 
@@ -111,6 +118,11 @@ public class SkinManager : MonoBehaviour
         skin2.GetComponent<Skin>().available = skins[1];
         skin3.GetComponent<Skin>().available = skins[2];
         skin4.GetComponent<Skin>().available = skins[3];
+        if(Data().GiveSkinSelection() == null)
+        {
+            skin1.GetComponent<Skin>().Select();
+        }
+        Data().GiveSkinSelection().Select();
     }
 
     private DataManager Data()

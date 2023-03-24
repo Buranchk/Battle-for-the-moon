@@ -29,6 +29,9 @@ public class GameBoard : MonoBehaviour
     public GameObject windowRPS;
     public GameObject buttonShuffle;
     public GameObject buttonDone;
+    public GameObject decoyText;
+    public GameObject flagText;
+    public GameObject reshuffleText;
 
     [HideInInspector] public int gameStage = 0;
 
@@ -40,7 +43,7 @@ public class GameBoard : MonoBehaviour
     private GameObject lastSelectedUnit;
     [HideInInspector] public List<GameObject> units = new List<GameObject>();
     public List<GameObject> enemyUnits = new List<GameObject>();
-    public bool gameWin;
+    public bool gameWin = true;
 
     void Start()
     {
@@ -75,6 +78,8 @@ public class GameBoard : MonoBehaviour
                 spawnedTile.Init(isOffset);
 
                 tiles[new Vector2(x, y)] = spawnedTile;
+                if(y >= 2)
+                    spawnedTile.setAlpha(0);
             }
         }
         cam.transform.position = new Vector3((float)width/2 -0.5f, (float)height / 2 -1f,-5);
@@ -93,10 +98,16 @@ public class GameBoard : MonoBehaviour
 
                 spawnedUnit.Init();
 
-                enemyUnits.Add(GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Enemy {x} {y}"));
+                GameObject newEnemy = GameObject.Find($"Enemy {x} {y}");
 
-                GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Enemy {x} {y}");
+                //enemyUnits.Add(GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Enemy {x} {y}")); 
+                enemyUnits.Add(newEnemy);
 
+                GetTileAtPosition(new Vector2(x, y)).unitLinked = newEnemy;
+
+                LeanTween.alpha(newEnemy, 1, 0.75f).setEaseOutBack();
+                newEnemy.GetComponent<EnemyAI>().SpawnAnimation();
+                
                 map[x, y] = "enemyUnit";
             }
         }
@@ -229,6 +240,16 @@ public class GameBoard : MonoBehaviour
     }
 
 /* UI related functions */
+
+//TEMP!!!!
+    public void WIN()
+    {
+        NewStage();
+        NewStage();
+        NewStage();
+        NewStage();
+    }
+
     public void UnitRandomize()
     {
         Shuffle(units);
@@ -272,6 +293,45 @@ public class GameBoard : MonoBehaviour
         SceneManager.LoadScene("Game Result");
     }
 
+    IEnumerator TileAppearence()
+    {
+        for(int i = 0; i < width; i++)
+        {
+            StartCoroutine(TileRawAppearence(i));
+            yield return new WaitForSeconds(0.1f);
+        }
+        yield return new WaitForSeconds(0.4f);
+        SpawnEnemies();
+    }
+
+    IEnumerator TileRawAppearence(int raw)
+    {
+        
+        Vector2 tilePos;
+        for(int i = 2; i < height; i++)
+        {
+            tilePos = new Vector2(raw, i);
+            StartCoroutine(MakeTileVisible(tilePos));
+            yield return new WaitForSeconds(0.1f);
+        }
+    }
+
+    IEnumerator MakeTileVisible(Vector2 tilePos)
+    {
+        Tile tile;
+        tile = GetTileAtPosition(tilePos);
+        tile.MakeTileVisible();
+        yield return new WaitForSeconds(0.05f);
+
+        // for(float opacity = 0; opacity <= 1; opacity += 0.05f)
+        // {
+        //     tile = GetTileAtPosition(tilePos);
+        //     tile.setAlpha(opacity);
+        //     yield return new WaitForSeconds(0.05f);
+        // }
+    }
+
+
 /* Usage functions */
 
     public Tile GetTileAtPosition(Vector2 pos) 
@@ -301,22 +361,26 @@ public class GameBoard : MonoBehaviour
         switch (gameStage)
         {
             case 1:
-            //show sm text?
+            flagText.SetActive(true);
             break;
 
             case 2:
-            //show more txt
+            flagText.SetActive(false);
+            decoyText.SetActive(true);
             break;
 
             case 3:
+            decoyText.SetActive(false);
+            reshuffleText.SetActive(true);
             ApplyUnitSelection();
             buttonShuffle.SetActive(true);
             break;
 
             case 4:
+            reshuffleText.SetActive(false);
             buttonShuffle.SetActive(false);
             buttonDone.SetActive(false);
-            SpawnEnemies();
+            StartCoroutine(TileAppearence());
             break;
 
             case 5:

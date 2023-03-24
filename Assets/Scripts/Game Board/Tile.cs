@@ -5,7 +5,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour 
 {
     //settings
-    [SerializeField] private Color baseColor, offsetColor;
+    public Color baseColor, offsetColor;
     [SerializeField] private SpriteRenderer tileRenderer;
     public GameObject highlight;
     private GameBoard Board;
@@ -54,7 +54,7 @@ public class Tile : MonoBehaviour
 
     void OnMouseEnter() 
     {
-        if(GetGameBoard().windowRPS.activeInHierarchy == false && GetGameBoard().gameStage >= 2)
+        if(GetGameBoard().windowRPS.activeInHierarchy == false && GetGameBoard().gameStage >= 4)
             highlight.SetActive(true);
     }
 
@@ -69,5 +69,19 @@ public class Tile : MonoBehaviour
         if (Board == null)
             Board = GameObject.Find("Game Board").GetComponent<GameBoard>();
         return Board;
+    }
+
+    public void setAlpha(float opacity)
+    {
+        Color colour;
+        colour = GetComponent<SpriteRenderer>().color;
+        colour.a = opacity;
+        GetComponent<SpriteRenderer>().color = colour;
+    }
+
+    public void MakeTileVisible()
+    {
+        setAlpha(0);
+        LeanTween.alpha(gameObject, 1, 0.75f).setEaseOutBack();
     }
 }

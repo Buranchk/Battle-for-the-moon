@@ -46,7 +46,8 @@ public class DataManager : MonoBehaviour
         save.coins = 0;
         save.emeralds = 0;
         save.power = 100;
-        save.lvl = 0.0f;
+        save.xp = 0;
+        save.lvl = 0;
         save.skins = new List<bool>(){true, false, true, false};
         save.selectedSkin = 0;
         SaveChanges();
@@ -78,9 +79,9 @@ public class DataManager : MonoBehaviour
 
     public void TakePower()
     {
-        save = GetSave();
+        LoadSave();
         save.power = save.power - 1;
-        SetSave(save);
+        SaveChanges();
     }
 
     public List<bool> GetSkins()
@@ -89,13 +90,109 @@ public class DataManager : MonoBehaviour
         return save.skins;
     }
     
-    public void SetSelectedSkin(int num)
+    public void SetSelectedSkin(int num, Skin skin)
     {
+        LoadSave();
+        save.skinSeletion = skin;
         save.selectedSkin = num;
         SaveChanges();
     }
 
+    public void GiveGold(int amount)
+    {
+        LoadSave();
+        save.coins += amount;
+        SaveChanges();
+    }
+
+    public void GiveXP(int amount)
+    {
+        LoadSave();
+        save.xp += amount;
+        SaveChanges();
+    }
+
+    public void GiveRuby(int amount)
+    {
+        LoadSave();
+        save.emeralds += amount;
+        SaveChanges();
+    }
+
+    public void EndGame(bool status, int selectedSkin)
+    {
+        LoadSave();
+        
+        if(status)
+        {
+            print("u won");
+            save.coins = save.coins + 20;
+            save.emeralds += 2;
+            save.xp = save.xp + 5;
+                
+
+            switch (selectedSkin){
+                case 1:
+                save.xp = save.xp + 5;
+                break;
+
+                case 2:
+                save.coins = save.coins + 20;
+                break;
+
+                case 3:
+                save.emeralds += 2;
+                break;
+            }
+        }
+        else if(!status)
+        {
+            print("u lost");
+            save.coins = save.coins + 5;
+            save.xp += 2;
+            switch (selectedSkin){
+                case 1:
+                save.xp = save.xp + 2;
+                break;
+
+                case 2:
+                save.coins = save.coins + 5;
+                break;
+
+                case 3:
+                save.emeralds += 1;
+                break;
+            }  
+        }
+
+        save.lvl = LevelUpdate();
+        SaveChanges();
+    }
+
+    public int LevelUpdate()
+    {
+        int[] lvls = new int[11]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150};
+        for(int i = 0; i < 10; i ++)
+        {
+            //print("in loop of i - " + i);
+            //print("there is xp " + save.xp + " and lvl selection is " + lvls[i]);
+            if(save.xp < lvls[i])
+            {
+                //print("worked on - " + i);
+                return i-1;
+            }
+        }
+        return 10;
+    }
+
+    public Skin GiveSkinSelection()
+    {
+        LoadSave();
+        return save.skinSeletion;
+    }
+
 }
+
 
 [Serializable]
 public class Save
@@ -105,9 +202,11 @@ public class Save
     public int coins;
     public int emeralds;
     public int power;
-    public float lvl;
+    public int lvl;
+    public int xp;
 
     //Skin data
+    public Skin skinSeletion;
     public List<bool> skins;
     public int selectedSkin;
 }

@@ -20,11 +20,13 @@ public class MenuManager : MonoBehaviour
     public GameObject XP;
 
 
+    private DataManager DataMan;
     private string naming;
     private Save sv = new Save();
 
     private void Start()
     {
+        DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         if (Data().LoadSave())
         {
             Data().LoadSave();
@@ -47,8 +49,7 @@ public class MenuManager : MonoBehaviour
         if(sv.power > 100)
             sv.power = 100;
         powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.power.ToString() + "/100");
-        lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = ((int)sv.lvl).ToString();
-        Data().SetSave(sv);
+        lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.lvl).ToString();
         SetSkinsActive(true);
     }
 
@@ -85,7 +86,7 @@ public class MenuManager : MonoBehaviour
     
     private DataManager Data()
     {
-        return GameObject.Find("Data Manager").GetComponent<DataManager>();
+        return DataMan;
     }
 /*  
 ++    //Add coin/emerald/power/lvl data
