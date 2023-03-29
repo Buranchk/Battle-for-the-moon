@@ -518,7 +518,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 103.69995, y: 116.73}
+  m_AnchoredPosition: {x: 103.69995, y: 116.72998}
   m_SizeDelta: {x: 1037, y: 204}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &206808507
@@ -863,7 +863,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -104, y: 116.73}
+  m_AnchoredPosition: {x: -104, y: 116.72998}
   m_SizeDelta: {x: 1037, y: 204}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &263016199
@@ -952,7 +952,7 @@ MonoBehaviour:
   height: 6
   tilePrefab: {fileID: 2820816422871453050, guid: c4ecefb07f874884385d874418411c2e, type: 3}
   cam: {fileID: 187830312}
-  spaceMan: {fileID: 1691166331064683932, guid: a5b4fd33294406343bd99c280d400be7, type: 3}
+  spaceMan: {fileID: 9133263346100822326, guid: 8955576b7281508459ac584cab3718f1, type: 3}
   XP: {fileID: 4728573957478449968, guid: d21738f15136b5247b9eee68170a61e7, type: 3}
   gold: {fileID: 2972072912298175917, guid: 65b76e7c0aa3155448bda1989bf39af0, type: 3}
   ruby: {fileID: 8596656013582707851, guid: b8a904976b3da134bac9410cf03a7acf, type: 3}

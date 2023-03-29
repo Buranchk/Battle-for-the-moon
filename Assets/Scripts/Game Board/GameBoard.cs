@@ -413,7 +413,7 @@ public class GameBoard : MonoBehaviour
 /* Unit functions */
     public void SelectUnit(GameObject newSelectedUnit)
     {
-        newSelectedUnit.GetComponent<Unit>().highlight.SetActive(true);
+        //newSelectedUnit.GetComponent<Unit>().highlight.SetActive(true);
         if (selectedUnit != newSelectedUnit && selectedUnit != null)
             ChangeUnit(newSelectedUnit);
         else if (selectedUnit == newSelectedUnit && selectedUnit != null)
@@ -427,7 +427,7 @@ public class GameBoard : MonoBehaviour
     public void DeselectUnit()
     {   
         if(selectedUnit != null){
-            selectedUnit.GetComponent<Unit>().highlight.SetActive(false);
+            //selectedUnit.GetComponent<Unit>().highlight.SetActive(false);
             SuggestMoves(false);
             selectedUnit = null;
         }
@@ -540,7 +540,7 @@ public class GameBoard : MonoBehaviour
         {
             print("Enemy Flag is fucked");
             DestroyUnit(eUnitObj);
-            fUnit.highlight.SetActive(false);
+            //fUnit.highlight.SetActive(false);
             gameWin = true;
             NewStage();
         }
@@ -556,7 +556,7 @@ public class GameBoard : MonoBehaviour
 
         if(eUnit.type == "decoy" || fUnit.type == "decoy")
         {
-            fUnit.highlight.SetActive(false);
+            //fUnit.highlight.SetActive(false);
             eUnit.highlight.SetActive(false);
             DestroyUnit(fUnitObj);
             DestroyUnit(eUnitObj);
@@ -587,7 +587,7 @@ public class GameBoard : MonoBehaviour
             fUnit.ChangeType(fUnit.type);
             fUnit.movedOn = false;
             DestroyUnit(eUnitObj);
-            fUnit.highlight.SetActive(false);
+            //fUnit.highlight.SetActive(false);
             turn = !turn;
             if(!turn)
                 EnemyAI();

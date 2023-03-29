@@ -1,24 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Spine.Unity;
 
 public class Unit : MonoBehaviour
 {
     //settings
     [SerializeField] private GameObject tile;
-    public GameObject highlight;
     private GameBoard Board;
 
     //sprites
-    public Sprite rock;
-    public Sprite paper;
-    public Sprite scissors;
-    public Sprite rockOpen;
-    public Sprite paperOpen;
-    public Sprite scissorsOpen;
-    public Sprite flag;
-    public Sprite decoy;
-    public Sprite nothing;
+    private string rock = "SC_stone";
+    private string paper = "SC_paper";
+    private string scissors = "SC_scissors";
+    private string rockOpen = "SO_stone";
+    private string paperOpen = "SO_paper";
+    private string scissorsOpen = "SO_scissors";
+    private string flag = "SM_FLAG";
+    private string decoy = "SM_FAKE";
+    private string nothing = "MARINE";
 
     
     //permanent statement
@@ -30,12 +30,30 @@ public class Unit : MonoBehaviour
     public bool isOverTheUnit = false;
     public bool movedOn;
 
+
+
+
+
+    //spine stuff
+    SkeletonAnimation skeletonAnimation;
+    Spine.AnimationState animationState;
+    Spine.Skeleton skeleton;
+
+
     //Unit initiation
     public void Init()
     {
         movedOn = false;
-        highlight.SetActive(false);
+        //highlight.SetActive(false);
     }
+
+   void Awake () {
+      skeletonAnimation = GetComponent<SkeletonAnimation>();
+      skeleton = skeletonAnimation.Skeleton;
+      //skeletonAnimation.Initialize(false); // when not accessing skeletonAnimation.Skeleton,
+                                 // use Initialize(false) to ensure everything is loaded.
+      animationState = skeletonAnimation.AnimationState;
+   }
 
     public void ChangeType(string newType)
     {
@@ -43,56 +61,56 @@ public class Unit : MonoBehaviour
         
         switch (newType)
         {
-            case "nothing":
-            this.gameObject.GetComponent<SpriteRenderer>().sprite = nothing;
-            highlight.GetComponent<SpriteRenderer>().sprite = nothing;
+            case "Nothing":
+                skeletonAnimation.Skeleton.SetSkin(nothing);
+                skeletonAnimation.Skeleton.SetSlotsToSetupPose();
             break;
 
             case "rock":
-            if(isOpen)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = rockOpen;
-                highlight.GetComponent<SpriteRenderer>().sprite = rockOpen;
-            } else
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = rock;
-                highlight.GetComponent<SpriteRenderer>().sprite = rock;
-            }
+                if(isOpen)
+                {
+                    skeletonAnimation.Skeleton.SetSkin(rockOpen);
+                    skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+                } else
+                {
+                    skeletonAnimation.Skeleton.SetSkin(rock);
+                    skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+                }
             break;
 
             case "paper":
-            if(isOpen)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = paperOpen;
-                highlight.GetComponent<SpriteRenderer>().sprite = paperOpen;
-            } else
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = paper;
-                highlight.GetComponent<SpriteRenderer>().sprite = paper;
-            }
+                if(isOpen)
+                {
+                    skeletonAnimation.Skeleton.SetSkin(paperOpen);
+                    skeletonAnimation.Skeleton.SetSlotsToSetupPose();                    
+                } else
+                {
+                    skeletonAnimation.Skeleton.SetSkin(paper);
+                    skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+                }
 
             break;
 
             case "scissors":
-            if(isOpen)
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = scissorsOpen;
-                highlight.GetComponent<SpriteRenderer>().sprite = scissorsOpen;
-            } else
-            {
-                this.gameObject.GetComponent<SpriteRenderer>().sprite = scissors;
-                highlight.GetComponent<SpriteRenderer>().sprite = scissors;
-            }
+                if(isOpen)
+                {
+                    skeletonAnimation.Skeleton.SetSkin(scissorsOpen);
+                    skeletonAnimation.Skeleton.SetSlotsToSetupPose();                    
+                } else
+                {
+                    skeletonAnimation.Skeleton.SetSkin(scissors);
+                    skeletonAnimation.Skeleton.SetSlotsToSetupPose();                    
+                }
             break;
 
             case "flag":
-            this.gameObject.GetComponent<SpriteRenderer>().sprite = flag;
-            highlight.GetComponent<SpriteRenderer>().sprite = flag;
+                skeletonAnimation.Skeleton.SetSkin(flag);
+                skeletonAnimation.Skeleton.SetSlotsToSetupPose();            
             break;
 
-            case "decoy":
-            this.gameObject.GetComponent<SpriteRenderer>().sprite = decoy;
-            highlight.GetComponent<SpriteRenderer>().sprite = decoy;
+                case "decoy":
+                skeletonAnimation.Skeleton.SetSkin(decoy);
+                skeletonAnimation.Skeleton.SetSlotsToSetupPose();
             break;
         }
     }
