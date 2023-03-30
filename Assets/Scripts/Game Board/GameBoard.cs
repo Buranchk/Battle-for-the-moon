@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameBoard : MonoBehaviour
 {
@@ -205,7 +206,7 @@ public class GameBoard : MonoBehaviour
         {
             Vector2 flagPos = Unit.transform.position;
             GameObject.Find("Flag").transform.position = flagPos;
-            buttonDone.SetActive(true);
+            setDoneButtonBack();
         } 
         
         else if (gameStage == 2)
@@ -214,7 +215,7 @@ public class GameBoard : MonoBehaviour
             {
                 Vector2 decayPos = Unit.transform.position;
                 GameObject.Find("Decoy").transform.position = decayPos;
-                buttonDone.SetActive(true);
+                setDoneButtonBack();
             }
         }
     }
@@ -696,6 +697,12 @@ public class GameBoard : MonoBehaviour
         UnitFight();
     }
 
+    public void setDoneButtonBack()
+    {
+        buttonDone.SetActive(true);
+        buttonDone.GetComponent<Image>().color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+        buttonDone.GetComponent<Button>().interactable = true;
+    }
 /* EnemyAI */
     public void EnemyAI()
     {
