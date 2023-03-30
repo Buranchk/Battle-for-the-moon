@@ -15,8 +15,14 @@ public class Tile : MonoBehaviour
     public GameObject unitSuggestMove;
     public GameObject unitLinked;
 
+    //Data
+    private Color basedColor = new Color (0.482f, 0.608f, 0.682f, 1f);
+    private Color offsetsColor = new Color (0.557f, 0.714f, 0.769f, 1f);
+    private bool isOffsetData;
+
     public void Init(bool isOffset) 
     {
+        isOffsetData = isOffset;
         tileRenderer.color = isOffset ? offsetColor : baseColor;
         highlight.SetActive(false);
     }
@@ -32,7 +38,6 @@ public class Tile : MonoBehaviour
             }
         }
     }
-
 
     private void UnitMove()
     {
@@ -81,7 +86,10 @@ public class Tile : MonoBehaviour
 
     public void MakeTileVisible()
     {
-        setAlpha(0);
-        LeanTween.alpha(gameObject, 1, 0.75f).setEaseOutBack();
+        if(isOffsetData)
+            LeanTween.color(gameObject, offsetsColor, 0.75f);
+        else
+            LeanTween.color(gameObject, basedColor, 0.75f);
     }
+
 }

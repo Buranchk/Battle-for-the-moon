@@ -78,8 +78,9 @@ public class GameBoard : MonoBehaviour
                 spawnedTile.Init(isOffset);
 
                 tiles[new Vector2(x, y)] = spawnedTile;
-                if(y >= 2)
-                    spawnedTile.setAlpha(0);
+                if(y >= 2){
+                    spawnedTile.GetComponent<SpriteRenderer>().color = isOffset ? new Color(0.69f,0.69f,0.69f,1f) : new Color(0.5f,0.5f,0.5f,1f);
+                }
             }
         }
         cam.transform.position = new Vector3((float)width/2 -0.5f, (float)height / 2 -1f,-5);
