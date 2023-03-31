@@ -44,14 +44,6 @@ MARINE/171
 bounds:1446,278,153,155
 MARINE/172
 bounds:171,2,180,15
-Paper/105
-bounds:918,118,153,143
-SO_paper/105
-bounds:918,118,153,143
-Paper/106
-bounds:1196,120,161,150
-SO_paper/106
-bounds:1196,120,161,150
 SC_paper/1
 bounds:795,6,106,48
 rotate:90
@@ -300,6 +292,10 @@ rotate:90
 SO_paper/104
 bounds:731,226,25,37
 rotate:90
+SO_paper/105
+bounds:918,118,153,143
+SO_paper/106
+bounds:1196,120,161,150
 SO_paper/107
 bounds:2264,64,106,46
 rotate:90

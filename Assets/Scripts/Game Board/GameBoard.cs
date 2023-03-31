@@ -37,6 +37,8 @@ public class GameBoard : MonoBehaviour
     [HideInInspector] public int gameStage = 0;
 
     //private
+    [SerializeField] private Sprite buttonDoneActive;
+    [SerializeField] private Sprite buttonDoneInactive;
     private GameObject PermFlag = null;
     private GameObject PermDecoy = null;
     private bool DecoyAlive = true;
@@ -206,7 +208,7 @@ public class GameBoard : MonoBehaviour
         {
             Vector2 flagPos = Unit.transform.position;
             GameObject.Find("Flag").transform.position = flagPos;
-            setDoneButtonBack();
+            setDoneActive();
         } 
         
         else if (gameStage == 2)
@@ -215,7 +217,7 @@ public class GameBoard : MonoBehaviour
             {
                 Vector2 decayPos = Unit.transform.position;
                 GameObject.Find("Decoy").transform.position = decayPos;
-                setDoneButtonBack();
+                setDoneActive();
             }
         }
     }
@@ -364,11 +366,13 @@ public class GameBoard : MonoBehaviour
         {
             case 1:
             flagText.SetActive(true);
+            setDoneInactive();
             break;
 
             case 2:
             flagText.SetActive(false);
             decoyText.SetActive(true);
+            setDoneInactive();
             break;
 
             case 3:
@@ -376,6 +380,8 @@ public class GameBoard : MonoBehaviour
             reshuffleText.SetActive(true);
             ApplyUnitSelection();
             buttonShuffle.SetActive(true);
+            UnitRandomize();
+            setDoneActive();
             break;
 
             case 4:
@@ -697,12 +703,19 @@ public class GameBoard : MonoBehaviour
         UnitFight();
     }
 
-    public void setDoneButtonBack()
+    public void setDoneInactive()
+    {
+            buttonDone.GetComponent<Button>().interactable = false;
+            buttonDone.GetComponent<Image>().sprite = buttonDoneInactive;
+    }
+
+    public void setDoneActive()
     {
         buttonDone.SetActive(true);
-        buttonDone.GetComponent<Image>().color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+        buttonDone.GetComponent<Image>().sprite = buttonDoneActive;
         buttonDone.GetComponent<Button>().interactable = true;
     }
+
 /* EnemyAI */
     public void EnemyAI()
     {
