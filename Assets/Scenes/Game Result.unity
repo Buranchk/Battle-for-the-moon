@@ -939,8 +939,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Enemy: {fileID: 21300000, guid: 115ab5f32a938e148afe488da699227c, type: 3}
   Player: {fileID: 21300000, guid: 392d756bd9ed67a4b821e0a8fd9bba58, type: 3}
-  Win: {fileID: 21300000, guid: f68a226d44b6e79488e56d9121d3cc2f, type: 3}
-  Loose: {fileID: 21300000, guid: 02bc7e15e7aa9f94c9164a58e7d26bfd, type: 3}
+  Result: {fileID: 578640429}
   Data: {fileID: 0}
   coinsSpace: {fileID: 992610917}
   emeraldsSpace: {fileID: 2034362927}

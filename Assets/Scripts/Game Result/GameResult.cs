@@ -7,8 +7,7 @@ public class GameResult : MonoBehaviour
 {
     public Sprite Enemy;
     public Sprite Player;
-    public Sprite Win;
-    public Sprite Loose;
+    public GameObject Result;
     public DataManager Data;
     public GameObject coinsSpace;
     public GameObject emeraldsSpace;
@@ -34,16 +33,14 @@ public class GameResult : MonoBehaviour
         RewardCalculation(gameResult);
         
         if(gameResult == 1){
-            GameObject.Find("Winner").GetComponent<Image>().sprite = Player;
-            GameObject.Find("Result").GetComponent<Image>().sprite = Win;
             //20 2 5
+            Result.SetActive(true);
             Data.EndGame(true, Data.GiveSelectedSkin());
         }
         else 
         {
-            GameObject.Find("Winner").GetComponent<Image>().sprite = Enemy;
-            GameObject.Find("Result").GetComponent<Image>().sprite = Loose;
             //5 0 2
+            Result.SetActive(false);
             Data.EndGame(false, Data.GiveSelectedSkin());
         }
 
@@ -117,8 +114,6 @@ public class GameResult : MonoBehaviour
         print("maxValue is " + (lvls[lvl + 1] - lvls[lvl]) + " lvl is " + lvl);
         XPSlider.value = xp - lvls[lvl];
         print("value is " + XPSlider.value + " xp is " + xp);
-
-  
 
     }
 
