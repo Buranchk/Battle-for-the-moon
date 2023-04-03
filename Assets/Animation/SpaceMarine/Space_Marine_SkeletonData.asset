@@ -18,13 +18,11 @@ MonoBehaviour:
   skeletonJSON: {fileID: 4900000, guid: b60cdf105da5e964c93e6387805ac5bb, type: 3}
   isUpgradingBlendModeMaterials: 0
   blendModeMaterials:
-    requiresBlendModeMaterials: 1
+    requiresBlendModeMaterials: 0
     applyAdditiveMaterial: 1
     additiveMaterials: []
     multiplyMaterials: []
-    screenMaterials:
-    - pageName: Space_Marine.png
-      material: {fileID: 2100000, guid: 641c6c338e3ac0541af2755ca9d487bd, type: 2}
+    screenMaterials: []
   skeletonDataModifiers: []
   fromAnimation: []
   toAnimation: []
