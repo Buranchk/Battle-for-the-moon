@@ -17,6 +17,9 @@ public class MenuManager : MonoBehaviour
     public GameObject lvlSpace;
     public GameObject showCase;
     public SkinPreview skinPreview;
+    public BuyOption buyOption;
+    public GameObject ShopCanvasScaler;
+    public GameObject DarkenClose;
 
     public GameObject Ruby;
     public GameObject XP;
@@ -69,10 +72,19 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    public void HideCaseSkin()
+    {
+        ShopCanvasScaler.GetComponent<RectTransform>().localScale = new Vector3(0.5f, 0.5f, 0.5f);
+        showCase.SetActive(false);
+        DarkenClose.GetComponent<Image>().color = new Vector4(0f,0f,0f,0f);
+    }
     public void ShowCaseSkin(int typeSkin)
     {
+        DarkenClose.GetComponent<Image>().color = new Vector4(0f,0f,0f,0.3f);
+        ShopCanvasScaler.GetComponent<RectTransform>().LeanScale(new Vector3(1f, 1f, 1f), 0.2f).setEase(LeanTweenType.easeOutCirc);
         showCase.SetActive(true);
         skinPreview.Appear(typeSkin);
+        buyOption.SetUpPrice(typeSkin);
     }
 
     public void NewAccount()

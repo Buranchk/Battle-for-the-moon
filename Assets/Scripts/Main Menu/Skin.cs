@@ -10,6 +10,7 @@ public class Skin : MonoBehaviour
     public Sprite unlocked;
     public Sprite locked;
     public GameObject outliner;
+    public GameObject shopCanvas;
     public SkinManager skinManager;
     public int typeSkin;
 
@@ -21,29 +22,32 @@ public class Skin : MonoBehaviour
             gameObject.GetComponent<SpriteRenderer>().sprite = locked;
     }
 
+    [Obsolete]
     void OnMouseOver()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if (queue == 0)
-            {
-                if (available)
+            if(!shopCanvas.active){
+                if (queue == 0)
                 {
-                    Select();
+                    if (available)
+                    {
+                        Select();
+                    }
+                    else if (!available)
+                    {
+                        GameObject.Find("Menu Manager").GetComponent<MenuManager>().ShowCaseSkin(typeSkin);
+                        print("BuyOption");
+                    }
                 }
-                else if (!available)
+                else if (queue == 1)
                 {
-                    GameObject.Find("Menu Manager").GetComponent<MenuManager>().ShowCaseSkin(typeSkin);
-                    print("BuyOption");
+                    skinManager.LeftSwipe();
                 }
-            }
-            else if (queue == 1)
-            {
-                skinManager.LeftSwipe();
-            }
-            else if (queue == 3)
-            {
-                skinManager.RightSwipe();
+                else if (queue == 3)
+                {
+                    skinManager.RightSwipe();
+                }
             }
         }
     }

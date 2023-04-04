@@ -65,8 +65,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: 923362d2d3efd1342930b0cf4abcb23a, type: 2}
-  - {fileID: 2100000, guid: 641c6c338e3ac0541af2755ca9d487bd, type: 2}
-  - {fileID: 2100000, guid: 923362d2d3efd1342930b0cf4abcb23a, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -125,7 +123,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: animation
+  _animationName: jump
   loop: 1
   timeScale: 1
 --- !u!61 &7532382379945314560

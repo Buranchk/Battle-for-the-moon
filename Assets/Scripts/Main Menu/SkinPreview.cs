@@ -36,8 +36,8 @@ public class SkinPreview : MonoBehaviour
         break;
        }
 
-        LeanTween.color(gameObject, new Vector4(1f, 1f, 1f, 1f), 0.2f);
-        LeanTween.scale(gameObject, new Vector3(1.3f, 1.3f, 1f), 0.2f);
+        LeanTween.color(gameObject, new Vector4(1f, 1f, 1f, 1f), 0.3f);
+        LeanTween.scale(gameObject, new Vector3(1.3f, 1.3f, 1f), 0.3f);
     }
     public void DisAppear()
     {
