@@ -16,6 +16,7 @@ public class MenuManager : MonoBehaviour
     public GameObject powerSpace;
     public GameObject lvlSpace;
     public GameObject showCase;
+    public SkinPreview skinPreview;
 
     public GameObject Ruby;
     public GameObject XP;
@@ -68,9 +69,10 @@ public class MenuManager : MonoBehaviour
         }
     }
 
-    public void ShowCaseSkin()
+    public void ShowCaseSkin(int typeSkin)
     {
         showCase.SetActive(true);
+        skinPreview.Appear(typeSkin);
     }
 
     public void NewAccount()

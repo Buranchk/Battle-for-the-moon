@@ -11,6 +11,7 @@ public class Skin : MonoBehaviour
     public Sprite locked;
     public GameObject outliner;
     public SkinManager skinManager;
+    public int typeSkin;
 
     private void Start()
     {
@@ -32,7 +33,7 @@ public class Skin : MonoBehaviour
                 }
                 else if (!available)
                 {
-                    GameObject.Find("Menu Manager").GetComponent<MenuManager>().ShowCaseSkin();
+                    GameObject.Find("Menu Manager").GetComponent<MenuManager>().ShowCaseSkin(typeSkin);
                     print("BuyOption");
                 }
             }
@@ -44,6 +45,19 @@ public class Skin : MonoBehaviour
             {
                 skinManager.RightSwipe();
             }
+        }
+    }
+
+    public void SwitchLock()
+    {   
+        Sprite objectSpriteRenderer = gameObject.GetComponent<SpriteRenderer>().sprite;
+        if(objectSpriteRenderer.name == unlocked.name)
+        {
+            objectSpriteRenderer = locked;
+        }
+        else if (objectSpriteRenderer.name == locked.name)
+        {
+            objectSpriteRenderer = unlocked;
         }
     }
 
@@ -103,28 +117,28 @@ public class Skin : MonoBehaviour
         
         case 0:
         //mid to left
-        SkinMove(-3.362528f, -0.4885723f, 1.0f, 1.4f);
+        SkinMove(-3.362528f, -0.4885723f, 1f, 1.4f);
         // gameObject.transform.position = new Vector3(-2.385383f, -0.4885723f, 1);
         // gameObject.transform.localScale = new Vector3(0.8621865f, 0.8621865f, 0.8621865f);
         break;
         
         case 1:
         //right to mid
-        SkinMove(0.0f, -0.4885723f, 0.0f, 1.8f);
+        SkinMove(0.0f, -0.4885723f, 0f, 1.8f);
         // gameObject.transform.position = new Vector3(0.4885723f, -0.4885723f, 0);
         // gameObject.transform.localScale = new Vector3(1.149582f, 1.149582f, 1.149582f);
         break;
         
         case 2:
         //back to right
-        SkinMove(3.362528f, -0.4885723f, 1.0f, 1.4f);
+        SkinMove(3.362528f, -0.4885723f, 1f, 1.4f);
         // gameObject.transform.position = new Vector3(3.362527f, -0.4885723f, 1);
         // gameObject.transform.localScale = new Vector3(0.8621865f, 0.8621865f, 0.8621865f);
         break;
 
         case 3:
         //left to back
-        SkinMove(0.0f, -0.4885723f, 3.0f, 1f);
+        SkinMove(0.0f, -0.4885723f, 3f, 1f);
         // gameObject.transform.position = new Vector3(0.4885723f, -0.4885723f, 3);
         // gameObject.transform.localScale = new Vector3(0.574791f, 0.574791f, 0.574791f);
         break;
@@ -135,7 +149,7 @@ public class Skin : MonoBehaviour
     {
         GameObject MySelf = gameObject;
         LeanTween.move(MySelf, new Vector3(xPos, yPos, zPos), 0.4f).setEaseInOutQuint();
-        LeanTween.scale(MySelf, new Vector3(allScale, allScale, allScale), 0.4f).setEaseInOutQuint();
+        LeanTween.scale(MySelf, new Vector2(allScale, allScale), 0.4f).setEaseInOutQuint();
     }
 
 }
