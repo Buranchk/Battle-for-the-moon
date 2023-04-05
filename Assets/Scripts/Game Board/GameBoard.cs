@@ -422,6 +422,7 @@ public class GameBoard : MonoBehaviour
     public void SelectUnit(GameObject newSelectedUnit)
     {
         //newSelectedUnit.GetComponent<Unit>().highlight.SetActive(true);
+        newSelectedUnit.GetComponent<Unit>().setAnimation("jump");
         if (selectedUnit != newSelectedUnit && selectedUnit != null)
             ChangeUnit(newSelectedUnit);
         else if (selectedUnit == newSelectedUnit && selectedUnit != null)
@@ -436,6 +437,7 @@ public class GameBoard : MonoBehaviour
     {   
         if(selectedUnit != null){
             //selectedUnit.GetComponent<Unit>().highlight.SetActive(false);
+            selectedUnit.GetComponent<Unit>().setAnimation("animation");
             SuggestMoves(false);
             selectedUnit = null;
         }

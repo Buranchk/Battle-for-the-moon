@@ -48,7 +48,7 @@ public class DataManager : MonoBehaviour
         save.power = 100;
         save.xp = 0;
         save.lvl = 0;
-        save.skins = new List<bool>(){true, false, true, false};
+        save.skins = new List<bool>(){true, false, false, false};
         save.selectedSkin = 0;
         SaveChanges();
     }
@@ -189,6 +189,61 @@ public class DataManager : MonoBehaviour
     {
         LoadSave();
         return save.skinSeletion;
+    }
+
+    public bool CheckResources(string currency, int amount)
+    {
+        LoadSave();
+        
+        switch (currency)
+        {
+            case "gold":
+            if(save.coins > amount)
+                return true;
+            else
+                return false;
+
+            case "ruby":
+            if(save.emeralds > amount)
+                return true;
+            else
+                return false;
+
+            case "lvl":
+            if(save.lvl > amount)
+                return true;
+            else
+                return false;
+
+        }
+        return false;
+    }
+
+    public void TakeResources(string currency, int amount)
+    {
+        LoadSave();
+        
+        switch (currency)
+        {
+            case "gold":
+            save.coins = save.coins - amount;
+            break;
+
+            case "ruby":
+            save.emeralds = save.emeralds - amount;
+            break;
+
+            case "lvl":
+            break;
+
+        }
+        SaveChanges();
+    }
+
+    public void OpenSkin(int skinType)
+    {
+        save.skins[skinType] = true;
+        SaveChanges();
     }
 
 }

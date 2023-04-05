@@ -2231,7 +2231,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 693255899}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 693255901}
+        m_TargetAssemblyTypeName: BuyOption, Assembly-CSharp
+        m_MethodName: BuySkin
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &693255899
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2287,6 +2299,9 @@ MonoBehaviour:
   XP: {fileID: 21300000, guid: 7ed5cb70e58cec140a7d1a0b314264a5, type: 3}
   Price: {fileID: 606494068}
   Description: {fileID: 1406014551}
+  skinType: 0
+  amount: 0
+  currency: 
 --- !u!1 &718320920
 GameObject:
   m_ObjectHideFlags: 0

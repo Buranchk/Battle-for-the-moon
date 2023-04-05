@@ -30,10 +30,6 @@ public class Unit : MonoBehaviour
     public bool isOverTheUnit = false;
     public bool movedOn;
 
-
-
-
-
     //spine stuff
     SkeletonAnimation skeletonAnimation;
     Spine.AnimationState animationState;
@@ -131,6 +127,11 @@ public class Unit : MonoBehaviour
                 }
             }
         }
+    }
+
+    public void setAnimation(string animationInstance)
+    {
+        skeletonAnimation.AnimationName = animationInstance;
     }
 
     //Unit highlight exit

@@ -123,7 +123,7 @@ MonoBehaviour:
   disableRenderingOnOverride: 1
   updateTiming: 1
   unscaledTime: 0
-  _animationName: jump
+  _animationName: animation
   loop: 1
   timeScale: 1
 --- !u!61 &7532382379945314560
