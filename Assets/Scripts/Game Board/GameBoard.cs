@@ -33,6 +33,8 @@ public class GameBoard : MonoBehaviour
     public GameObject decoyText;
     public GameObject flagText;
     public GameObject reshuffleText;
+    public GameObject StartGame;
+    public RPSMatch frameRPS;
 
     [HideInInspector] public int gameStage = 0;
 
@@ -297,15 +299,27 @@ public class GameBoard : MonoBehaviour
         SceneManager.LoadScene("Game Result");
     }
 
-    IEnumerator TileAppearence()
+    IEnumerator StartGameFX()
     {
+        StartGame.SetActive(true);
+        LeanTween.scale(StartGame, new Vector3(70f, 70f, 70f), 0.3f).setEase(LeanTweenType.easeOutCirc);
+        LeanTween.alpha(StartGame, 1.0f, 0.3f);
+
         for(int i = 0; i < width; i++)
         {
             StartCoroutine(TileRawAppearence(i));
             yield return new WaitForSeconds(0.1f);
         }
         yield return new WaitForSeconds(0.4f);
+
+        LeanTween.scale(StartGame, new Vector3(30.3f, 0.3f, 30.3f), 0.2f);
+        LeanTween.alpha(StartGame, 0f, 0.2f);
+        
+
         SpawnEnemies();
+        yield return new WaitForSeconds(0.2f);
+        StartGame.SetActive(false);
+        
     }
 
     IEnumerator TileRawAppearence(int raw)
@@ -388,7 +402,7 @@ public class GameBoard : MonoBehaviour
             reshuffleText.SetActive(false);
             buttonShuffle.SetActive(false);
             buttonDone.SetActive(false);
-            StartCoroutine(TileAppearence());
+            StartCoroutine(StartGameFX());
             break;
 
             case 5:
@@ -582,6 +596,7 @@ public class GameBoard : MonoBehaviour
 
         if(RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //e
         {
+            frameRPS.RegularRPS();
             eUnit.isOpen = true;
             eUnit.ChangeType(eUnit.type);
             eUnit.movedOn = false;
@@ -593,6 +608,7 @@ public class GameBoard : MonoBehaviour
         }
         else if(!RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //f
         {
+            frameRPS.RegularRPS();
             fUnit.isOpen = true;
             fUnit.ChangeType(fUnit.type);
             fUnit.movedOn = false;
@@ -682,6 +698,7 @@ public class GameBoard : MonoBehaviour
 /*(UI related)*/
     public void pickRock()
     {
+        frameRPS.Match();
         windowRPS.SetActive(false);
         //movedFromUnit.GetComponent<Unit>().isOpen = true;
         fUnit.ChangeType("rock");
@@ -691,6 +708,7 @@ public class GameBoard : MonoBehaviour
 
     public void pickPaper()
     {
+        frameRPS.Match();
         windowRPS.SetActive(false);
         fUnit.ChangeType("paper");
         EnemyAIPickRandom();
@@ -699,6 +717,7 @@ public class GameBoard : MonoBehaviour
 
     public void pickScissors()
     {
+        frameRPS.Match();
         windowRPS.SetActive(false);
         fUnit.ChangeType("scissors");
         EnemyAIPickRandom();
@@ -908,7 +927,8 @@ public class GameBoard : MonoBehaviour
 
     public void EnemyAIPickRandom()
     {
-        int RPS = Random.Range(0, 3);
+        //int RPS = Random.Range(0, 3);
+        int RPS = 0;
         switch (RPS)
         {
             case 0:

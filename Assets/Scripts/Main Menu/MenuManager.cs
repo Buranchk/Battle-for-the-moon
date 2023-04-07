@@ -78,6 +78,7 @@ public class MenuManager : MonoBehaviour
         showCase.SetActive(false);
         DarkenClose.GetComponent<Image>().color = new Vector4(0f,0f,0f,0f);
     }
+    
     public void ShowCaseSkin(int typeSkin)
     {
         DarkenClose.GetComponent<Image>().color = new Vector4(0f,0f,0f,0.3f);
