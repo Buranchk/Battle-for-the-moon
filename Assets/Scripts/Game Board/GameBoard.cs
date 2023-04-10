@@ -35,8 +35,12 @@ public class GameBoard : MonoBehaviour
     public GameObject reshuffleText;
     public GameObject StartGame;
     public RPSMatch frameRPS;
+    public GameObject myName;
+    public GameObject enemyName;
+    public Tweens tweens;
+    public GameObject gradient;
 
-    [HideInInspector] public int gameStage = 0;
+    public int gameStage = -1;
 
     //private
     [SerializeField] private Sprite buttonDoneActive;
@@ -52,9 +56,10 @@ public class GameBoard : MonoBehaviour
 
     void Start()
     {
+        StartCoroutine(ShowNames());
         GenerateGrid();
-        SpawnUnits();
-        NewStage();
+        gradient.SetActive(true);
+        SpawnUnits();//add anim
     }
 
     private void Update()
@@ -173,9 +178,13 @@ public class GameBoard : MonoBehaviour
 
                 spawnedUnit.Init();
 
-                units.Add(GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Unit {x} {y}"));
+                //units.Add(GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Unit {x} {y}"));
 
-                GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Unit {x} {y}");
+                //GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Unit {x} {y}");
+
+                units.Add(GetTileAtPosition(new Vector2(x, y)).unitLinked = GameObject.Find($"Unit {x} {y}"));
+
+                //GetTileAtPosition(new Vector2(x, y)).unitLinked = GetUnitObjectAt(x, y);    
 
                 map[x, y] = "myUnit";
             }
@@ -301,7 +310,6 @@ public class GameBoard : MonoBehaviour
 
     IEnumerator StartGameFX()
     {
-        GameObject gradient = GameObject.Find("Gradient");
         LeanTween.alpha(gradient, 0f, 0.4f);
 
         StartGame.SetActive(true);
@@ -378,11 +386,10 @@ public class GameBoard : MonoBehaviour
 
     public void NewStage()
     {
-        gameStage++;
+        gameStage = gameStage + 1;
         switch (gameStage)
         {
             case 0:
-            ShowNames();
             //time delay
             break;
 
@@ -705,8 +712,13 @@ public class GameBoard : MonoBehaviour
     }
 
 /*(UI related)*/
-    private void ShowNames()
+    IEnumerator ShowNames()
     {
+        tweens.MoveTo(myName, true);
+        tweens.MoveTo(enemyName, false);
+
+        yield return new WaitForSeconds(5);
+        NewStage();
         //nicknames ease show
     }
     public void pickRock()
