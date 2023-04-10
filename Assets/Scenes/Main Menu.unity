@@ -3680,10 +3680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'has a smell for some rubins
-
-
-    Rubins x2'
+  m_text: Paste description
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: e0d9ebfda7cc3ee4abc6fbb830038f5d, type: 2}
   m_sharedMaterial: {fileID: -7029159330373213000, guid: e0d9ebfda7cc3ee4abc6fbb830038f5d, type: 2}

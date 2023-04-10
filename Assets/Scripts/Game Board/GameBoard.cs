@@ -301,6 +301,9 @@ public class GameBoard : MonoBehaviour
 
     IEnumerator StartGameFX()
     {
+        GameObject gradient = GameObject.Find("Gradient");
+        LeanTween.alpha(gradient, 0f, 0.4f);
+
         StartGame.SetActive(true);
         LeanTween.scale(StartGame, new Vector3(70f, 70f, 70f), 0.3f).setEase(LeanTweenType.easeOutCirc);
         LeanTween.alpha(StartGame, 1.0f, 0.3f);
@@ -378,6 +381,11 @@ public class GameBoard : MonoBehaviour
         gameStage++;
         switch (gameStage)
         {
+            case 0:
+            ShowNames();
+            //time delay
+            break;
+
             case 1:
             flagText.SetActive(true);
             setDoneInactive();
@@ -592,6 +600,7 @@ public class GameBoard : MonoBehaviour
         if (eUnit.type == fUnit.type)
         {
             windowRPS.SetActive(true);
+            frameRPS.Appear();
         }
 
         if(RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //e
@@ -696,6 +705,10 @@ public class GameBoard : MonoBehaviour
     }
 
 /*(UI related)*/
+    private void ShowNames()
+    {
+        //nicknames ease show
+    }
     public void pickRock()
     {
         frameRPS.Match();
@@ -927,8 +940,8 @@ public class GameBoard : MonoBehaviour
 
     public void EnemyAIPickRandom()
     {
-        //int RPS = Random.Range(0, 3);
-        int RPS = 0;
+        int RPS = Random.Range(0, 3);
+        //int RPS = 1;
         switch (RPS)
         {
             case 0:

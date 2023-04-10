@@ -17,4 +17,9 @@ public class RPSObjects : MonoBehaviour
         gameObject.transform.position = place;
         Tween.MoveShake(gameObject, place);
     }
+
+    public void Center()
+    {
+        transform.position = place;
+    }
 }

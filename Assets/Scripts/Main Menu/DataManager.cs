@@ -198,19 +198,19 @@ public class DataManager : MonoBehaviour
         switch (currency)
         {
             case "gold":
-            if(save.coins > amount)
+            if(save.coins >= amount)
                 return true;
             else
                 return false;
 
             case "ruby":
-            if(save.emeralds > amount)
+            if(save.emeralds >= amount)
                 return true;
             else
                 return false;
 
             case "lvl":
-            if(save.lvl > amount)
+            if(save.lvl >= amount)
                 return true;
             else
                 return false;
