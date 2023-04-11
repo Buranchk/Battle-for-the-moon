@@ -35,14 +35,13 @@ public class GameBoard : MonoBehaviour
     public GameObject reshuffleText;
     public GameObject StartGame;
     public RPSMatch frameRPS;
-    public GameObject myName;
-    public GameObject enemyName;
     public Tweens tweens;
     public GameObject gradient;
 
-    public int gameStage = -1;
+    public int gameStage = 0;
 
     //private
+    private Unit gameVarUnit;
     [SerializeField] private Sprite buttonDoneActive;
     [SerializeField] private Sprite buttonDoneInactive;
     private GameObject PermFlag = null;
@@ -56,10 +55,9 @@ public class GameBoard : MonoBehaviour
 
     void Start()
     {
-        StartCoroutine(ShowNames());
         GenerateGrid();
         gradient.SetActive(true);
-        SpawnUnits();//add anim
+        StartCoroutine(SpawnUnits());
     }
 
     private void Update()
@@ -75,6 +73,7 @@ public class GameBoard : MonoBehaviour
     }
 
 /* Start */
+
     void GenerateGrid() 
     {
         tiles = new Dictionary<Vector2, Tile>();
@@ -89,7 +88,7 @@ public class GameBoard : MonoBehaviour
 
                 tiles[new Vector2(x, y)] = spawnedTile;
                 if(y >= 2){
-                    spawnedTile.GetComponent<SpriteRenderer>().color = isOffset ? new Color(0.69f,0.69f,0.69f,1f) : new Color(0.5f,0.5f,0.5f,1f);
+                    spawnedTile.GetComponent<SpriteRenderer>().color = isOffset ? new Color(0.69f, 0.69f, 0.69f, 1f) : new Color(0.5f, 0.5f, 0.5f, 1f);
                 }
             }
         }
@@ -160,7 +159,7 @@ public class GameBoard : MonoBehaviour
         GetUnitObjectAt(rndD, height-1).GetComponent<EnemyAI>().type = "decoy";
     }
 
-    void SpawnUnits()
+    IEnumerator SpawnUnits()
     {
         //Setup the right unit prefab from the DataManager!!!!!
         SelectUnitSkin();
@@ -184,11 +183,14 @@ public class GameBoard : MonoBehaviour
 
                 units.Add(GetTileAtPosition(new Vector2(x, y)).unitLinked = GameObject.Find($"Unit {x} {y}"));
 
-                //GetTileAtPosition(new Vector2(x, y)).unitLinked = GetUnitObjectAt(x, y);    
+                //GetTileAtPosition(new Vector2(x, y)).unitLinked = GetUnitObjectAt(x, y);
 
                 map[x, y] = "myUnit";
+                
+                yield return new WaitForSeconds(0.05f);
             }
         }
+        NewStage();
     }
 
     private void SelectUnitSkin()
@@ -217,41 +219,69 @@ public class GameBoard : MonoBehaviour
     {
         if(gameStage == 1)
         {
+            PermFlag = Unit;
             Vector2 flagPos = Unit.transform.position;
             GameObject.Find("Flag").transform.position = flagPos;
+            SelectUnselectUnit(Unit.GetComponent<Unit>(), true);
             setDoneActive();
         } 
         
         else if (gameStage == 2)
         {
-            if(Unit.transform.position != GameObject.Find("Flag").transform.position)
+            if(Unit.transform.position != PermFlag.transform.position)
             {
+                PermDecoy = Unit;
                 Vector2 decayPos = Unit.transform.position;
                 GameObject.Find("Decoy").transform.position = decayPos;
+                SelectUnselectUnit(Unit.GetComponent<Unit>(), false);
                 setDoneActive();
             }
         }
     }
 
-    private void ApplyUnitSelection()
+    private void SelectUnselectUnit(Unit unit, bool isFlag)
     {
-        PermFlag = GameObject.Find("Flag");
-        PermDecoy = GameObject.Find("Decoy");
+        if(gameVarUnit == null)
+        {
+            if(gameStage == 1)
+                tweens.ScaleDownDisappear(GameObject.Find("MarineFlag"));
+            else if (gameStage == 2)
+                tweens.ScaleDownDisappear(GameObject.Find("MarineDecoy"));
 
-        Vector2 flagPos = GameObject.Find("Flag").transform.position;
-        Vector2 decoyPos = GameObject.Find("Decoy").transform.position;
-        
-        GetUnitAtPosition((int)flagPos.x, (int)flagPos.y).ChangeType("flag");
-        GetUnitAtPosition((int)decoyPos.x, (int)decoyPos.y).ChangeType("decoy");
+            unit.FlagDecoySelected(isFlag, true);
+            gameVarUnit = unit;
+        } else
+        {
+            gameVarUnit.FlagDecoySelected(isFlag, false);
+            unit.FlagDecoySelected(isFlag, true);
+            gameVarUnit = unit;
+        }
 
-        units.Remove(GetUnitObjectAt((int)flagPos.x, (int)flagPos.y));
-        units.Remove(GetUnitObjectAt((int)decoyPos.x, (int)decoyPos.y));
+    }
 
-        GetUnitAtPosition((int)flagPos.x, (int)flagPos.y).name = "FlagUnit";
-        GetUnitAtPosition((int)decoyPos.x, (int)decoyPos.y).name = "DecoyUnit";
-
-        Destroy(GameObject.Find("Flag"));
-        Destroy(GameObject.Find("Decoy"));
+    private void ApplyUnitSelection(string state)
+    {
+        gameVarUnit.FlagDecoySelected(true, false);
+        gameVarUnit = null;
+        //set by property
+        if (state == "Flag")
+        {
+            GameObject Flag = GameObject.Find("Flag");
+            Vector2 flagPos = Flag.transform.position;
+            GetUnitAtPosition((int)flagPos.x, (int)flagPos.y).ChangeType("flag");
+            units.Remove(GetUnitObjectAt((int)flagPos.x, (int)flagPos.y));
+            GetUnitAtPosition((int)flagPos.x, (int)flagPos.y).name = "FlagUnit";
+            Destroy(Flag);
+        }
+        else if (state == "Decoy")
+        {
+            GameObject Decoy = GameObject.Find("Decoy");
+            Vector2 decoyPos = Decoy.transform.position;
+            GetUnitAtPosition((int)decoyPos.x, (int)decoyPos.y).ChangeType("decoy");
+            units.Remove(GetUnitObjectAt((int)decoyPos.x, (int)decoyPos.y));
+            GetUnitAtPosition((int)decoyPos.x, (int)decoyPos.y).name = "DecoyUnit";
+            Destroy(Decoy);
+        }
     }
 
 /* UI related functions */
@@ -360,7 +390,6 @@ public class GameBoard : MonoBehaviour
         // }
     }
 
-
 /* Usage functions */
 
     public Tile GetTileAtPosition(Vector2 pos) 
@@ -386,7 +415,9 @@ public class GameBoard : MonoBehaviour
 
     public void NewStage()
     {
+        print("gay stage was - " + gameStage);
         gameStage = gameStage + 1;
+        print("it is now - " + gameStage);
         switch (gameStage)
         {
             case 0:
@@ -395,22 +426,26 @@ public class GameBoard : MonoBehaviour
 
             case 1:
             flagText.SetActive(true);
+            tweens.AppearScale(flagText);
             setDoneInactive();
             break;
 
             case 2:
             flagText.SetActive(false);
             decoyText.SetActive(true);
+            tweens.AppearScale(decoyText);
             setDoneInactive();
+            ApplyUnitSelection("Flag");
             break;
 
             case 3:
             decoyText.SetActive(false);
             reshuffleText.SetActive(true);
-            ApplyUnitSelection();
+            tweens.AppearScale(reshuffleText);
             buttonShuffle.SetActive(true);
             UnitRandomize();
             setDoneActive();
+            ApplyUnitSelection("Decoy");
             break;
 
             case 4:
@@ -712,15 +747,6 @@ public class GameBoard : MonoBehaviour
     }
 
 /*(UI related)*/
-    IEnumerator ShowNames()
-    {
-        tweens.MoveTo(myName, true);
-        tweens.MoveTo(enemyName, false);
-
-        yield return new WaitForSeconds(5);
-        NewStage();
-        //nicknames ease show
-    }
     public void pickRock()
     {
         frameRPS.Match();

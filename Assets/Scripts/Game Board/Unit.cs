@@ -25,6 +25,7 @@ public class Unit : MonoBehaviour
     public bool playerUnit = true;
 
     //condition
+    private int tweenId;
     public bool isOpen = false;
     public string type = "Nothing";
     public bool isOverTheUnit = false;
@@ -39,15 +40,17 @@ public class Unit : MonoBehaviour
     //Unit initiation
     public void Init()
     {
+        gameObject.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         movedOn = false;
         //highlight.SetActive(false);
+        gameObject.LeanScale(new Vector3(0.4f, 0.4f, 0.4f), 0.4f).setEaseOutCirc();
     }
 
    void Awake () {
       skeletonAnimation = GetComponent<SkeletonAnimation>();
+      //skeletonGraphic = GetComponent<SkeletonGraphic>();
       skeleton = skeletonAnimation.Skeleton;
-      //skeletonAnimation.Initialize(false); // when not accessing skeletonAnimation.Skeleton,
-                                 // use Initialize(false) to ensure everything is loaded.
+
       animationState = skeletonAnimation.AnimationState;
    }
 
@@ -132,6 +135,45 @@ public class Unit : MonoBehaviour
     public void setAnimation(string animationInstance)
     {
         skeletonAnimation.AnimationName = animationInstance;
+    }
+
+    public void FlagDecoySelected(bool isFlag, bool selected)
+    {
+        if(selected)
+        {
+            if(isFlag)
+            {
+                skeletonAnimation.Skeleton.SetSkin(flag);
+                skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+            } 
+            else if (!isFlag)
+            {
+                skeletonAnimation.Skeleton.SetSkin(decoy);
+                skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+            }
+
+
+            // Get the SkeletonGraphic component
+            SkeletonGraphic skeletonGraphic = GetComponent<SkeletonGraphic>();
+
+            // Animate the alpha value in a loop
+            tweenId = LeanTween.value(gameObject, 1f, 0f, 1f)
+                .setEase(LeanTweenType.easeInOutSine)
+                .setLoopType(LeanTweenType.pingPong)
+                .setOnUpdate((float value) =>
+                {
+                    skeleton.A = value;
+                })
+                .id;
+
+        } else if (!selected)
+        {
+            LeanTween.cancel(tweenId);
+            skeleton.A = 1f;
+
+            skeletonAnimation.Skeleton.SetSkin(nothing);
+            skeletonAnimation.Skeleton.SetSlotsToSetupPose();    
+        }
     }
 
     //Unit highlight exit

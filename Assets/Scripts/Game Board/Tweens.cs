@@ -40,34 +40,23 @@ public class Tweens : MonoBehaviour
         LeanTween.scale(item, new Vector2(1.2f, 1.2f), 0.2f).setEaseOutBounce().setLoopPingPong(1).setOnComplete(SetBack);
     }
 
-    public void MoveTo(GameObject item, bool me)
+    public void AppearScale(GameObject item)
     {
-        RectTransform rectItemTransform = item.GetComponent<RectTransform>();
-        if (me)
-        {
-            rectItemTransform.transform.position = new Vector3(2700f, -250f, 0f);
-            LeanTween.move(rectItemTransform, new Vector2(1500f, -500f), 0.8f).setEaseOutExpo();
-            LeanTween.rotate(item, new Vector3(0f, 0f, -8f), 0.35f).setEaseOutExpo();
-            LeanTween.rotate(item, new Vector3(0f, 0f, 3f), 0.35f).setEaseInQuad().setDelay(0.35f);
-            LeanTween.rotate(item, new Vector3(0f, 0f, -1f), 0.35f).setEaseInQuad().setDelay(0.70f);
-
-            LeanTween.scale(item, new Vector3(1f, 1f, 1f), 1.5f).setEaseInOutQuad().setLoopPingPong(1);
-
-            LeanTween.rotate(item, new Vector3(0f, 0f, 0f), 0.50f).setEaseInQuad().setDelay(3.45f);
-            LeanTween.move(rectItemTransform, new Vector2(-400f, -250f), 1f).setEaseInOutSine().setDelay(4f);
-        } else if (!me)
-        {
-            rectItemTransform.transform.position = new Vector3(-2700f, -250f, 0f);
-            LeanTween.move(rectItemTransform, new Vector2(-1500f, -750f), 0.8f).setEaseOutExpo();
-            LeanTween.rotate(item, new Vector3(0f, 0f, -8f), 0.35f).setEaseOutExpo();
-            LeanTween.rotate(item, new Vector3(0f, 0f, 3f), 0.35f).setEaseInQuad().setDelay(0.35f);
-            LeanTween.rotate(item, new Vector3(0f, 0f, -1f), 0.35f).setEaseInQuad().setDelay(0.70f);
-            
-            LeanTween.scale(item, new Vector3(1f, 1f, 1f), 1.5f).setEaseInOutQuad().setLoopPingPong(1);
-
-            LeanTween.rotate(item, new Vector3(0f, 0f, 0f), 0.50f).setEaseInQuad().setDelay(3.45f);
-            LeanTween.move(rectItemTransform, new Vector2(-400f, -250f), 1f).setEaseInOutSine().setDelay(4f);
-        }
+        LeanTween.scale(item, new Vector2(1.1f, 1.1f), 0.25f).setEaseOutCirc().setLoopPingPong(1);
     }
 
+    public void ScaleDownDisappear(GameObject item)
+    {
+        LeanTween.scale(item, new Vector2(0f, 0f), 0.1f).setEaseInCirc().setOnComplete(() =>
+        {
+            item.SetActive(false);
+        });
+    }
+
+    public void AbortGame(GameObject item)
+    {
+        item.SetActive(true);
+        LeanTween.scale(item, new Vector2(1.3f, 1.3f), 0.5f).setEaseOutCirc();
+        LeanTween.scale(item, new Vector2(0.1f, 0.1f), 0.3f).setEaseInCirc().setDelay(1f);
+    }
 }
