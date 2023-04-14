@@ -10,15 +10,16 @@ public class Unit : MonoBehaviour
     private GameBoard Board;
 
     //sprites
-    private string rock = "SC_stone";
-    private string paper = "SC_paper";
-    private string scissors = "SC_scissors";
-    private string rockOpen = "SO_stone";
-    private string paperOpen = "SO_paper";
-    private string scissorsOpen = "SO_scissors";
-    private string flag = "SM_FLAG";
-    private string decoy = "SM_FAKE";
-    private string nothing = "MARINE";
+    private string rock = "Closed_Rock";
+    private string paper = "Closed_Paper";
+    private string scissors = "Closed_Scissors";
+    private string rockOpen = "Open_Rock";
+    private string paperOpen = "Open_Paper";
+    private string scissorsOpen = "Open_Scissors";
+    private string flag = "Flag";
+    private string decoy = "Fake";
+    private string empty = "Empty";
+    private string outline = "Empty_Outline";
 
     
     //permanent statement
@@ -27,7 +28,7 @@ public class Unit : MonoBehaviour
     //condition
     private int tweenId;
     public bool isOpen = false;
-    public string type = "Nothing";
+    public string type = "Empty";
     public bool isOverTheUnit = false;
     public bool movedOn;
 
@@ -61,7 +62,7 @@ public class Unit : MonoBehaviour
         switch (newType)
         {
             case "Nothing":
-                skeletonAnimation.Skeleton.SetSkin(nothing);
+                skeletonAnimation.Skeleton.SetSkin(empty);
                 skeletonAnimation.Skeleton.SetSlotsToSetupPose();
             break;
 
@@ -107,8 +108,13 @@ public class Unit : MonoBehaviour
                 skeletonAnimation.Skeleton.SetSlotsToSetupPose();            
             break;
 
-                case "decoy":
+            case "decoy":
                 skeletonAnimation.Skeleton.SetSkin(decoy);
+                skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+            break;
+
+            case "outline":
+                skeletonAnimation.Skeleton.SetSkin(outline);
                 skeletonAnimation.Skeleton.SetSlotsToSetupPose();
             break;
         }
@@ -171,7 +177,7 @@ public class Unit : MonoBehaviour
             LeanTween.cancel(tweenId);
             skeleton.A = 1f;
 
-            skeletonAnimation.Skeleton.SetSkin(nothing);
+            skeletonAnimation.Skeleton.SetSkin(empty);
             skeletonAnimation.Skeleton.SetSlotsToSetupPose();    
         }
     }

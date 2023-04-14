@@ -37,6 +37,7 @@ public class GameBoard : MonoBehaviour
     public RPSMatch frameRPS;
     public Tweens tweens;
     public GameObject gradient;
+    public Timer timer;
 
     public int gameStage = 0;
 
@@ -65,7 +66,7 @@ public class GameBoard : MonoBehaviour
         //Deselect Unit
         if (Input.GetMouseButtonDown(0))
             if(selectedUnit != null)
-                if(!GameObject.Find(selectedUnit.name).GetComponent<Unit>().isOverTheUnit)
+                if(!selectedUnit.GetComponent<Unit>().isOverTheUnit)
                 {
                     DeselectUnit();
                 }
@@ -244,9 +245,9 @@ public class GameBoard : MonoBehaviour
         if(gameVarUnit == null)
         {
             if(gameStage == 1)
-                tweens.ScaleDownDisappear(GameObject.Find("MarineFlag"));
+                tweens.ScaleDownDisappear(GameObject.Find("UnitFlag"));
             else if (gameStage == 2)
-                tweens.ScaleDownDisappear(GameObject.Find("MarineDecoy"));
+                tweens.ScaleDownDisappear(GameObject.Find("UnitDecoy"));
 
             unit.FlagDecoySelected(isFlag, true);
             gameVarUnit = unit;
@@ -436,6 +437,7 @@ public class GameBoard : MonoBehaviour
             tweens.AppearScale(decoyText);
             setDoneInactive();
             ApplyUnitSelection("Flag");
+            timer.ResetTimer15();
             break;
 
             case 3:
@@ -446,6 +448,7 @@ public class GameBoard : MonoBehaviour
             UnitRandomize();
             setDoneActive();
             ApplyUnitSelection("Decoy");
+            timer.ResetTimer15();
             break;
 
             case 4:
@@ -453,6 +456,7 @@ public class GameBoard : MonoBehaviour
             buttonShuffle.SetActive(false);
             buttonDone.SetActive(false);
             StartCoroutine(StartGameFX());
+            timer.ResetTimer();
             break;
 
             case 5:
@@ -791,6 +795,7 @@ public class GameBoard : MonoBehaviour
 /* EnemyAI */
     public void EnemyAI()
     {
+        timer.ResetTimer();
         //moving down effectivness
         int effectiveness = height;
         GameObject movingUnit = null;

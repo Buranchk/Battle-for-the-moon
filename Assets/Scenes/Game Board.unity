@@ -801,10 +801,10 @@ MonoBehaviour:
   height: 6
   tilePrefab: {fileID: 2820816422871453050, guid: c4ecefb07f874884385d874418411c2e, type: 3}
   cam: {fileID: 187830312}
-  spaceMan: {fileID: 6541992344020631188, guid: 314d7777ffe1fae4c9827470dc02d14c, type: 3}
-  XP: {fileID: 4728573957478449968, guid: d21738f15136b5247b9eee68170a61e7, type: 3}
-  gold: {fileID: 2972072912298175917, guid: 65b76e7c0aa3155448bda1989bf39af0, type: 3}
-  ruby: {fileID: 8596656013582707851, guid: b8a904976b3da134bac9410cf03a7acf, type: 3}
+  spaceMan: {fileID: 6418615159934353038, guid: 314d7777ffe1fae4c9827470dc02d14c, type: 3}
+  XP: {fileID: 3138314364450014175, guid: a06b27ed5265b714781189005e624118, type: 3}
+  gold: {fileID: 483770318282470085, guid: 1eeef99ddc9c4304fbdc7052bfe07033, type: 3}
+  ruby: {fileID: 7829253093526622818, guid: 25ff2f72937631e4e8488a48ac0e3cd5, type: 3}
   enemyPrefab: {fileID: 6149643926512166003, guid: 48cc1676ea3202c44868e42d57ac20d4, type: 3}
   selectedUnit: {fileID: 0}
   eUnit: {fileID: 0}
@@ -821,6 +821,7 @@ MonoBehaviour:
   frameRPS: {fileID: 371802829}
   tweens: {fileID: 1037055935}
   gradient: {fileID: 755516563}
+  timer: {fileID: 1185173156}
   gameStage: 0
   buttonDoneActive: {fileID: 21300000, guid: a3ab0c274db027f4e96aa489fe254ef4, type: 3}
   buttonDoneInactive: {fileID: 21300000, guid: 4e7d8614fb2332c47b83530a2163c556, type: 3}
@@ -3920,8 +3921,9 @@ GameObject:
   - component: {fileID: 1826499620}
   - component: {fileID: 1826499622}
   - component: {fileID: 1826499621}
+  - component: {fileID: 1826499623}
   m_Layer: 5
-  m_Name: MarineDecoy
+  m_Name: UnitDecoy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3985,6 +3987,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1826499619}
   m_CullTransparentMesh: 1
+--- !u!114 &1826499623
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1826499619}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ececa579060692449b00f66e2c3e5ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFlag: 0
+  marineFlag: {fileID: 21300000, guid: 07fd843c9b8a8cf4d902330df47468f6, type: 3}
+  marineDecoy: {fileID: 21300000, guid: 837bb360ea762a64f81bb6fd2a5ac836, type: 3}
+  goldFlag: {fileID: 21300000, guid: 6ea542d77e7fa7f448311576149de34c, type: 3}
+  goldDecoy: {fileID: 21300000, guid: 11e84cca8f1af464fbaf0abd19572111, type: 3}
+  xp2Flag: {fileID: 21300000, guid: 75414ee462fe0be43a54baa0ffe12a9e, type: 3}
+  xp2Decoy: {fileID: 21300000, guid: 7e05c218edad9d9408ac34a9642ec857, type: 3}
+  rubyFlag: {fileID: 21300000, guid: fce546947b394fa43b2c329313cd81ea, type: 3}
+  rubyDecoy: {fileID: 21300000, guid: 068ea0b7c61d0864a99e9a684f80e4db, type: 3}
 --- !u!1 &1841294011
 GameObject:
   m_ObjectHideFlags: 0
@@ -4472,8 +4495,9 @@ GameObject:
   - component: {fileID: 1886840605}
   - component: {fileID: 1886840607}
   - component: {fileID: 1886840606}
+  - component: {fileID: 1886840608}
   m_Layer: 5
-  m_Name: MarineFlag
+  m_Name: UnitFlag
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4537,6 +4561,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1886840604}
   m_CullTransparentMesh: 1
+--- !u!114 &1886840608
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1886840604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8ececa579060692449b00f66e2c3e5ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isFlag: 1
+  marineFlag: {fileID: 21300000, guid: 07fd843c9b8a8cf4d902330df47468f6, type: 3}
+  marineDecoy: {fileID: 21300000, guid: 837bb360ea762a64f81bb6fd2a5ac836, type: 3}
+  goldFlag: {fileID: 21300000, guid: 6ea542d77e7fa7f448311576149de34c, type: 3}
+  goldDecoy: {fileID: 21300000, guid: 11e84cca8f1af464fbaf0abd19572111, type: 3}
+  xp2Flag: {fileID: 21300000, guid: 75414ee462fe0be43a54baa0ffe12a9e, type: 3}
+  xp2Decoy: {fileID: 21300000, guid: 7e05c218edad9d9408ac34a9642ec857, type: 3}
+  rubyFlag: {fileID: 21300000, guid: fce546947b394fa43b2c329313cd81ea, type: 3}
+  rubyDecoy: {fileID: 21300000, guid: 068ea0b7c61d0864a99e9a684f80e4db, type: 3}
 --- !u!1 &2029165496
 GameObject:
   m_ObjectHideFlags: 0

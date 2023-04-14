@@ -70,4 +70,13 @@ public class Timer : MonoBehaviour
         LeanTween.cancel(timerText.gameObject, false);
     }
 
+    public void ResetTimer15()
+    {
+        timeState = true;
+        timeLeft = 15;
+        timerText.color = Color.white;
+        timerText.rectTransform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
+        LeanTween.cancel(timerText.gameObject, false);
+    }
+
 }
