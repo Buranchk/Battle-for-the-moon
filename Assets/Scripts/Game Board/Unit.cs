@@ -143,6 +143,26 @@ public class Unit : MonoBehaviour
         skeletonAnimation.AnimationName = animationInstance;
     }
 
+    public void PlayOneShotAnimation(string oneShotAnimationName, float mixDuration = 0.1f)
+    {
+        // Get the current track entry.
+        var currentTrackEntry = animationState.GetCurrent(0);
+
+        // Store the current animation name and track time.
+        string previousAnimationName = currentTrackEntry.Animation.Name;
+        float previousTrackTime = currentTrackEntry.TrackTime;
+
+        // Play the one-shot animation.
+        animationState.SetAnimation(0, oneShotAnimationName, false);
+
+        // Create a new track entry with the previous animation and set it to loop.
+        var returnToPreviousAnimation = animationState.AddAnimation(0, previousAnimationName, true, 0);
+        returnToPreviousAnimation.MixDuration = mixDuration;
+
+        // Set the track time of the new track entry to the stored time.
+        returnToPreviousAnimation.TrackTime = previousTrackTime;
+    }
+
     public void FlagDecoySelected(bool isFlag, bool selected)
     {
         if(selected)

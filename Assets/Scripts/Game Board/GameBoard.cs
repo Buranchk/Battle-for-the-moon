@@ -34,9 +34,11 @@ public class GameBoard : MonoBehaviour
     public GameObject flagText;
     public GameObject reshuffleText;
     public GameObject StartGame;
+    public GameObject gradient;
+    public GameObject UnitDecoy;
+    public GameObject UnitFlag;
     public RPSMatch frameRPS;
     public Tweens tweens;
-    public GameObject gradient;
     public Timer timer;
 
     public int gameStage = 0;
@@ -416,9 +418,7 @@ public class GameBoard : MonoBehaviour
 
     public void NewStage()
     {
-        print("gay stage was - " + gameStage);
         gameStage = gameStage + 1;
-        print("it is now - " + gameStage);
         switch (gameStage)
         {
             case 0:
@@ -426,24 +426,31 @@ public class GameBoard : MonoBehaviour
             break;
 
             case 1:
+            UnitFlag.SetActive(true);
             flagText.SetActive(true);
             tweens.AppearScale(flagText);
+            tweens.AppearScale(UnitFlag);
             setDoneInactive();
             break;
 
             case 2:
+            UnitFlag.SetActive(false);
             flagText.SetActive(false);
+            UnitDecoy.SetActive(true);
             decoyText.SetActive(true);
             tweens.AppearScale(decoyText);
+            tweens.AppearScale(UnitDecoy);
             setDoneInactive();
             ApplyUnitSelection("Flag");
             timer.ResetTimer15();
             break;
 
             case 3:
+            UnitDecoy.SetActive(false);
             decoyText.SetActive(false);
             reshuffleText.SetActive(true);
             tweens.AppearScale(reshuffleText);
+            tweens.AppearScale(buttonShuffle);
             buttonShuffle.SetActive(true);
             UnitRandomize();
             setDoneActive();
@@ -490,7 +497,7 @@ public class GameBoard : MonoBehaviour
     public void SelectUnit(GameObject newSelectedUnit)
     {
         //newSelectedUnit.GetComponent<Unit>().highlight.SetActive(true);
-        newSelectedUnit.GetComponent<Unit>().setAnimation("jump");
+        newSelectedUnit.GetComponent<Unit>().PlayOneShotAnimation("jump", 0.6f);
         if (selectedUnit != newSelectedUnit && selectedUnit != null)
             ChangeUnit(newSelectedUnit);
         else if (selectedUnit == newSelectedUnit && selectedUnit != null)
