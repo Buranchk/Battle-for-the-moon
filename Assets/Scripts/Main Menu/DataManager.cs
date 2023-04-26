@@ -89,6 +89,24 @@ public class DataManager : MonoBehaviour
         LoadSave();
         return save.skins;
     }
+
+    public string GetName()
+    {
+        LoadSave();
+        return save.name;
+    }
+
+    public int GetGold()
+    {
+        LoadSave();
+        return save.coins;
+    }
+
+    public int GetRuby()
+    {
+        LoadSave();
+        return save.emeralds;
+    }
     
     public void SetSelectedSkin(int num, Skin skin)
     {

@@ -43,7 +43,6 @@ public class GameResult : MonoBehaviour
             Result.SetActive(false);
             Data.EndGame(false, Data.GiveSelectedSkin());
         }
-
     }
 
 
@@ -107,14 +106,12 @@ public class GameResult : MonoBehaviour
 
     private void SetUpXPSlider(int lvl, int xp)
     {
-        int[] lvls = new int[12]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150, 100000};
-        
+        int[] lvls = new int[12]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150, 100000};        
 
         XPSlider.maxValue = lvls[lvl + 1] - lvls[lvl];
         print("maxValue is " + (lvls[lvl + 1] - lvls[lvl]) + " lvl is " + lvl);
         XPSlider.value = xp - lvls[lvl];
         print("value is " + XPSlider.value + " xp is " + xp);
-
     }
 
     public void FillXP(int xp)
@@ -153,6 +150,4 @@ public class GameResult : MonoBehaviour
         powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.power.ToString() + "/100");
         SetUpXPSlider(sv.lvl, sv.xp);
     }
-
-
 }

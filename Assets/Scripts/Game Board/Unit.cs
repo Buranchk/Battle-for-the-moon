@@ -37,10 +37,14 @@ public class Unit : MonoBehaviour
     Spine.AnimationState animationState;
     Spine.Skeleton skeleton;
 
+    //attached objects
+    public TrailRenderer trail;
+
 
     //Unit initiation
     public void Init()
     {
+        TrailSwitch(false);
         gameObject.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         movedOn = false;
         //highlight.SetActive(false);
@@ -197,7 +201,7 @@ public class Unit : MonoBehaviour
             LeanTween.cancel(tweenId);
             skeleton.A = 1f;
 
-            skeletonAnimation.Skeleton.SetSkin(empty);
+            skeletonAnimation.Skeleton.SetSkin(outline);
             skeletonAnimation.Skeleton.SetSlotsToSetupPose();    
         }
     }
@@ -215,4 +219,8 @@ public class Unit : MonoBehaviour
         return Board;
     }
 
+    public void TrailSwitch(bool state)
+    {
+        trail.enabled = state;
+    }
 }

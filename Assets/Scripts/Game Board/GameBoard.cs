@@ -319,6 +319,15 @@ public class GameBoard : MonoBehaviour
         }
     }
 
+    private void UnitOutline()
+    {
+        foreach (GameObject obj in units)
+        {
+            obj.GetComponent<Unit>().ChangeType("outline");
+        }
+        
+    }
+
     void Shuffle(List<GameObject> a)
     {
         // Loop array
@@ -392,7 +401,7 @@ public class GameBoard : MonoBehaviour
         //     yield return new WaitForSeconds(0.05f);
         // }
     }
-
+ 
 /* Usage functions */
 
     public Tile GetTileAtPosition(Vector2 pos) 
@@ -426,6 +435,7 @@ public class GameBoard : MonoBehaviour
             break;
 
             case 1:
+            UnitOutline();
             UnitFlag.SetActive(true);
             flagText.SetActive(true);
             tweens.AppearScale(flagText);
@@ -560,6 +570,8 @@ public class GameBoard : MonoBehaviour
 
     IEnumerator UnitStep(int x, int y, int xe, int ye)
     {
+        Unit unitScript = GetUnitObjectAt(xe, ye).GetComponent<Unit>();
+        unitScript.TrailSwitch(true);
         //Unit link to a new Tile
         GetTileAtPosition(new Vector2 (x, y)).GetComponent<Tile>().unitLinked = selectedUnit;
 
@@ -580,6 +592,8 @@ public class GameBoard : MonoBehaviour
         print(GetTileAtPosition(new Vector2 (x, y)).GetComponent<Tile>().unitLinked.name + " makes a step");
 
         //switch the turn
+        yield return new WaitForSeconds(0.15f);
+        unitScript.TrailSwitch(false);
         turn = !turn;
         EnemyAI();
     }
