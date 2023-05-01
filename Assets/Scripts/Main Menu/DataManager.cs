@@ -31,28 +31,6 @@ public class DataManager : MonoBehaviour
             return false;
     }
 
-    public void SaveChanges()
-    {
-#if UNITY_ANDROID && !UNITY_EDITOR
-        File.WriteAllText(path, JsonUtility.ToJson(save));
-#endif
-        File.WriteAllText(path, JsonUtility.ToJson(save));
-    }
-
-    public void InitializeAccount(string naming)
-    {
-        print("New Account");
-        save.name = naming;
-        save.coins = 0;
-        save.emeralds = 0;
-        save.power = 100;
-        save.xp = 0;
-        save.lvl = 0;
-        save.skins = new List<bool>(){true, false, false, false};
-        save.selectedSkin = 0;
-        SaveChanges();
-    }
-
     public Save GetSave()
     {
         LoadSave();
@@ -65,29 +43,34 @@ public class DataManager : MonoBehaviour
         SaveChanges();
     }
 
-    public int GivePower()
+    public void SaveChanges()
     {
-        LoadSave();
-        return save.power;
+#if UNITY_ANDROID && !UNITY_EDITOR
+        File.WriteAllText(path, JsonUtility.ToJson(save));
+#endif
+        File.WriteAllText(path, JsonUtility.ToJson(save));
     }
 
-    public int GiveSelectedSkin()
+    public void InitializeAccount(string naming)
     {
-        LoadSave();
-        return save.selectedSkin;
-    }
-
-    public void TakePower()
-    {
-        LoadSave();
-        save.power = save.power - 1;
+        print("New Account");
+        save.name = naming;
+        save.gold = 0;
+        save.ruby = 0;
+        save.energy = 100;
+        save.xp = 0;
+        save.lvl = 0;
+        save.skins = new List<bool>(){true, false, false, false};
+        save.selectedSkin = 0;
         SaveChanges();
     }
 
-    public List<bool> GetSkins()
+
+    //Getters//
+    public int GetPower()
     {
         LoadSave();
-        return save.skins;
+        return save.energy;
     }
 
     public string GetName()
@@ -99,27 +82,53 @@ public class DataManager : MonoBehaviour
     public int GetGold()
     {
         LoadSave();
-        return save.coins;
+        return save.gold;
     }
 
     public int GetRuby()
     {
         LoadSave();
-        return save.emeralds;
+        return save.ruby;
     }
-    
-    public void SetSelectedSkin(int num, Skin skin)
+
+    public int GetXP()
     {
         LoadSave();
-        save.skinSeletion = skin;
-        save.selectedSkin = num;
+        return save.xp;
+    }
+
+    public int GetSelectedSkin()
+    {
+        LoadSave();
+        return save.selectedSkin;
+    }
+
+    public List<bool> GetSkins()
+    {
+        LoadSave();
+        return save.skins;
+    }
+
+    public Skin GetSkinSelection()
+    {
+        LoadSave();
+        return save.skinSeletion;
+    }
+    
+    
+    //Setters//
+
+    public void TakePower()
+    {
+        LoadSave();
+        save.energy = save.energy - 1;
         SaveChanges();
     }
 
     public void GiveGold(int amount)
     {
         LoadSave();
-        save.coins += amount;
+        save.gold += amount;
         SaveChanges();
     }
 
@@ -133,9 +142,54 @@ public class DataManager : MonoBehaviour
     public void GiveRuby(int amount)
     {
         LoadSave();
-        save.emeralds += amount;
+        save.ruby += amount;
         SaveChanges();
     }
+
+    public void SetSelectedSkin(int num, Skin skin)
+    {
+        LoadSave();
+        save.skinSeletion = skin;
+        save.selectedSkin = num;
+        SaveChanges();
+    }
+
+    public void TakeResources(string currency, int amount)
+    {
+        LoadSave();
+        
+        switch (currency)
+        {
+            case "gold":
+            save.gold = save.gold - amount;
+            break;
+
+            case "ruby":
+            save.ruby = save.ruby - amount;
+            break;
+
+            case "lvl":
+            break;
+
+        }
+        SaveChanges();
+    }
+
+    public void NextLvl()
+    {
+        int[] lvls = new int[11]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150};
+        save.xp = lvls[save.lvl + 1];
+        save.lvl = save.lvl + 1;
+        SaveChanges();
+    }
+
+    public void FillEnergy()
+    {
+        save.energy = 100;
+        SaveChanges();
+    }
+
+    //Functions
 
     public void EndGame(bool status, int selectedSkin)
     {
@@ -144,8 +198,8 @@ public class DataManager : MonoBehaviour
         if(status)
         {
             print("u won");
-            save.coins = save.coins + 20;
-            save.emeralds += 2;
+            save.gold = save.gold + 20;
+            save.ruby += 2;
             save.xp = save.xp + 5;
                 
 
@@ -155,18 +209,18 @@ public class DataManager : MonoBehaviour
                 break;
 
                 case 2:
-                save.coins = save.coins + 20;
+                save.gold = save.gold + 20;
                 break;
 
                 case 3:
-                save.emeralds += 2;
+                save.ruby += 2;
                 break;
             }
         }
         else if(!status)
         {
             print("u lost");
-            save.coins = save.coins + 5;
+            save.gold = save.gold + 5;
             save.xp += 2;
             switch (selectedSkin){
                 case 1:
@@ -174,11 +228,11 @@ public class DataManager : MonoBehaviour
                 break;
 
                 case 2:
-                save.coins = save.coins + 5;
+                save.gold = save.gold + 5;
                 break;
 
                 case 3:
-                save.emeralds += 1;
+                save.ruby += 1;
                 break;
             }  
         }
@@ -203,12 +257,6 @@ public class DataManager : MonoBehaviour
         return 10;
     }
 
-    public Skin GiveSkinSelection()
-    {
-        LoadSave();
-        return save.skinSeletion;
-    }
-
     public bool CheckResources(string currency, int amount)
     {
         LoadSave();
@@ -216,13 +264,13 @@ public class DataManager : MonoBehaviour
         switch (currency)
         {
             case "gold":
-            if(save.coins >= amount)
+            if(save.gold >= amount)
                 return true;
             else
                 return false;
 
             case "ruby":
-            if(save.emeralds >= amount)
+            if(save.ruby >= amount)
                 return true;
             else
                 return false;
@@ -235,27 +283,6 @@ public class DataManager : MonoBehaviour
 
         }
         return false;
-    }
-
-    public void TakeResources(string currency, int amount)
-    {
-        LoadSave();
-        
-        switch (currency)
-        {
-            case "gold":
-            save.coins = save.coins - amount;
-            break;
-
-            case "ruby":
-            save.emeralds = save.emeralds - amount;
-            break;
-
-            case "lvl":
-            break;
-
-        }
-        SaveChanges();
     }
 
     public void OpenSkin(int skinType)
@@ -272,9 +299,9 @@ public class Save
 {
     //Stat data
     public string name;
-    public int coins;
-    public int emeralds;
-    public int power;
+    public int gold;
+    public int ruby;
+    public int energy;
     public int lvl;
     public int xp;
 

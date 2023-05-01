@@ -20,7 +20,7 @@ public class SpriteSwitch : MonoBehaviour
     {
 
         //Sprite objSprite = gameObject.GetComponent<Image>().sprite;
-        int selectedskin = GameObject.Find("Data Manager").GetComponent<DataManager>().GiveSelectedSkin();
+        int selectedskin = GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin();
         if(isFlag)
         {
             switch (selectedskin){

@@ -49,11 +49,11 @@ public class MenuManager : MonoBehaviour
     {
         sv = Data().GetSave();
         nameSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.name;
-        coinsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.coins.ToString();
-        emeraldsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.emeralds.ToString();
-        if(sv.power > 100)
-            sv.power = 100;
-        powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.power.ToString() + "/100");
+        coinsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.gold.ToString();
+        emeraldsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.ruby.ToString();
+        if(sv.energy > 100)
+            sv.energy = 100;
+        powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.energy.ToString() + "/100");
         lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.lvl).ToString();
         SetSkinsActive(true);
     }

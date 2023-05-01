@@ -118,11 +118,11 @@ public class SkinManager : MonoBehaviour
         skin2.GetComponent<Skin>().available = skins[1];
         skin3.GetComponent<Skin>().available = skins[2];
         skin4.GetComponent<Skin>().available = skins[3];
-        if(Data().GiveSkinSelection() == null)
+        if(Data().GetSkinSelection() == null)
         {
             skin1.GetComponent<Skin>().Select();
         }
-        Data().GiveSkinSelection().Select();
+        Data().GetSkinSelection().Select();
     }
 
     private DataManager Data()

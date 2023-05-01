@@ -35,13 +35,13 @@ public class GameResult : MonoBehaviour
         if(gameResult == 1){
             //20 2 5
             Result.SetActive(true);
-            Data.EndGame(true, Data.GiveSelectedSkin());
+            Data.EndGame(true, Data.GetSelectedSkin());
         }
         else 
         {
             //5 0 2
             Result.SetActive(false);
-            Data.EndGame(false, Data.GiveSelectedSkin());
+            Data.EndGame(false, Data.GetSelectedSkin());
         }
     }
 
@@ -60,7 +60,7 @@ public class GameResult : MonoBehaviour
             xpReward = 5;
                 
 
-            switch (Data.GiveSelectedSkin()){
+            switch (Data.GetSelectedSkin()){
                 case 1:
                 xpReward += 5;
                 break;
@@ -80,7 +80,7 @@ public class GameResult : MonoBehaviour
             coinReward = 5;
             xpReward = 2;
             emeraldReward = 0;
-            switch (Data.GiveSelectedSkin()){
+            switch (Data.GetSelectedSkin()){
                 case 1:
                 xpReward += 2;
                 break;
@@ -143,11 +143,11 @@ public class GameResult : MonoBehaviour
     public void LoadUI()
     {
         sv = Data.GetSave();
-        coinsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.coins.ToString();
-        emeraldsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.emeralds.ToString();
-        if(sv.power > 100)
-            sv.power = 100;
-        powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.power.ToString() + "/100");
+        coinsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.gold.ToString();
+        emeraldsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.ruby.ToString();
+        if(sv.energy > 100)
+            sv.energy = 100;
+        powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.energy.ToString() + "/100");
         SetUpXPSlider(sv.lvl, sv.xp);
     }
 }

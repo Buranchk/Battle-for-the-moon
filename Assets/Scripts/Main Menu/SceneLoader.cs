@@ -17,8 +17,8 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadGame()
     {
-        print(GameObject.Find("Data Manager").GetComponent<DataManager>().GivePower());
-        if(GameObject.Find("Data Manager").GetComponent<DataManager>().GivePower() > 33){
+        print(GameObject.Find("Data Manager").GetComponent<DataManager>().GetPower());
+        if(GameObject.Find("Data Manager").GetComponent<DataManager>().GetPower() > 33){
             GameObject.Find("Data Manager").GetComponent<DataManager>().TakePower();
             SceneManager.LoadScene("Game Board");
         }

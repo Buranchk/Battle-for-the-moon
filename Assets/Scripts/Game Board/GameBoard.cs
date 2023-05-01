@@ -198,7 +198,7 @@ public class GameBoard : MonoBehaviour
 
     private void SelectUnitSkin()
     {
-        int selectedskin = GameObject.Find("Data Manager").GetComponent<DataManager>().GiveSelectedSkin();
+        int selectedskin = GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin();
         switch (selectedskin){
             case 0:
             fUnit = spaceMan;
