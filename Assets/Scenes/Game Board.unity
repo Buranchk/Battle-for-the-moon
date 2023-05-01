@@ -805,7 +805,7 @@ MonoBehaviour:
   XP: {fileID: 3138314364450014175, guid: a06b27ed5265b714781189005e624118, type: 3}
   gold: {fileID: 483770318282470085, guid: 1eeef99ddc9c4304fbdc7052bfe07033, type: 3}
   ruby: {fileID: 7829253093526622818, guid: 25ff2f72937631e4e8488a48ac0e3cd5, type: 3}
-  enemyPrefab: {fileID: 6149643926512166003, guid: 48cc1676ea3202c44868e42d57ac20d4, type: 3}
+  enemyPrefab: {fileID: 1205550042270821982, guid: 48cc1676ea3202c44868e42d57ac20d4, type: 3}
   selectedUnit: {fileID: 0}
   eUnit: {fileID: 0}
   fUnit: {fileID: 0}
@@ -817,7 +817,7 @@ MonoBehaviour:
   decoyText: {fileID: 1095017420}
   flagText: {fileID: 1669925320}
   reshuffleText: {fileID: 55776879}
-  StartGame: {fileID: 400104576}
+  startGameText: {fileID: 400104576}
   gradient: {fileID: 755516563}
   UnitDecoy: {fileID: 1826499619}
   UnitFlag: {fileID: 1886840604}

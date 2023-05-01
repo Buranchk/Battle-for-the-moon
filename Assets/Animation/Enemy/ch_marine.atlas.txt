@@ -1,0 +1,66 @@
+ch_marine.png
+size:446,575
+filter:Linear,Linear
+pma:true
+Enemy_paper/111
+bounds:2,104,164,275
+rotate:90
+Enemy_scissors/11
+bounds:2,104,164,275
+rotate:90
+Enemy_stone/111 copy
+bounds:2,104,164,275
+rotate:90
+Enemy_wait/1
+bounds:2,104,164,275
+rotate:90
+Enemy_paper/123
+bounds:253,375,198,186
+rotate:90
+Enemy_paper/222
+bounds:122,57,105,45
+Enemy_scissors/22
+bounds:122,57,105,45
+Enemy_stone/222 copy
+bounds:122,57,105,45
+Enemy_wait/2
+bounds:122,57,105,45
+Enemy_paper/333
+bounds:62,17,85,58
+rotate:90
+Enemy_scissors/33
+bounds:62,17,85,58
+rotate:90
+Enemy_stone/333 copy
+bounds:62,17,85,58
+rotate:90
+Enemy_wait/3
+bounds:62,17,85,58
+rotate:90
+Enemy_paper/444
+bounds:2,16,86,58
+rotate:90
+Enemy_scissors/44
+bounds:2,16,86,58
+rotate:90
+Enemy_stone/444 copy
+bounds:2,16,86,58
+rotate:90
+Enemy_wait/4
+bounds:2,16,86,58
+rotate:90
+Enemy_paper/555
+bounds:2,2,183,12
+Enemy_scissors/55
+bounds:2,2,183,12
+Enemy_stone/555 copy
+bounds:2,2,183,12
+Enemy_wait/5
+bounds:2,2,183,12
+Enemy_scissors/scissors1
+bounds:279,169,165,204
+Enemy_stone/Group
+bounds:279,3,164,156
+rotate:90
+Enemy_wait/1336
+bounds:2,270,249,303

@@ -33,7 +33,7 @@ public class GameBoard : MonoBehaviour
     public GameObject decoyText;
     public GameObject flagText;
     public GameObject reshuffleText;
-    public GameObject StartGame;
+    public GameObject startGameText;
     public GameObject gradient;
     public GameObject UnitDecoy;
     public GameObject UnitFlag;
@@ -52,7 +52,7 @@ public class GameBoard : MonoBehaviour
     private bool DecoyAlive = true;
     private Dictionary<Vector2, Tile> tiles;
     private GameObject lastSelectedUnit;
-    [HideInInspector] public List<GameObject> units = new List<GameObject>();
+    public List<GameObject> units = new List<GameObject>();
     public List<GameObject> enemyUnits = new List<GameObject>();
     public bool gameWin = true;
 
@@ -118,7 +118,7 @@ public class GameBoard : MonoBehaviour
 
                 GetTileAtPosition(new Vector2(x, y)).unitLinked = newEnemy;
 
-                LeanTween.alpha(newEnemy, 1, 0.75f).setEaseOutBack();
+                //LeanTween.alpha(newEnemy, 1, 0.75f).setEaseOutBack();
                 newEnemy.GetComponent<EnemyAI>().SpawnAnimation();
                 
                 map[x, y] = "enemyUnit";
@@ -354,9 +354,9 @@ public class GameBoard : MonoBehaviour
     {
         LeanTween.alpha(gradient, 0f, 0.4f);
 
-        StartGame.SetActive(true);
-        LeanTween.scale(StartGame, new Vector3(70f, 70f, 70f), 0.3f).setEase(LeanTweenType.easeOutCirc);
-        LeanTween.alpha(StartGame, 1.0f, 0.3f);
+        startGameText.SetActive(true);
+        LeanTween.scale(startGameText, new Vector3(70f, 70f, 70f), 0.3f).setEase(LeanTweenType.easeOutCirc);
+        LeanTween.alpha(startGameText, 1.0f, 0.3f);
 
         for(int i = 0; i < width; i++)
         {
@@ -365,13 +365,13 @@ public class GameBoard : MonoBehaviour
         }
         yield return new WaitForSeconds(0.4f);
 
-        LeanTween.scale(StartGame, new Vector3(30.3f, 0.3f, 30.3f), 0.2f);
-        LeanTween.alpha(StartGame, 0f, 0.2f);
+        LeanTween.scale(startGameText, new Vector3(30.3f, 0.3f, 30.3f), 0.2f);
+        LeanTween.alpha(startGameText, 0f, 0.2f);
         
 
         SpawnEnemies();
         yield return new WaitForSeconds(0.2f);
-        StartGame.SetActive(false);
+        startGameText.SetActive(false);
         
     }
 
@@ -558,7 +558,7 @@ public class GameBoard : MonoBehaviour
             else if (map[x, y] == "enemyUnit") // fix here
             {
                 GetEnemyAtPosition(x, y).movedOn = isActiveSelection;
-                GetEnemyAtPosition(x, y).highlight.SetActive(isActiveSelection);
+                GetEnemyAtPosition(x, y).highlightFX(isActiveSelection);
             }
         }
     }
@@ -601,6 +601,7 @@ public class GameBoard : MonoBehaviour
 /* Fight functions */
     public void DestroyUnit(GameObject Unit)
     {
+        print(Unit.name);
         GetTileAtPosition(Unit.transform.position).unitLinked = null;
         map[(int)Unit.transform.position.x, (int)Unit.transform.position.y] = "empty";
         if(Unit.tag == "Enemy")
@@ -648,7 +649,7 @@ public class GameBoard : MonoBehaviour
         {
             print("Friendly Flag is fucked");
             DestroyUnit(fUnitObj);
-            eUnit.highlight.SetActive(false);
+            //eUnit.highlight.SetActive(false);
             gameWin = false;
             NewStage();
         }
@@ -656,7 +657,7 @@ public class GameBoard : MonoBehaviour
         if(eUnit.type == "decoy" || fUnit.type == "decoy")
         {
             //fUnit.highlight.SetActive(false);
-            eUnit.highlight.SetActive(false);
+            //eUnit.highlight.SetActive(false);
             DestroyUnit(fUnitObj);
             DestroyUnit(eUnitObj);
             turn = !turn;
@@ -677,7 +678,7 @@ public class GameBoard : MonoBehaviour
             eUnit.ChangeType(eUnit.type);
             eUnit.movedOn = false;
             DestroyUnit(fUnitObj);
-            eUnit.highlight.SetActive(false);
+            //eUnit.highlight.SetActive(false);
             turn = !turn;
             if(!turn)
                 EnemyAI();
@@ -992,6 +993,7 @@ public class GameBoard : MonoBehaviour
 
     IEnumerator EnemyStep(int x, int y, GameObject movingUnit)
     {
+        movingUnit.GetComponent<EnemyAI>().TrailSwitch(true);
         GetTileAtPosition(new Vector2((int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y)).unitLinked = null;
         map[(int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y] = "empty";
         LeanTween.move(movingUnit, new Vector2(movingUnit.transform.position.x + x, movingUnit.transform.position.y + y), 0.4f).setEaseInOutQuint();
@@ -1000,6 +1002,8 @@ public class GameBoard : MonoBehaviour
         map[(int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y] = "enemyUnit";
         movingUnit.transform.position = new Vector2(movingUnit.transform.position.x, movingUnit.transform.position.y);
         turn = true;
+        yield return new WaitForSeconds(0.2f);
+        movingUnit.GetComponent<EnemyAI>().TrailSwitch(false);
     }
 
     public void EnemyAIPickRandom()

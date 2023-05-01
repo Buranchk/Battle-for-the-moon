@@ -281,6 +281,13 @@ public class DataManager : MonoBehaviour
             else
                 return false;
 
+            case "energy":
+            if(save.energy >= amount)
+                return true;
+            else
+                return false;
+
+
         }
         return false;
     }

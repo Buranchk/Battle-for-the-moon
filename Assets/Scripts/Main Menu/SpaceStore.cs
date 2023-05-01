@@ -17,9 +17,9 @@ public class SpaceStore : MonoBehaviour
 
     public int goldPriceForLvlUp;
     public int rubyPriceForGold = 10;
-    public int rubyPriceForEnergy = 10;
-    public int moneyPriceForNoAds;
-    public int moneyPriceForRuby;
+    public int rubyPriceForEnergy = 5;
+    public float moneyPriceForNoAds = 1.99f;
+    public float moneyPriceForRuby = 0.99f;
 
 
     private DataManager DataMan;
@@ -42,8 +42,8 @@ public class SpaceStore : MonoBehaviour
         price1.text = (goldPriceForLvlUp).ToString();
         price2.text = (rubyPriceForGold).ToString();
         price3.text = (rubyPriceForEnergy).ToString();
-        price4.text = (moneyPriceForNoAds).ToString();
-        price5.text = (moneyPriceForRuby).ToString();
+        price4.text = (moneyPriceForNoAds).ToString() + " $";
+        price5.text = (moneyPriceForRuby).ToString() + " $";
 
     }
 
@@ -77,15 +77,19 @@ public class SpaceStore : MonoBehaviour
 
     public void RubyToEnergy()
     {
-        if(DataMan.CheckResources("ruby", 5))
+        if(DataMan.CheckResources("ruby", 5) && !DataMan.CheckResources("energy", 100))
         {
             DataMan.TakeResources("ruby", 5); 
             DataMan.FillEnergy();
             SceneLoad.ReloadScene();
         }
-        else
+        else if (DataMan.CheckResources("energy", 100))
         {
-
+            print("ur energy is full");
+        }
+        else if (!DataMan.CheckResources("ruby", 5))
+        {
+            print("not enough ruby");
         }
 
     }
