@@ -27,6 +27,9 @@ public class GameBoard : MonoBehaviour
     private string [ , ] map;
     public bool turn = false;
     public bool suggestSystem = false;
+    public GameObject explosion;
+    public ParticleSystem winParticles;
+    public ParticleSystem oopsParticles;
     public GameObject windowRPS;
     public GameObject buttonShuffle;
     public GameObject buttonDone;
@@ -595,36 +598,38 @@ public class GameBoard : MonoBehaviour
         yield return new WaitForSeconds(0.15f);
         unitScript.TrailSwitch(false);
         turn = !turn;
-        EnemyAI();
+        StartCoroutine(EnemyTurn());
     }
 
 /* Fight functions */
     public void DestroyUnit(GameObject Unit)
     {
-        print(Unit.name);
-        GetTileAtPosition(Unit.transform.position).unitLinked = null;
-        map[(int)Unit.transform.position.x, (int)Unit.transform.position.y] = "empty";
-        if(Unit.tag == "Enemy")
+        if(Unit != null)
         {
-            enemyUnits.Remove(Unit);
-            if(enemyUnits.Count == 0)
+            GetTileAtPosition(Unit.transform.position).unitLinked = null;
+            map[(int)Unit.transform.position.x, (int)Unit.transform.position.y] = "empty";
+            if(Unit.tag == "Enemy")
             {
-                gameWin = true;
-                NewStage();
-            }
+                enemyUnits.Remove(Unit);
+                if(enemyUnits.Count == 0)
+                {
+                    gameWin = true;
+                    NewStage();
+                }
 
-        }
-        else
-        {
-            units.Remove(Unit);
-            if(units.Count == 0)
-            {
-                gameWin = false;
-                NewStage();
             }
+            else
+            {
+                units.Remove(Unit);
+                if(units.Count == 0)
+                {
+                    gameWin = false;
+                    NewStage();
+                }
+            }
+            Destroy(Unit);
+            print (Unit.name + " was destroyed");
         }
-        Destroy(Unit);
-        print (Unit.name + " was destroyed");
     }
 
     public void UnitFight()
@@ -634,7 +639,6 @@ public class GameBoard : MonoBehaviour
         GameObject eUnitObj = GameObject.Find(eUnit.name); //e
 
         print("Enemy was - " + eUnit.type + "    Friend was - " + fUnit.type);
-
 
         if(eUnit.type == "flag")
         {
@@ -662,7 +666,7 @@ public class GameBoard : MonoBehaviour
             DestroyUnit(eUnitObj);
             turn = !turn;
             if(!turn)
-                EnemyAI();
+                StartCoroutine(EnemyTurn());
         }
 
         if (eUnit.type == fUnit.type)
@@ -677,11 +681,12 @@ public class GameBoard : MonoBehaviour
             eUnit.isOpen = true;
             eUnit.ChangeType(eUnit.type);
             eUnit.movedOn = false;
-            DestroyUnit(fUnitObj);
+            StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, false));
+            //DestroyUnit(fUnitObj);
             //eUnit.highlight.SetActive(false);
-            turn = !turn;
-            if(!turn)
-                EnemyAI();
+            // turn = !turn;
+            // if(!turn)
+            //     StartCoroutine(EnemyTurn());
         }
         else if(!RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //f
         {
@@ -689,11 +694,13 @@ public class GameBoard : MonoBehaviour
             fUnit.isOpen = true;
             fUnit.ChangeType(fUnit.type);
             fUnit.movedOn = false;
-            DestroyUnit(eUnitObj);
+            StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, true));
+            //DestroyUnit(eUnitObj);
             //fUnit.highlight.SetActive(false);
-            turn = !turn;
-            if(!turn)
-                EnemyAI();
+            // turn = !turn;
+            // if(!turn)
+            //     StartCoroutine(EnemyTurn());
+
         }
 
     }
@@ -772,6 +779,41 @@ public class GameBoard : MonoBehaviour
         return win;
     }
 
+    IEnumerator FightAnimation(GameObject unit1, GameObject unit2, float pos1X, float pos1Y, float pos2X, float pos2Y, bool win)
+    {
+
+        Vector2 place = new Vector2(0, 15f);
+        Vector2 fightPlace = new Vector2(((pos1X + pos2X)/2), ((pos1Y + pos2Y)/2));
+
+        if(turn)
+            tweens.UnitsMeet(fUnit.gameObject, eUnit.gameObject, win);
+        else
+            tweens.UnitsMeet(eUnit.gameObject, fUnit.gameObject, !win);
+
+        print("Code is past Animation sector");
+
+        if(win)
+        {
+            winParticles.gameObject.transform.position = fightPlace;
+            winParticles.Play();
+        }
+        else
+        {
+            oopsParticles.gameObject.transform.position = fightPlace;
+            oopsParticles.Play();
+        }
+        print("BeforeTimePause");
+        yield return new WaitForSeconds(0.6f);
+        print("AfterTimePause");
+        DestroyUnit(unit2);
+        turn = !turn;
+        if(!turn)
+            StartCoroutine(EnemyTurn());
+        yield return new WaitForSeconds(1f);
+        oopsParticles.gameObject.transform.position = place;
+        winParticles.gameObject.transform.position = place;
+    }
+
 /*(UI related)*/
     public void pickRock()
     {
@@ -815,9 +857,9 @@ public class GameBoard : MonoBehaviour
     }
 
 /* EnemyAI */
-    public void EnemyAI()
+    public void EnemyThink()
     {
-        timer.ResetTimer();
+
         //moving down effectivness
         int effectiveness = height;
         GameObject movingUnit = null;
@@ -881,6 +923,15 @@ public class GameBoard : MonoBehaviour
         }
 
     //h - (height - posY + 1 + tarY) - distance formula
+    timer.ResetTimer();
+    }
+
+    IEnumerator EnemyTurn()
+    {
+        timer.ResetTimer();
+        yield return new WaitForSeconds(Random.Range(0.3f, 1.2f));
+        EnemyThink();
+        timer.ResetTimer();
     }
 
     public bool SideCheck(GameObject movingUnit)
