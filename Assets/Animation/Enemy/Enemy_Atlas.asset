@@ -10,8 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a6b194f808b1af6499c93410e504af42, type: 3}
-  m_Name: ch_marine_Atlas
+  m_Name: Enemy_Atlas
   m_EditorClassIdentifier: 
-  atlasFile: {fileID: 4900000, guid: 9aa2919d5a37a9c44a402e6f7e91cd8f, type: 3}
+  atlasFile: {fileID: 4900000, guid: 3a831cc4930c4944fa446f854c2f8e0b, type: 3}
   materials:
-  - {fileID: 2100000, guid: c3684068f65f9a040affbd1e025f028b, type: 2}
+  - {fileID: 2100000, guid: 79e693c6fa801a542a298fc2513c47bd, type: 2}

@@ -248,7 +248,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d247ba06193faa74d9335f5481b2b56c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  skeletonDataAsset: {fileID: 11400000, guid: 4a5f320602d51b145b2c9a5b02d70801, type: 2}
+  skeletonDataAsset: {fileID: 11400000, guid: 430ffa782393b4a469498734aa10c65e, type: 2}
   initialSkinName: Enemy_wait
   fixPrefabOverrideViaMeshFilter: 2
   initialFlipX: 0

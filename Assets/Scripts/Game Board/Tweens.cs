@@ -116,7 +116,7 @@ public class Tweens : MonoBehaviour
 
         LeanTween.scale(explosionInstance, new Vector2(1f,1f), 0.2f).setEaseInElastic().setLoopPingPong(1);
         // Shake the object
-        LeanTween.move(explosionInstance, explosionInstance.transform.position + new Vector3(0.5f, 0, 0), 0.2f)
+        LeanTween.move(explosionInstance, explosionInstance.transform.position + new Vector3(0.1f, 0, 0), 0.2f)
             .setEaseShake()
             .setOnComplete(() =>
             {

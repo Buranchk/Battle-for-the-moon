@@ -5,18 +5,19 @@ using UnityEngine.UI;
 
 public class GameResult : MonoBehaviour
 {
-    public Sprite Enemy;
-    public Sprite Player;
     public GameObject Result;
     public DataManager Data;
+    public Animator AnimatedPart;
+
+    public GameObject powerSpace;
     public GameObject coinsSpace;
     public GameObject emeraldsSpace;
-    public GameObject powerSpace;
-    public GameObject xpSpace;
     public GameObject coinsRewards;
     public GameObject emeraldsRewards;
+
+    public Image XP_space;
+    public Image XP_Fill;
     public Slider XPSlider;
-    public Animator AnimatedPart;
     private float updXP;
 
     private Save sv = new Save();
@@ -27,7 +28,6 @@ public class GameResult : MonoBehaviour
     {
         Data = GameObject.Find("Data Manager").GetComponent<DataManager>();
         int gameResult = PlayerPrefs.GetInt("GameResult");
-
 
         LoadUI();
         RewardCalculation(gameResult);
@@ -44,7 +44,6 @@ public class GameResult : MonoBehaviour
             Data.EndGame(false, Data.GetSelectedSkin());
         }
     }
-
 
     private void RewardCalculation(int gameResult)
     {
@@ -98,11 +97,7 @@ public class GameResult : MonoBehaviour
         coinsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + coinReward.ToString());
         emeraldsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + emeraldReward.ToString());
         FillXP(xpReward);
-        xpSpace.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + xpReward.ToString());
     }
-
-
-
 
     private void SetUpXPSlider(int lvl, int xp)
     {
@@ -119,21 +114,44 @@ public class GameResult : MonoBehaviour
         int[] lvls = new int[12]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150, 100000};
         sv = Data.GetSave();
 
-        LeanTween.value(GameObject.Find("XPSlider"), XPSlider.value, XPSlider.value + xp, 1.0f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
-            print(val);
-            updXP = val;
-            if(val >= XPSlider.maxValue)
-            {
-               //lvlUpAnimation.Play(true);
-            }
-        });
+        if(sv.lvl == 10)
+        {
+            //ShowFullXPBar + MaxLVL
+        }
+        else
+        {
+            
+            LeanTween.value(XPSlider.gameObject, XPSlider.value, XPSlider.value + xp, 1.0f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
+                print(val);
+                updXP = val;
+                if(val >= XPSlider.maxValue)
+                {
+                    
+                    //lvlUpAnimation.Play(true);
 
-
-
+                }
+            });
+            
+            // LeanTween.value(XPSlider.gameObject, XPSlider.value, XPSlider.value + xp, 1.0f).setEaseInOutQuad().setOnComplete(() =>
+            // {
+                // DarkenXP();
+            // });
+        
+        }
         // AnimatedPart.GetComponent<AnimationClip>().events
         // XPSlider.GetComponent<Slider>().value + xp
     }
 
+    public void DarkenXP()
+    {
+        Darken(XP_space);
+        Darken(XP_Fill);
+    }
+
+    private void Darken(Image imageToDarken)
+    {
+        LeanTween.color(imageToDarken.rectTransform, Color.black, 0.75f);
+    }
 
     private void Update()
     {
@@ -150,4 +168,5 @@ public class GameResult : MonoBehaviour
         powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.energy.ToString() + "/100");
         SetUpXPSlider(sv.lvl, sv.xp);
     }
+
 }

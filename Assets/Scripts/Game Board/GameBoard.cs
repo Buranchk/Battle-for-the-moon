@@ -370,12 +370,10 @@ public class GameBoard : MonoBehaviour
 
         LeanTween.scale(startGameText, new Vector3(30.3f, 0.3f, 30.3f), 0.2f);
         LeanTween.alpha(startGameText, 0f, 0.2f);
-        
 
         SpawnEnemies();
         yield return new WaitForSeconds(0.2f);
         startGameText.SetActive(false);
-        
     }
 
     IEnumerator TileRawAppearence(int raw)

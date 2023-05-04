@@ -8,13 +8,13 @@ public class EnemyAI : MonoBehaviour
 {
 
     private string hidden = "Enemy_wait";
-    private string outlined = "Enemy_wait_red";
-    private string rockOpen = "Enemy_stone";
-    private string paperOpen = "Enemy_paper";
-    private string scissorsOpen = "Enemy_scissors";
-    private string rockOpen_red = "Enemy_stone_red";
-    private string paperOpen_red = "Enemy_paper_red";
-    private string scissorsOpen_red = "Enemy_scissors_red";
+    private string outlined = "Enemy_wait_outline";
+    private string rockOpen = "Enemy_O_stone";
+    private string paperOpen = "Enemy_O_paper";
+    private string scissorsOpen = "Enemy_O_scissors";
+    private string rockOpen_outline = "Enemy_O_stone_outline";
+    private string paperOpen_outline = "Enemy_O_paper_outline";
+    private string scissorsOpen_outline = "Enemy_O_scissors_outline";
 
     //permanent statement
     public bool playerUnit = false;
@@ -114,17 +114,17 @@ public class EnemyAI : MonoBehaviour
                 switch (type)
                 {
                     case "rock":
-                        skeletonAnimation.Skeleton.SetSkin(rockOpen_red);
+                        skeletonAnimation.Skeleton.SetSkin(rockOpen_outline);
                         skeletonAnimation.Skeleton.SetSlotsToSetupPose();
                         break;
 
                     case "paper":
-                        skeletonAnimation.Skeleton.SetSkin(paperOpen_red);
+                        skeletonAnimation.Skeleton.SetSkin(paperOpen_outline);
                         skeletonAnimation.Skeleton.SetSlotsToSetupPose();
                         break;
 
                     case "scissors":
-                        skeletonAnimation.Skeleton.SetSkin(scissorsOpen_red);
+                        skeletonAnimation.Skeleton.SetSkin(scissorsOpen_outline);
                         skeletonAnimation.Skeleton.SetSlotsToSetupPose();
                         break;
 
