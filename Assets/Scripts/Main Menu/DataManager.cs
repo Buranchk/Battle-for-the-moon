@@ -91,6 +91,12 @@ public class DataManager : MonoBehaviour
         return save.ruby;
     }
 
+    public int GetLvl()
+    {
+        LoadSave();
+        return save.lvl;
+    }
+
     public int GetXP()
     {
         LoadSave();
@@ -297,6 +303,8 @@ public class DataManager : MonoBehaviour
         save.skins[skinType] = true;
         SaveChanges();
     }
+
+
 
 }
 

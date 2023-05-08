@@ -7,16 +7,15 @@ public class GameResult : MonoBehaviour
 {
     public GameObject Result;
     public DataManager Data;
-    public Animator AnimatedPart;
+    public AnimationClip newLevelAnimation;
 
     public GameObject powerSpace;
     public GameObject coinsSpace;
     public GameObject emeraldsSpace;
     public GameObject coinsRewards;
     public GameObject emeraldsRewards;
+    public GameObject animatedPart;
 
-    public Image XP_space;
-    public Image XP_Fill;
     public Slider XPSlider;
     private float updXP;
 
@@ -113,6 +112,8 @@ public class GameResult : MonoBehaviour
     {
         int[] lvls = new int[12]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150, 100000};
         sv = Data.GetSave();
+        bool nextLevel = false;
+
 
         if(sv.lvl == 10)
         {
@@ -121,14 +122,20 @@ public class GameResult : MonoBehaviour
         else
         {
             
-            LeanTween.value(XPSlider.gameObject, XPSlider.value, XPSlider.value + xp, 1.0f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
+            LeanTween.value(XPSlider.gameObject, XPSlider.value, XPSlider.value + xp, 3.5f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
                 print(val);
                 updXP = val;
                 if(val >= XPSlider.maxValue)
                 {
-                    
+                    nextLevel = true;
                     //lvlUpAnimation.Play(true);
+                }
 
+            }).setOnComplete(() => {
+                if(nextLevel)
+                {
+                    animatedPart.GetComponent<Animator>().Play(newLevelAnimation.name);
+                    //lvlUpAnimation.Play(true);
                 }
             });
             
@@ -142,16 +149,7 @@ public class GameResult : MonoBehaviour
         // XPSlider.GetComponent<Slider>().value + xp
     }
 
-    public void DarkenXP()
-    {
-        Darken(XP_space);
-        Darken(XP_Fill);
-    }
 
-    private void Darken(Image imageToDarken)
-    {
-        LeanTween.color(imageToDarken.rectTransform, Color.black, 0.75f);
-    }
 
     private void Update()
     {
