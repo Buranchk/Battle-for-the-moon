@@ -20,6 +20,10 @@ public class MenuManager : MonoBehaviour
     public BuyOption buyOption;
     public GameObject ShopCanvasScaler;
     public GameObject DarkenClose;
+    public GameObject Energy;
+    public GameObject EnergyBar1;
+    public GameObject EnergyBar2;
+    public GameObject EnergyBar3;
 
     public GameObject Ruby;
     public GameObject XP;
@@ -51,11 +55,38 @@ public class MenuManager : MonoBehaviour
         nameSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.name;
         coinsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.gold.ToString();
         emeraldsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.ruby.ToString();
-        if(sv.energy > 100)
-            sv.energy = 100;
-        powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.energy.ToString() + "/100");
+        if(sv.energy > 60)
+            sv.energy = 60;
+        powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.energy.ToString() + "/60");
+        SetEnergy(sv.energy);
         lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.lvl).ToString();
         SetSkinsActive(true);
+    }
+
+    public void SetEnergy(int energy)
+    {
+
+        switch (energy)
+        {
+            case int val when val < 20:
+                print("ur shit is empty");
+                break;
+            case int val when val >= 20 && val < 40:
+                EnergyBar1.SetActive(true);
+                break;
+            case int val when val >= 40 && val < 60:
+                EnergyBar1.SetActive(true);
+                EnergyBar2.SetActive(true);
+                break;
+            case int val when val == 60:
+                EnergyBar1.SetActive(true);
+                EnergyBar2.SetActive(true);
+                EnergyBar3.SetActive(true);
+                break;
+            default:
+                print("something is wrong");
+                break;
+        }
     }
 
     public void CheckName(string name)

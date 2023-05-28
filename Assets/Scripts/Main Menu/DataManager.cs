@@ -57,7 +57,7 @@ public class DataManager : MonoBehaviour
         save.name = naming;
         save.gold = 0;
         save.ruby = 0;
-        save.energy = 100;
+        save.energy = 60;
         save.xp = 0;
         save.lvl = 0;
         save.skins = new List<bool>(){true, false, false, false};

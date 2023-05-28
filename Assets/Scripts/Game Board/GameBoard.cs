@@ -571,6 +571,7 @@ public class GameBoard : MonoBehaviour
 
     IEnumerator UnitStep(int x, int y, int xe, int ye)
     {
+        turn = !turn;
         Unit unitScript = GetUnitObjectAt(xe, ye).GetComponent<Unit>();
         unitScript.TrailSwitch(true);
         //Unit link to a new Tile
@@ -595,7 +596,6 @@ public class GameBoard : MonoBehaviour
         //switch the turn
         yield return new WaitForSeconds(0.15f);
         unitScript.TrailSwitch(false);
-        turn = !turn;
         StartCoroutine(EnemyTurn());
     }
 
@@ -679,10 +679,11 @@ public class GameBoard : MonoBehaviour
             eUnit.isOpen = true;
             eUnit.ChangeType(eUnit.type);
             eUnit.movedOn = false;
+            if(turn)
+                turn = !turn;
             StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, false));
             //DestroyUnit(fUnitObj);
             //eUnit.highlight.SetActive(false);
-            // turn = !turn;
             // if(!turn)
             //     StartCoroutine(EnemyTurn());
         }
@@ -692,10 +693,11 @@ public class GameBoard : MonoBehaviour
             fUnit.isOpen = true;
             fUnit.ChangeType(fUnit.type);
             fUnit.movedOn = false;
+            if(turn)
+                turn = !turn;
             StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, true));
             //DestroyUnit(eUnitObj);
             //fUnit.highlight.SetActive(false);
-            // turn = !turn;
             // if(!turn)
             //     StartCoroutine(EnemyTurn());
 
@@ -779,6 +781,7 @@ public class GameBoard : MonoBehaviour
 
     IEnumerator FightAnimation(GameObject unit1, GameObject unit2, float pos1X, float pos1Y, float pos2X, float pos2Y, bool win)
     {
+        //bool tempTurn = turn;
 
         Vector2 place = new Vector2(0, 15f);
         Vector2 fightPlace = new Vector2(((pos1X + pos2X)/2), ((pos1Y + pos2Y)/2));
@@ -800,10 +803,13 @@ public class GameBoard : MonoBehaviour
             oopsParticles.gameObject.transform.position = fightPlace;
             oopsParticles.Play();
         }
+
+            
         print("BeforeTimePause");
         yield return new WaitForSeconds(0.6f);
         print("AfterTimePause");
         DestroyUnit(unit2);
+
         turn = !turn;
         if(!turn)
             StartCoroutine(EnemyTurn());
@@ -1050,9 +1056,9 @@ public class GameBoard : MonoBehaviour
         GetTileAtPosition(new Vector2((int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y)).unitLinked = movingUnit;
         map[(int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y] = "enemyUnit";
         movingUnit.transform.position = new Vector2(movingUnit.transform.position.x, movingUnit.transform.position.y);
-        turn = true;
         yield return new WaitForSeconds(0.2f);
         movingUnit.GetComponent<EnemyAI>().TrailSwitch(false);
+        turn = true;
     }
 
     public void EnemyAIPickRandom()
