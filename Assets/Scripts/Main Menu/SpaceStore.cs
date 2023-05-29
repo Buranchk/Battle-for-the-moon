@@ -36,6 +36,9 @@ public class SpaceStore : MonoBehaviour
     public GameObject EnergyBar3;
     public GameObject lvlSpace;
 
+    public ParticleSystem particleCoins;
+    public ParticleSystem particleRubins;
+    
 
     private DataManager DataMan;
     private SceneLoader SceneLoad;
@@ -48,7 +51,99 @@ public class SpaceStore : MonoBehaviour
         //moneyPriceForRuby
         SceneLoad = GameObject.Find("Scene loader").GetComponent<SceneLoader>();
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
+        
+        UpdateStats();
+    }
 
+
+//Buttons
+    public void GoldToXP()
+    {
+        if(DataMan.CheckResources("gold", goldPriceForLvlUp) && !(DataMan.GetLvl() == 10))
+        {
+            DataMan.TakeResources("gold", goldPriceForLvlUp);
+
+            buttonLvlUP.GetComponent<Button>().interactable = false;
+
+            LeanTween.scale(buttonLvlUP, Vector3.one / 2.2f, 0.1f).setLoopPingPong(1);
+            buttonLvlUP.GetComponent<Image>().color = new Color(0, 1, 0, 1);
+            LeanTween.scale(buttonLvlUP, Vector3.one / 2.2f, 0.1f).setLoopPingPong(1);
+
+            LeanTween.value(gameObject, UpdateGoldValue, DataMan.GetGold(), DataMan.GetGold() - goldPriceForLvlUp, 1.0f);
+            LeanTween.value(gameObject, UpdatePrice1Value, goldPriceForLvlUp, 0.0f, 1.0f);
+
+            NextLevel();
+        }
+        else if (DataMan.GetLvl() == 10)
+        {
+            buttonLvlUP.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            LeanTween.color(buttonLvlUP.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 0.3f);
+            
+            lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().color = new Color (0.0f, 1.0f, 0.0f, 1.0f);
+            lvlSpace.transform.localScale = new Vector3(3.2f, 3.2f, 3.2f);
+            LeanTween.scale(lvlSpace, new Vector2(4.2f, 4.2f), 0.1f).setEaseOutBounce().setLoopPingPong(1);
+
+        }
+        else if (!DataMan.CheckResources("gold", goldPriceForLvlUp))
+        {
+            ButtonPress(buttonLvlUP, false);
+        }
+    }
+
+    public void RubyToGold()
+    {
+        if(DataMan.CheckResources("ruby", rubyPriceForGold))
+        {
+            DataMan.TakeResources("ruby", rubyPriceForGold);
+            DataMan.GiveGold(rubyPriceForGold * 10);
+
+            ButtonPress(buttonGold, true);
+            UpdateStats();
+        }
+        else
+        {
+            ButtonPress(buttonGold, false);
+        }
+    }
+
+    public void RubyToEnergy()
+    {
+        if(DataMan.CheckResources("ruby", 5) && !DataMan.CheckResources("energy", 60))
+        {
+            DataMan.TakeResources("ruby", 5); 
+            DataMan.FillEnergy();
+            ButtonPress(buttonEnergy ,true);
+            UpdateStats();
+        }
+        else if (DataMan.CheckResources("energy", 60))
+        {
+            buttonEnergy.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
+            LeanTween.color(buttonEnergy.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 0.3f);
+            print("ur energy is full");
+        }
+        else if (!DataMan.CheckResources("ruby", 5))
+        {
+            ButtonPress(buttonGold, false);
+            print("not enough ruby");
+        }
+        ShowEnergy();
+
+    }
+
+    public void MonyNoAd()
+    {
+        //some function
+    }
+
+    public void MoneyToRuby()
+    {
+        //some function too
+    }
+
+
+//function helpers
+    private void UpdateStats()
+    {
         lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (DataMan.GetLvl()).ToString();
 
         goldSpace.text = DataMan.GetGold().ToString();
@@ -62,51 +157,14 @@ public class SpaceStore : MonoBehaviour
         price4.text = (moneyPriceForNoAds).ToString() + " $";
         price5.text = (moneyPriceForRuby).ToString() + " $";
 
-
-        
-        //XPSlider.value = 0.5f;
         FillXP();
-
         ShowEnergy();
-
     }
 
-    public void GoldToXP()
-    {
-        if(DataMan.CheckResources("gold", goldPriceForLvlUp))
-        {
-            
-            DataMan.TakeResources("gold", goldPriceForLvlUp);
-            ButtonPress(buttonLvlUP);
-            TextMeshProUGUI text = price1.GetComponent<TextMeshProUGUI>();
-            LeanTween.value(gameObject, UpdateValue, goldPriceForLvlUp, 0.0f, 1.0f);
-            NextLevel();
-        }
-        else
-        {
-            //ButtonPress(buttonLvlUP, false);
-        }
-    }
-
-    public void RubyToGold()
-    {
-        if(DataMan.CheckResources("ruby", rubyPriceForGold))
-        {
-            DataMan.TakeResources("ruby", rubyPriceForGold);
-            DataMan.GiveGold(rubyPriceForGold * 10);
-
-            goldPriceForLvlUp = (DataMan.GetXP() * 2);
-            SceneLoad.ReloadScene();
-        }
-        else
-        {
-
-        }
-    }
-
-    public void NextLevel()
+    private void NextLevel()
     {
         LeanTween.scale(lvlSpace, new Vector2(4f, 4f), 0.5f).setEaseOutBounce().setLoopPingPong(1);
+        lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().color = new Color (0.0f, 1.0f, 0.0f, 1.0f);
         LeanTween.value(XPSlider.gameObject, updXP, 1.0f, 1.0f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
                 print(val);
                 updXP = val;
@@ -116,40 +174,24 @@ public class SpaceStore : MonoBehaviour
                 }
 
             }).setOnComplete(() => {
+                buttonLvlUP.GetComponent<Button>().interactable = true;
                 DataMan.NextLvl();
-                SceneLoad.ReloadScene();
+                lvlSpace.transform.localScale = new Vector3(3.2f, 3.2f, 3.2f);
+                LeanTween.scale(lvlSpace, new Vector2(4.2f, 4.2f), 0.1f).setEaseOutBounce().setLoopPingPong(1);
+                lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+                UpdateStats();
                 //animatedPart.GetComponent<Animator>().Play(newLevelAnimation.name);
                 //lvlUpAnimation.Play(true);
 
             });
     }
 
-    public void RubyToEnergy()
-    {
-        if(DataMan.CheckResources("ruby", 5) && !DataMan.CheckResources("energy", 60))
-        {
-            DataMan.TakeResources("ruby", 5); 
-            DataMan.FillEnergy();
-            SceneLoad.ReloadScene();
-        }
-        else if (DataMan.CheckResources("energy", 60))
-        {
-            print("ur energy is full");
-        }
-        else if (!DataMan.CheckResources("ruby", 5))
-        {
-            print("not enough ruby");
-        }
-        ShowEnergy();
-
-    }
-
-    public void ShowEnergy()
+    private void ShowEnergy()
     {
         int energy = DataMan.GetPower();
         if(energy > 60)
             energy = 60;
-        powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (energy.ToString() + "/60");
+        //powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (energy.ToString() + "/60");
         switch (energy)
         {
             case int val when val < 20:
@@ -173,7 +215,7 @@ public class SpaceStore : MonoBehaviour
         }
     }
 
-    public void FillXP()
+    private void FillXP()
     {
         int[] lvls = new int[12]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150, 100000};
 
@@ -193,16 +235,35 @@ public class SpaceStore : MonoBehaviour
         }
     }
 
-    private void ButtonPress(GameObject button)
+    private void ButtonPress(GameObject button, bool state)
     {
-        button.GetComponent<Button>().interactable = false;
-        button.GetComponent<Image>().color = new Color(0, 1, 0, 1);
+        button.transform.localScale = Vector3.one * 0.4f;
+        if(state)
+        {
+            LeanTween.scale(button, Vector3.one / 2.2f, 0.1f).setLoopPingPong(1);
+            button.GetComponent<Image>().color = new Color(0, 1, 0, 1);
 
-        LeanTween.scale(button, Vector3.one / 2.2f, 0.1f).setLoopPingPong(1);
-        LeanTween.color(button.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 1f);
+            LeanTween.color(button.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 0.1f);
+        } 
+            else if (!state)
+        {
+            LeanTween.scale(button, Vector3.one / 0.45f, 0.1f).setLoopPingPong(1);
+            button.GetComponent<Image>().color = new Color(1, 0, 0, 1);
+            LeanTween.color(button.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 0.1f);
+        }
+
+    }
 
 
-        //LeanTween.color(gameObject, Color.green, 0.2f).setEase(LeanTweenType.easeOutExpo).setLoopPingPong();
+//value's animations
+    void UpdatePrice1Value(float value)
+    {
+        price1.text = Mathf.RoundToInt(value).ToString();
+    }
+
+    void UpdateGoldValue(float value)
+    {
+        goldSpace.text = Mathf.RoundToInt(value).ToString();
     }
 
     private void Update()
@@ -210,19 +271,5 @@ public class SpaceStore : MonoBehaviour
         XPSlider.value = updXP;
     }
 
-    void UpdateValue(float value)
-    {
-        price1.text = Mathf.RoundToInt(value).ToString();
-    }
-
-    public void MonyNoAd()
-    {
-        //some function
-    }
-
-    public void MoneyToRuby()
-    {
-        //some function too
-    }
 
 }

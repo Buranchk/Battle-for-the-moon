@@ -191,7 +191,7 @@ public class DataManager : MonoBehaviour
 
     public void FillEnergy()
     {
-        save.energy = 100;
+        save.energy = 60;
         SaveChanges();
     }
 

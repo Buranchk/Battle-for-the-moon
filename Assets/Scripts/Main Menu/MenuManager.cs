@@ -57,7 +57,7 @@ public class MenuManager : MonoBehaviour
         emeraldsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.ruby.ToString();
         if(sv.energy > 60)
             sv.energy = 60;
-        powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.energy.ToString() + "/60");
+        //powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.energy.ToString() + "/60");
         SetEnergy(sv.energy);
         lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.lvl).ToString();
         SetSkinsActive(true);
