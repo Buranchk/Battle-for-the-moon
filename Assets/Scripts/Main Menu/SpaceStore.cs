@@ -16,6 +16,12 @@ public class SpaceStore : MonoBehaviour
     public TextMeshProUGUI price4;
     public TextMeshProUGUI price5;
 
+    public GameObject buttonLvlUP;
+    public GameObject buttonGold;
+    public GameObject buttonEnergy;
+    public GameObject buttonNoAds;
+    public GameObject buttonRuby;
+
     public int goldPriceForLvlUp;
     public int rubyPriceForGold = 10;
     public int rubyPriceForEnergy = 5;
@@ -59,7 +65,7 @@ public class SpaceStore : MonoBehaviour
 
         
         //XPSlider.value = 0.5f;
-        FillXP(0);
+        FillXP();
 
         ShowEnergy();
 
@@ -69,13 +75,16 @@ public class SpaceStore : MonoBehaviour
     {
         if(DataMan.CheckResources("gold", goldPriceForLvlUp))
         {
+            
             DataMan.TakeResources("gold", goldPriceForLvlUp);
-            DataMan.NextLvl();
-            SceneLoad.ReloadScene();
+            ButtonPress(buttonLvlUP);
+            TextMeshProUGUI text = price1.GetComponent<TextMeshProUGUI>();
+            LeanTween.value(gameObject, UpdateValue, goldPriceForLvlUp, 0.0f, 1.0f);
+            NextLevel();
         }
         else
         {
-            //not enough!!!!
+            //ButtonPress(buttonLvlUP, false);
         }
     }
 
@@ -85,12 +94,34 @@ public class SpaceStore : MonoBehaviour
         {
             DataMan.TakeResources("ruby", rubyPriceForGold);
             DataMan.GiveGold(rubyPriceForGold * 10);
+
+            goldPriceForLvlUp = (DataMan.GetXP() * 2);
             SceneLoad.ReloadScene();
         }
         else
         {
 
         }
+    }
+
+    public void NextLevel()
+    {
+        LeanTween.scale(lvlSpace, new Vector2(4f, 4f), 0.5f).setEaseOutBounce().setLoopPingPong(1);
+        LeanTween.value(XPSlider.gameObject, updXP, 1.0f, 1.0f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
+                print(val);
+                updXP = val;
+                if(val >= XPSlider.maxValue)
+                {
+                    //lvlUpAnimation.Play(true);
+                }
+
+            }).setOnComplete(() => {
+                DataMan.NextLvl();
+                SceneLoad.ReloadScene();
+                //animatedPart.GetComponent<Animator>().Play(newLevelAnimation.name);
+                //lvlUpAnimation.Play(true);
+
+            });
     }
 
     public void RubyToEnergy()
@@ -142,11 +173,9 @@ public class SpaceStore : MonoBehaviour
         }
     }
 
-    public void FillXP(int xp)
+    public void FillXP()
     {
         int[] lvls = new int[12]{0, 5, 10, 15, 25, 35, 50, 70, 90, 120, 150, 100000};
-        bool nextLevel = false;
-
 
         if(DataMan.GetLvl() == 10)
         {
@@ -164,10 +193,26 @@ public class SpaceStore : MonoBehaviour
         }
     }
 
+    private void ButtonPress(GameObject button)
+    {
+        button.GetComponent<Button>().interactable = false;
+        button.GetComponent<Image>().color = new Color(0, 1, 0, 1);
+
+        LeanTween.scale(button, Vector3.one / 2.2f, 0.1f).setLoopPingPong(1);
+        LeanTween.color(button.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 1f);
+
+
+        //LeanTween.color(gameObject, Color.green, 0.2f).setEase(LeanTweenType.easeOutExpo).setLoopPingPong();
+    }
 
     private void Update()
     {
         XPSlider.value = updXP;
+    }
+
+    void UpdateValue(float value)
+    {
+        price1.text = Mathf.RoundToInt(value).ToString();
     }
 
     public void MonyNoAd()
