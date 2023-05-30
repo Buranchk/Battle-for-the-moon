@@ -19,7 +19,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadGame()
     {
         DataManager dataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
-        if(dataMan.GetPower() > 20)
+        if(dataMan.GetPower() >= 20)
         {
             dataMan.TakePower();
             SceneManager.LoadScene("Game Board");

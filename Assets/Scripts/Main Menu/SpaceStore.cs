@@ -24,7 +24,7 @@ public class SpaceStore : MonoBehaviour
 
     public int goldPriceForLvlUp;
     public int rubyPriceForGold = 10;
-    public int rubyPriceForEnergy = 5;
+    public int rubyPriceForEnergy;
     public float moneyPriceForNoAds = 1.99f;
     public float moneyPriceForRuby = 0.99f;
     private float updXP;
@@ -127,11 +127,13 @@ public class SpaceStore : MonoBehaviour
 
     public void RubyToEnergy()
     {
-        if(DataMan.CheckResources("ruby", 5) && !DataMan.CheckResources("energy", 60))
+        
+        if(DataMan.CheckResources("ruby", (3 - (DataMan.GetPower() / 20)) * 2) && !DataMan.CheckResources("energy", 60))
         {
-            DataMan.TakeResources("ruby", 5); 
+            DataMan.TakeResources("ruby", (3 - (DataMan.GetPower() / 20)) * 2); 
             DataMan.FillEnergy();
             ButtonPress(buttonEnergy ,true);
+            buttonEnergy.GetComponent<Button>().interactable = false;
             StartCoroutine(FillEnergy());
             print("stats are updated");
         }
@@ -139,6 +141,7 @@ public class SpaceStore : MonoBehaviour
         {
             buttonEnergy.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
             LeanTween.color(buttonEnergy.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 0.3f);
+            buttonEnergy.GetComponent<Button>().interactable = false;
             StartCoroutine(FillEnergy());
             print("ur energy is full");
         }
@@ -147,8 +150,6 @@ public class SpaceStore : MonoBehaviour
             ButtonPress(buttonGold, false);
             print("not enough ruby");
         }
-        ShowEnergy();
-
     }
 
     public void MonyNoAd()
@@ -172,10 +173,10 @@ public class SpaceStore : MonoBehaviour
 
             UpdateStats();
         }
-        else if(false)
-        {
-            ButtonPress(buttonGold, false);
-        }
+        // else if(false)
+        // {
+        //     ButtonPress(buttonGold, false);
+        // }
     }
 
 
@@ -188,6 +189,7 @@ public class SpaceStore : MonoBehaviour
         rubySpace.text = DataMan.GetRuby().ToString();
 
         goldPriceForLvlUp = (DataMan.GetXP() * 2);
+        rubyPriceForEnergy = (3 - (DataMan.GetPower() / 20)) * 2;
 
         price1.text = (goldPriceForLvlUp).ToString();
         price2.text = (rubyPriceForGold).ToString();
@@ -262,9 +264,6 @@ public class SpaceStore : MonoBehaviour
             float second = (lvls[DataMan.GetLvl() + 1] - lvls[DataMan.GetLvl()]);
 
             updXP = first / second;
-            print(first);
-            print(second);
-            print(updXP);
         }
     }
 
@@ -290,15 +289,17 @@ public class SpaceStore : MonoBehaviour
     {
         EnergyBar1.SetActive(true);
         LeanTween.scale(EnergyBar1.GetComponent<Image>().rectTransform, Vector3.one * 1.1f, 0.1f).setLoopPingPong(1);
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.2f);
 
         EnergyBar2.SetActive(true);
         LeanTween.scale(EnergyBar2.GetComponent<Image>().rectTransform, Vector3.one * 1.1f, 0.1f).setLoopPingPong(1);
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.2f);
 
         EnergyBar3.SetActive(true);
         LeanTween.scale(EnergyBar3.GetComponent<Image>().rectTransform, Vector3.one * 1.1f, 0.1f).setLoopPingPong(1);
+        yield return new WaitForSeconds(0.2f);
 
+        buttonEnergy.GetComponent<Button>().interactable = true;
         UpdateStats();
     }
 
