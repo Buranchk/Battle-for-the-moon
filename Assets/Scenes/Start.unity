@@ -322,9 +322,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   save:
     name: 
-    coins: 0
-    emeralds: 0
-    power: 0
+    gold: 0
+    ruby: 0
+    energy: 0
     lvl: 0
     xp: 0
     skinSeletion: {fileID: 0}

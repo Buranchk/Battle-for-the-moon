@@ -39,7 +39,6 @@ public class SpaceStore : MonoBehaviour
     public ParticleSystem particleCoins;
     public ParticleSystem particleRubins;
     
-
     private DataManager DataMan;
     private SceneLoader SceneLoad;
 
@@ -51,8 +50,9 @@ public class SpaceStore : MonoBehaviour
         //moneyPriceForRuby
         SceneLoad = GameObject.Find("Scene loader").GetComponent<SceneLoader>();
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
-        
+
         UpdateStats();
+        print("stats are updated");
     }
 
 
@@ -61,6 +61,13 @@ public class SpaceStore : MonoBehaviour
     {
         if(DataMan.CheckResources("gold", goldPriceForLvlUp) && !(DataMan.GetLvl() == 10))
         {
+
+            LeanTween.value(gameObject, UpdateGoldValue, DataMan.GetGold(), DataMan.GetGold() - goldPriceForLvlUp, 1.0f).setOnComplete(() =>
+                {
+                    UpdateStats();
+                }
+            );
+
             DataMan.TakeResources("gold", goldPriceForLvlUp);
 
             buttonLvlUP.GetComponent<Button>().interactable = false;
@@ -69,9 +76,10 @@ public class SpaceStore : MonoBehaviour
             buttonLvlUP.GetComponent<Image>().color = new Color(0, 1, 0, 1);
             LeanTween.scale(buttonLvlUP, Vector3.one / 2.2f, 0.1f).setLoopPingPong(1);
 
-            LeanTween.value(gameObject, UpdateGoldValue, DataMan.GetGold(), DataMan.GetGold() - goldPriceForLvlUp, 1.0f);
             LeanTween.value(gameObject, UpdatePrice1Value, goldPriceForLvlUp, 0.0f, 1.0f);
 
+            LeanTween.color(buttonLvlUP.GetComponent<Image>().rectTransform, new Color(1f, 1f, 1f, 1f), 1f);
+            
             NextLevel();
         }
         else if (DataMan.GetLvl() == 10)
@@ -94,10 +102,21 @@ public class SpaceStore : MonoBehaviour
     {
         if(DataMan.CheckResources("ruby", rubyPriceForGold))
         {
+            int initialGold = DataMan.GetGold();
+            int endGold = initialGold + (rubyPriceForGold * 10);
+
+            LeanTween.value(gameObject, UpdateGoldValue, initialGold, endGold, 1.5f).setOnComplete(() =>
+                {
+                    UpdateStats();
+                }
+            );
+
             DataMan.TakeResources("ruby", rubyPriceForGold);
             DataMan.GiveGold(rubyPriceForGold * 10);
 
             ButtonPress(buttonGold, true);
+            particleCoins.Play();
+
             UpdateStats();
         }
         else
@@ -113,12 +132,14 @@ public class SpaceStore : MonoBehaviour
             DataMan.TakeResources("ruby", 5); 
             DataMan.FillEnergy();
             ButtonPress(buttonEnergy ,true);
-            UpdateStats();
+            StartCoroutine(FillEnergy());
+            print("stats are updated");
         }
         else if (DataMan.CheckResources("energy", 60))
         {
             buttonEnergy.GetComponent<Image>().color = new Color(0.5f, 0.5f, 0.5f, 1f);
             LeanTween.color(buttonEnergy.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 0.3f);
+            StartCoroutine(FillEnergy());
             print("ur energy is full");
         }
         else if (!DataMan.CheckResources("ruby", 5))
@@ -137,7 +158,24 @@ public class SpaceStore : MonoBehaviour
 
     public void MoneyToRuby()
     {
-        //some function too
+        if(true)
+        {
+            int initialRubin = DataMan.GetRuby();
+            int endRubin = initialRubin + (rubyPriceForGold * 10);
+
+            LeanTween.value(gameObject, UpdateRubinValue, initialRubin, endRubin, 1.5f);
+
+            DataMan.GiveRuby(100);
+
+            ButtonPress(buttonRuby, true);
+            particleRubins.Play();
+
+            UpdateStats();
+        }
+        else if(false)
+        {
+            ButtonPress(buttonGold, false);
+        }
     }
 
 
@@ -166,13 +204,7 @@ public class SpaceStore : MonoBehaviour
         LeanTween.scale(lvlSpace, new Vector2(4f, 4f), 0.5f).setEaseOutBounce().setLoopPingPong(1);
         lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().color = new Color (0.0f, 1.0f, 0.0f, 1.0f);
         LeanTween.value(XPSlider.gameObject, updXP, 1.0f, 1.0f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
-                print(val);
                 updXP = val;
-                if(val >= XPSlider.maxValue)
-                {
-                    //lvlUpAnimation.Play(true);
-                }
-
             }).setOnComplete(() => {
                 buttonLvlUP.GetComponent<Button>().interactable = true;
                 DataMan.NextLvl();
@@ -180,6 +212,7 @@ public class SpaceStore : MonoBehaviour
                 LeanTween.scale(lvlSpace, new Vector2(4.2f, 4.2f), 0.1f).setEaseOutBounce().setLoopPingPong(1);
                 lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
                 UpdateStats();
+                print("stats are updated");
                 //animatedPart.GetComponent<Animator>().Play(newLevelAnimation.name);
                 //lvlUpAnimation.Play(true);
 
@@ -242,18 +275,32 @@ public class SpaceStore : MonoBehaviour
         {
             LeanTween.scale(button, Vector3.one / 2.2f, 0.1f).setLoopPingPong(1);
             button.GetComponent<Image>().color = new Color(0, 1, 0, 1);
-
             LeanTween.color(button.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 0.1f);
         } 
             else if (!state)
         {
-            LeanTween.scale(button, Vector3.one / 0.45f, 0.1f).setLoopPingPong(1);
+            LeanTween.scale(button, Vector3.one / 2.2f, 0.1f).setLoopPingPong(1);
             button.GetComponent<Image>().color = new Color(1, 0, 0, 1);
             LeanTween.color(button.GetComponent<Image>().rectTransform, new Color(1, 1, 1, 1), 0.1f);
         }
 
     }
 
+    IEnumerator FillEnergy()
+    {
+        EnergyBar1.SetActive(true);
+        LeanTween.scale(EnergyBar1.GetComponent<Image>().rectTransform, Vector3.one * 1.1f, 0.1f).setLoopPingPong(1);
+        yield return new WaitForSeconds(0.15f);
+
+        EnergyBar2.SetActive(true);
+        LeanTween.scale(EnergyBar2.GetComponent<Image>().rectTransform, Vector3.one * 1.1f, 0.1f).setLoopPingPong(1);
+        yield return new WaitForSeconds(0.15f);
+
+        EnergyBar3.SetActive(true);
+        LeanTween.scale(EnergyBar3.GetComponent<Image>().rectTransform, Vector3.one * 1.1f, 0.1f).setLoopPingPong(1);
+
+        UpdateStats();
+    }
 
 //value's animations
     void UpdatePrice1Value(float value)
@@ -266,10 +313,39 @@ public class SpaceStore : MonoBehaviour
         goldSpace.text = Mathf.RoundToInt(value).ToString();
     }
 
+    void UpdateRubinValue(float value)
+    {
+        rubySpace.text = Mathf.RoundToInt(value).ToString();
+    }
+
     private void Update()
     {
         XPSlider.value = updXP;
     }
 
+//other
+    public void CoinAdd()
+    {
+        goldSpace.color = new Color (1.0f, 1.0f, 0.0f, 1.0f);
+        goldSpace.gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        LeanTween.scale(goldSpace.gameObject, new Vector2(1.2f, 1.2f), 0.05f).setEaseOutBounce().setLoopPingPong(1).setOnComplete(() =>
+            {
+                goldSpace.color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+                goldSpace.gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+                
+            }
+        );
+    }
 
+    public void RubinAdd()
+    {
+        rubySpace.color = new Color (1.0f, 0.0f, 1.0f, 1.0f);
+        rubySpace.gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+        LeanTween.scale(rubySpace.gameObject, new Vector2(1.2f, 1.2f), 0.05f).setEaseOutBounce().setLoopPingPong(1).setOnComplete(() =>
+            {
+                rubySpace.color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
+                rubySpace.gameObject.transform.localScale = new Vector3(1f, 1f, 1f);
+            }
+        );
+    }
 }

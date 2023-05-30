@@ -62,6 +62,7 @@ public class DataManager : MonoBehaviour
         save.lvl = 0;
         save.skins = new List<bool>(){true, false, false, false};
         save.selectedSkin = 0;
+        save.soundSwitcher = true;
         SaveChanges();
     }
 
@@ -120,14 +121,19 @@ public class DataManager : MonoBehaviour
         LoadSave();
         return save.skinSeletion;
     }
+
+    public bool GetSound()
+    {
+        LoadSave();
+        return save.soundSwitcher;
+    }
     
     
     //Setters//
-
     public void TakePower()
     {
         LoadSave();
-        save.energy = save.energy - 1;
+        save.energy = save.energy - 20;
         SaveChanges();
     }
 
@@ -195,8 +201,13 @@ public class DataManager : MonoBehaviour
         SaveChanges();
     }
 
-    //Functions
+    public void SetSound(bool state)
+    {
+        save.soundSwitcher = state;
+        SaveChanges();
+    }
 
+    //Functions
     public void EndGame(bool status, int selectedSkin)
     {
         LoadSave();
@@ -324,4 +335,7 @@ public class Save
     public Skin skinSeletion;
     public List<bool> skins;
     public int selectedSkin;
+
+    //settings
+    public bool soundSwitcher;
 }

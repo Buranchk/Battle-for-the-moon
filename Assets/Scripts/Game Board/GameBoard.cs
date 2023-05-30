@@ -32,6 +32,7 @@ public class GameBoard : MonoBehaviour
     public ParticleSystem oopsParticles;
     public GameObject windowRPS;
     public GameObject buttonShuffle;
+    public GameObject arrowShuffle;
     public GameObject buttonDone;
     public GameObject decoyText;
     public GameObject flagText;
@@ -78,8 +79,8 @@ public class GameBoard : MonoBehaviour
 //Should use different shit here, maybe... someday.....
     }
 
-/* Start */
 
+/* Start */
     void GenerateGrid() 
     {
         tiles = new Dictionary<Vector2, Tile>();
@@ -290,6 +291,7 @@ public class GameBoard : MonoBehaviour
         }
     }
 
+
 /* UI related functions */
 
 //TEMP!!!!
@@ -402,9 +404,9 @@ public class GameBoard : MonoBehaviour
         //     yield return new WaitForSeconds(0.05f);
         // }
     }
- 
-/* Usage functions */
 
+
+/* Usage functions */
     public Tile GetTileAtPosition(Vector2 pos) 
     {
         if (tiles.TryGetValue(pos, out var tile)) return tile;
@@ -461,7 +463,8 @@ public class GameBoard : MonoBehaviour
             decoyText.SetActive(false);
             reshuffleText.SetActive(true);
             tweens.AppearScale(reshuffleText);
-            tweens.AppearScale(buttonShuffle);
+            tweens.AppearScale(arrowShuffle);
+
             buttonShuffle.SetActive(true);
             UnitRandomize();
             setDoneActive();
@@ -504,6 +507,7 @@ public class GameBoard : MonoBehaviour
         }
     }
 
+
 /* Unit functions */
     public void SelectUnit(GameObject newSelectedUnit)
     {
@@ -535,6 +539,7 @@ public class GameBoard : MonoBehaviour
         selectedUnit = newSelectedUnit;
         SuggestMoves(true);
     }
+
 
 /* Step functions */
     public void SuggestMoves(bool isActiveSelection)
@@ -598,6 +603,7 @@ public class GameBoard : MonoBehaviour
         unitScript.TrailSwitch(false);
         StartCoroutine(EnemyTurn());
     }
+
 
 /* Fight functions */
     public void DestroyUnit(GameObject Unit)
@@ -818,6 +824,7 @@ public class GameBoard : MonoBehaviour
         winParticles.gameObject.transform.position = place;
     }
 
+
 /*(UI related)*/
     public void pickRock()
     {
@@ -859,6 +866,7 @@ public class GameBoard : MonoBehaviour
         buttonDone.GetComponent<Image>().sprite = buttonDoneActive;
         buttonDone.GetComponent<Button>().interactable = true;
     }
+
 
 /* EnemyAI */
     public void EnemyThink()

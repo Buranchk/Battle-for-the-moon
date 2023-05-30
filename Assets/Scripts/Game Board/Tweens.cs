@@ -1,10 +1,7 @@
-
-
-
-
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Tweens : MonoBehaviour
 {
@@ -112,6 +109,7 @@ public class Tweens : MonoBehaviour
 
         
     }
+
     public void CreateAndShakeExplosion(Vector2 center)
     {
         // Instantiate the prefab
@@ -127,6 +125,16 @@ public class Tweens : MonoBehaviour
                 // Destroy the object after shaking
                 Destroy(explosionInstance);
             });
+    }
+
+    public void SpinShuffle(GameObject shuffle)
+    {
+        Button shuffleButton = GameObject.Find("Shuffle").GetComponent<Button>(); 
+        shuffleButton.interactable = false;
+        LeanTween.rotateAroundLocal(shuffle, Vector3.forward, -180f, 0.3f).setEaseOutCirc().setOnComplete(() =>
+        {
+            shuffleButton.interactable = true;
+        });
     }
 
 }

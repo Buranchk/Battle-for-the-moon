@@ -20,10 +20,16 @@ public class MenuManager : MonoBehaviour
     public BuyOption buyOption;
     public GameObject ShopCanvasScaler;
     public GameObject DarkenClose;
+
+
     public GameObject Energy;
     public GameObject EnergyBar1;
     public GameObject EnergyBar2;
     public GameObject EnergyBar3;
+
+
+    public GameObject soundIcon;
+    public GameObject noSoundIcon;
 
     public GameObject Ruby;
     public GameObject XP;
@@ -32,6 +38,7 @@ public class MenuManager : MonoBehaviour
     private DataManager DataMan;
     private string naming;
     private Save sv = new Save();
+
 
     private void Start()
     {
@@ -48,6 +55,7 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+
     //remake this
     public void LoadMenuValues()
     {
@@ -55,12 +63,12 @@ public class MenuManager : MonoBehaviour
         nameSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.name;
         coinsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.gold.ToString();
         emeraldsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.ruby.ToString();
-        if(sv.energy > 60)
-            sv.energy = 60;
-        //powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.energy.ToString() + "/60");
         SetEnergy(sv.energy);
         lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.lvl).ToString();
         SetSkinsActive(true);
+
+        SoundSwitch();
+        SoundSwitch();
     }
 
     public void SetEnergy(int energy)
@@ -125,6 +133,7 @@ public class MenuManager : MonoBehaviour
         Data().InitializeAccount(naming);
     }
 
+
     //take to the data manager
     public void TakePower()
     {
@@ -140,18 +149,43 @@ public class MenuManager : MonoBehaviour
     {
         return DataMan;
     }
-/*  
-++    //Add coin/emerald/power/lvl data
-++    //Initialize coin/emerald/power/lvl data
-++    //Load coin/emerald/power/lvl data
---    //Load unlocked skins, Last selected skin, some other data
---    //Load info bout previous games, W|L
-    
-++    //Change power lvl, when pressed "Play"
---    //Change last selected skin
-    //Change unlocked skins
-    
-*/
+
+    public void OpenInfo()
+    {
+        Application.OpenURL("https://en.wikipedia.org/wiki/End-user_license_agreement");
+    }
+
+    public void OpenLisenbartGameStudio()
+    {
+        Application.OpenURL("http://lisenbart.com/");
+    }
+
+    public void SoundSwitch()
+    {
+        if(DataMan.GetSound())
+        {
+            noSoundIcon.transform.localScale = noSoundIcon.transform.localScale * 1.3f;
+            DataMan.SetSound(false);
+
+            soundIcon.SetActive(false);
+            noSoundIcon.SetActive(true);
+
+            LeanTween.scale(noSoundIcon,new Vector3(1.85f, 1.85f, 1.85f), 0.1f).setEaseOutCirc();
+        } 
+        else if(!(DataMan.GetSound()))
+        {
+            
+            soundIcon.transform.localScale = noSoundIcon.transform.localScale * 1.3f;
+            DataMan.SetSound(true);
+
+            soundIcon.SetActive(true);
+            noSoundIcon.SetActive(false);
+
+            LeanTween.scale(soundIcon, new Vector3(1.85f, 1.85f, 1.85f), 0.1f).setEaseOutCirc();
+        }
+    }
+
+
 }
 
 

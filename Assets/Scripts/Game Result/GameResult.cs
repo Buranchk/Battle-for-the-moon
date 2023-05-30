@@ -16,6 +16,10 @@ public class GameResult : MonoBehaviour
     public GameObject emeraldsRewards;
     public GameObject animatedPart;
 
+    public GameObject EnergyBar1;
+    public GameObject EnergyBar2;
+    public GameObject EnergyBar3;
+
     public Slider XPSlider;
     private float updXP;
 
@@ -156,14 +160,43 @@ public class GameResult : MonoBehaviour
         XPSlider.value = updXP;
     }
 
+    private void ShowEnergy()
+    {
+        int energy = sv.energy;
+        if(energy > 60)
+            energy = 60;
+        //powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (energy.ToString() + "/60");
+        switch (energy)
+        {
+            case int val when val < 20:
+                print("ur shit is empty");
+                break;
+            case int val when val >= 20 && val < 40:
+                EnergyBar1.SetActive(true);
+                break;
+            case int val when val >= 40 && val < 60:
+                EnergyBar1.SetActive(true);
+                EnergyBar2.SetActive(true);
+                break;
+            case int val when val == 60:
+                EnergyBar1.SetActive(true);
+                EnergyBar2.SetActive(true);
+                EnergyBar3.SetActive(true);
+                break;
+            default:
+                print("something is wrong");
+                break;
+        }
+    }
+
     public void LoadUI()
     {
         sv = Data.GetSave();
         coinsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.gold.ToString();
         emeraldsSpace.GetComponent<TMPro.TextMeshProUGUI>().text = sv.ruby.ToString();
-        if(sv.energy > 100)
-            sv.energy = 100;
-        powerSpace.GetComponent<TMPro.TextMeshProUGUI>().text = (sv.energy.ToString() + "/100");
+        ShowEnergy();
+        
+
         SetUpXPSlider(sv.lvl, sv.xp);
     }
 
