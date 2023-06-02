@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class GameResult : MonoBehaviour
 {
     public GameObject Result;
+    public GameObject LogoResult;
     public DataManager Data;
     public AnimationClip newLevelAnimation;
 
@@ -38,12 +39,14 @@ public class GameResult : MonoBehaviour
         if(gameResult == 1){
             //20 2 5
             Result.SetActive(true);
+            LogoResult.SetActive(false);
             Data.EndGame(true, Data.GetSelectedSkin());
         }
         else 
         {
             //5 0 2
             Result.SetActive(false);
+            LogoResult.SetActive(true);
             Data.EndGame(false, Data.GetSelectedSkin());
         }
     }

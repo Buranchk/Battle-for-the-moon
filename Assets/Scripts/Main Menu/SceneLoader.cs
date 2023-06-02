@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
 {
+    public GameObject AdProposition;
+
     public void LoadMainMenu()
     {
         SceneManager.LoadScene("Main Menu");
@@ -32,7 +34,14 @@ public class SceneLoader : MonoBehaviour
 
             LeanTween.scale(battery, new Vector3(1f,1f,1f), 0.1f);
             LeanTween.color(battery.GetComponent<Image>().rectTransform, new Color(1f,1f,1f,1f), 0.1f);
+
+            AdProposition.SetActive(true);
         }
+    }
+
+    private void ShowAd()
+    {
+        
     }
 
     public void LoadProfile()
