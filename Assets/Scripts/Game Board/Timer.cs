@@ -19,6 +19,11 @@ public class Timer : MonoBehaviour
         timeLeft = timerLength;
     }
 
+    public void ExitGame()
+    {
+        StartCoroutine(AbortGame());
+    }
+
     IEnumerator AbortGame()
     {
         tween.AbortGame(AbortedGame);
@@ -33,7 +38,7 @@ public class Timer : MonoBehaviour
             timeLeft -= Time.deltaTime; // Subtract the time since last frame from the time remaining on the timer
 
             // Update the TextMeshProUGUI element with the time remaining on the timer
-            timerText.text = Mathf.CeilToInt(timeLeft).ToString();
+            timerText.text = ":" + (Mathf.CeilToInt(timeLeft).ToString());
 
 
             if (timeLeft < 10.0f && timeState)

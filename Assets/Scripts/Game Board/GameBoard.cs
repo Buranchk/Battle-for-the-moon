@@ -39,6 +39,10 @@ public class GameBoard : MonoBehaviour
     public GameObject reshuffleText;
     public GameObject startGameText;
     public GameObject gradient;
+
+    public GameObject soundIcon;
+    public GameObject noSoundIcon;
+
     public GameObject UnitDecoy;
     public GameObject UnitFlag;
     public RPSMatch frameRPS;
@@ -60,8 +64,15 @@ public class GameBoard : MonoBehaviour
     public List<GameObject> enemyUnits = new List<GameObject>();
     public bool gameWin = true;
 
+    private DataManager DataMan;
+
     void Start()
     {
+        DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
+        SoundSwitch();
+        SoundSwitch();
+
+
         GenerateGrid();
         gradient.SetActive(true);
         StartCoroutine(SpawnUnits());
@@ -302,6 +313,32 @@ public class GameBoard : MonoBehaviour
         NewStage();
         NewStage();
     }
+
+    public void SoundSwitch()
+    {
+        if(DataMan.GetSound())
+        {
+            noSoundIcon.transform.localScale = noSoundIcon.transform.localScale * 1.3f;
+            DataMan.SetSound(false);
+
+            soundIcon.SetActive(false);
+            noSoundIcon.SetActive(true);
+
+            LeanTween.scale(noSoundIcon,new Vector3(0.85f, 0.85f, 0.85f), 0.1f).setEaseOutCirc();
+        } 
+        else if(!(DataMan.GetSound()))
+        {
+            
+            soundIcon.transform.localScale = noSoundIcon.transform.localScale * 1.3f;
+            DataMan.SetSound(true);
+
+            soundIcon.SetActive(true);
+            noSoundIcon.SetActive(false);
+
+            LeanTween.scale(soundIcon, new Vector3(0.85f, 0.85f, 0.85f), 0.1f).setEaseOutCirc();
+        }
+    }
+
 
     public void UnitRandomize()
     {
