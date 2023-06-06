@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 877ade7879a357d4e8ee027f852618aa
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences:
+  - mainMenuMusic: {fileID: 8300000, guid: 3d472c788bcb94841ad65e6ddcdbc28f, type: 3}
+  - ambientMusic: {instanceID: 0}
+  - gameMusic: {fileID: 8300000, guid: bb32fbe58e3904a5d94ef8995c7d5570, type: 3}
+  - clicOnButtons1: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
+  - clicOnbuttons2: {instanceID: 0}
+  - cashRegisterRing: {instanceID: 0}
+  - expFillSFX: {instanceID: 0}
+  - lvlUpSFX: {instanceID: 0}
+  - selectionSFX: {instanceID: 0}
+  - airWhistlSFX: {instanceID: 0}
+  - moneyDingSFX: {instanceID: 0}
+  - winSFX: {instanceID: 0}
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

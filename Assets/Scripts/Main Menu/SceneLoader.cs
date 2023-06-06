@@ -11,6 +11,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadMainMenu()
     {
         SceneManager.LoadScene("Main Menu");
+        AudioManager.Instance.MainMenuMusic();
     }
 
     public void LoadShop()
@@ -25,6 +26,7 @@ public class SceneLoader : MonoBehaviour
         {
             dataMan.TakePower();
             SceneManager.LoadScene("Game Board");
+            AudioManager.Instance.GameMusic();
         }
         else 
         {
