@@ -640,18 +640,18 @@ MonoBehaviour:
   playerAudio: {fileID: 0}
   soundVolume: 1
   mainMenuMusic: {fileID: 8300000, guid: 3d472c788bcb94841ad65e6ddcdbc28f, type: 3}
-  ambientMusic: {fileID: 0}
+  ambientMusic: {fileID: 8300000, guid: 30510a35bfd53435e9963c3a7594417b, type: 3}
   gameMusic: {fileID: 8300000, guid: bb32fbe58e3904a5d94ef8995c7d5570, type: 3}
   clicOnButtons1: {fileID: 8300000, guid: 19f89c6e740e7447f9e12a8310d3e973, type: 3}
   clicOnButtons2: {fileID: 8300000, guid: 2c5292ba5cf254919a6b9e2b18e04f49, type: 3}
   playButton: {fileID: 8300000, guid: b6428d4edb06344ba829da4edd9967c1, type: 3}
   cashRegisterRing: {fileID: 8300000, guid: 81652031b64c342cc8dbc59c138d77c5, type: 3}
-  expFillSFX: {fileID: 0}
-  lvlUpSFX: {fileID: 0}
-  selectionSFX: {fileID: 0}
-  airWhistlSFX: {fileID: 0}
-  moneyDingSFX: {fileID: 0}
-  winSFX: {fileID: 0}
+  expFillSFX: {fileID: 8300000, guid: 89e6bc608da7b47d4914f3d9c2484e48, type: 3}
+  lvlUpSFX: {fileID: 8300000, guid: df729d213c4be44a9b55cd109f5cd4f9, type: 3}
+  selectionSFX: {fileID: 8300000, guid: 5039414d94a6e4e70a5ab9e8833e992a, type: 3}
+  airWhistlSFX: {fileID: 8300000, guid: 7478151cf36724a7dada558f746c3633, type: 3}
+  moneyDingSFX: {fileID: 8300000, guid: 52320e590bf774734a288886eba557ba, type: 3}
+  winSFX: {fileID: 8300000, guid: 35fbad8cdde724f11ba6481f1e64af71, type: 3}
 --- !u!82 &1015925983
 AudioSource:
   m_ObjectHideFlags: 0

@@ -390,6 +390,7 @@ public class GameBoard : MonoBehaviour
     public void GameResult()
     {
         SceneManager.LoadScene("Game Result");
+        AudioManager.Instance.AmbientMusic();
     }
 
     IEnumerator StartGameFX()

@@ -65,7 +65,11 @@ public class AudioManager : MonoBehaviour
         playerAudio.Play();
     }
 
-
+    public void AmbientMusic()
+    {
+        playerAudio.clip = ambientMusic;
+        playerAudio.Play();
+    }
     public void Mutebutton()
     {
         if(playerAudio.mute==false)
