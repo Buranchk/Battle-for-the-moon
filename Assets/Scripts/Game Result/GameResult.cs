@@ -60,6 +60,7 @@ public class GameResult : MonoBehaviour
         if(gameResult == 1)
         {
             print("u won");
+            AudioManager.Instance.MoneyDingSoundFX(); //Sound of adding money after match
             coinReward = 20;
             emeraldReward = 2;
             xpReward = 5;
@@ -82,6 +83,7 @@ public class GameResult : MonoBehaviour
         else
         {
             print("u lost");
+            AudioManager.Instance.MoneyDingSoundFX(); //Sound of adding money after match
             coinReward = 5;
             xpReward = 2;
             emeraldReward = 0;
@@ -99,7 +101,6 @@ public class GameResult : MonoBehaviour
                 break;
             }  
         }
-
         coinsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + coinReward.ToString());
         emeraldsRewards.GetComponent<TMPro.TextMeshProUGUI>().text = ("+ " + emeraldReward.ToString());
         FillXP(xpReward);
@@ -128,7 +129,7 @@ public class GameResult : MonoBehaviour
         }
         else
         {
-            
+            AudioManager.Instance.XPSoundFX(); //XP fill SFX
             LeanTween.value(XPSlider.gameObject, XPSlider.value, XPSlider.value + xp, 3.5f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
                 print(val);
                 updXP = val;
@@ -141,6 +142,7 @@ public class GameResult : MonoBehaviour
             }).setOnComplete(() => {
                 if(nextLevel)
                 {
+                    AudioManager.Instance.LVLupSFX(); //LVLup SFX
                     animatedPart.GetComponent<Animator>().Play(newLevelAnimation.name);
                     //lvlUpAnimation.Play(true);
                 }

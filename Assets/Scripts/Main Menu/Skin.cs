@@ -33,6 +33,7 @@ public class Skin : MonoBehaviour
                     if (available)
                     {
                         Select();
+                        AudioManager.Instance.SelectionSoundFX();
                     }
                     else if (!available)
                     {
@@ -154,6 +155,7 @@ public class Skin : MonoBehaviour
         GameObject MySelf = gameObject;
         LeanTween.move(MySelf, new Vector3(xPos, yPos, zPos), 0.4f).setEaseInOutQuint();
         LeanTween.scale(MySelf, new Vector2(allScale, allScale), 0.4f).setEaseInOutQuint();
+        AudioManager.Instance.AirWhistleSoundFX();
     }
 
 }

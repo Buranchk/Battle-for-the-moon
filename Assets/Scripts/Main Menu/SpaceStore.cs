@@ -65,6 +65,7 @@ public class SpaceStore : MonoBehaviour
             LeanTween.value(gameObject, UpdateGoldValue, DataMan.GetGold(), DataMan.GetGold() - goldPriceForLvlUp, 1.0f).setOnComplete(() =>
                 {
                     UpdateStats();
+                    FillXP();
                 }
             );
 
@@ -118,6 +119,7 @@ public class SpaceStore : MonoBehaviour
             particleCoins.Play();
 
             UpdateStats();
+            AudioManager.Instance.MoneyDingSoundFX();
         }
         else
         {
@@ -197,7 +199,6 @@ public class SpaceStore : MonoBehaviour
         price4.text = (moneyPriceForNoAds).ToString() + " $";
         price5.text = (moneyPriceForRuby).ToString() + " $";
 
-        FillXP();
         ShowEnergy();
     }
 
@@ -215,6 +216,7 @@ public class SpaceStore : MonoBehaviour
                 lvlSpace.GetComponent<TMPro.TextMeshProUGUI>().color = new Color (1.0f, 1.0f, 1.0f, 1.0f);
                 UpdateStats();
                 print("stats are updated");
+                AudioManager.Instance.LVLupSFX();
                 //animatedPart.GetComponent<Animator>().Play(newLevelAnimation.name);
                 //lvlUpAnimation.Play(true);
 
@@ -260,6 +262,7 @@ public class SpaceStore : MonoBehaviour
         }
         else
         {
+            AudioManager.Instance.XPSoundFX();
             float first = (DataMan.GetXP() - lvls[DataMan.GetLvl()]);
             float second = (lvls[DataMan.GetLvl() + 1] - lvls[DataMan.GetLvl()]);
 
