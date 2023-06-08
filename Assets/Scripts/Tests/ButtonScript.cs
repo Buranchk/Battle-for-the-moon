@@ -30,5 +30,6 @@ public class ButtonScript : MonoBehaviour
     public void OnMuteButton()
     {
         AudioManager.Instance.Mutebutton();
+        AudioMusic.Instance.Mutebutton();
     }
 }

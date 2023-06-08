@@ -43,9 +43,10 @@ public class AudioManager : MonoBehaviour
     {
         playerAudio = GetComponent<AudioSource>();
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();  
-        playerAudio.clip = ambientMusic;
+//        playerAudio.clip = ambientMusic;
         playerAudio.Play();
         playerAudio.mute = !DataMan.GetSound();
+        //playerAudio.volume=0.01f;
     }
 
   // Realization for AudioManager to initilize it when changig game scenes, and prevents it from duplication
@@ -66,25 +67,25 @@ public class AudioManager : MonoBehaviour
     }
 
     //Functions for changing audiotrack and playing music depending on scene
-    public void MainMenuMusic()
-    {
-        if(playerAudio.clip!=mainMenuMusic)
-        { 
-            playerAudio.clip = mainMenuMusic;
-            playerAudio.Play();
-        }
-    }
-    public void GameMusic()
-    {
-        playerAudio.clip = gameMusic;
-        playerAudio.Play();
-    }
+    // public void MainMenuMusic()
+    // {
+    //     if(playerAudio.clip!=mainMenuMusic)
+    //     { 
+    //         playerAudio.clip = mainMenuMusic;
+    //         playerAudio.Play();
+    //     }
+    // }
+    // public void GameMusic()
+    // {
+    //     playerAudio.clip = gameMusic;
+    //     playerAudio.Play();
+    // }
 
-    public void AmbientMusic()
-    {
-        playerAudio.clip = ambientMusic;
-        playerAudio.Play();
-    }
+    // public void AmbientMusic()
+    // {
+    //     playerAudio.clip = ambientMusic;
+    //     playerAudio.Play();
+    // }
 
     //Controls for mute button, depends on state saved in DataManager
     public void Mutebutton()

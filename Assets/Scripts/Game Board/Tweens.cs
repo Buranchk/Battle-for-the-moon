@@ -130,11 +130,19 @@ public class Tweens : MonoBehaviour
     public void SpinShuffle(GameObject shuffle)
     {
         Button shuffleButton = GameObject.Find("Shuffle").GetComponent<Button>(); 
+        
         shuffleButton.interactable = false;
+        
         LeanTween.rotateAroundLocal(shuffle, Vector3.forward, -180f, 0.3f).setEaseOutCirc().setOnComplete(() =>
         {
             shuffleButton.interactable = true;
         });
+    }
+
+    public void RoundButtonPress(GameObject button)
+    {
+        button.transform.localScale = Vector3.one * 0.5f;
+        LeanTween.scale(button, Vector3.one * 0.7f, 0.2f).setEaseOutQuad();
     }
 
 }

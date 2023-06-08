@@ -29,7 +29,7 @@ public class Timer : MonoBehaviour
         tween.AbortGame(AbortedGame);
         yield return new WaitForSeconds(1.5f);
         SceneManager.LoadScene("Main Menu");
-        AudioManager.Instance.MainMenuMusic();
+        AudioMusic.Instance.MainMenuMusic();
     }
 
     private void Update()
