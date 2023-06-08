@@ -64,6 +64,8 @@ public class GameBoard : MonoBehaviour
     public List<GameObject> enemyUnits = new List<GameObject>();
     public bool gameWin = true;
 
+    private bool crutchTurn;
+
     private DataManager DataMan;
 
     void Start()
@@ -235,6 +237,7 @@ public class GameBoard : MonoBehaviour
 
     public void SetFlagDecoy(GameObject Unit)
     {
+        AudioManager.Instance.FlagDecoyAppereance();
         if(gameStage == 1)
         {
             PermFlag = Unit;
@@ -372,6 +375,7 @@ public class GameBoard : MonoBehaviour
 
     void Shuffle(List<GameObject> a)
     {
+        AudioManager.Instance.ShuffleUnit();
         // Loop array
         for (int i = a.Count - 1; i > 0; i--)
         {
@@ -549,6 +553,7 @@ public class GameBoard : MonoBehaviour
 /* Unit functions */
     public void SelectUnit(GameObject newSelectedUnit)
     {
+        AudioManager.Instance.SelectionSoundFX();
         //newSelectedUnit.GetComponent<Unit>().highlight.SetActive(true);
         newSelectedUnit.GetComponent<Unit>().PlayOneShotAnimation("jump", 0.6f);
         if (selectedUnit != newSelectedUnit && selectedUnit != null)
@@ -614,6 +619,7 @@ public class GameBoard : MonoBehaviour
 
     IEnumerator UnitStep(int x, int y, int xe, int ye)
     {
+        AudioManager.Instance.AirWhistleSoundFX();
         turn = !turn;
         Unit unitScript = GetUnitObjectAt(xe, ye).GetComponent<Unit>();
         unitScript.TrailSwitch(true);
@@ -676,6 +682,7 @@ public class GameBoard : MonoBehaviour
 
     public void UnitFight()
     {
+        AudioManager.Instance.UnitFight();
         print("Units duel now");
         GameObject fUnitObj = GameObject.Find(fUnit.name); //f
         GameObject eUnitObj = GameObject.Find(eUnit.name); //e
@@ -713,18 +720,24 @@ public class GameBoard : MonoBehaviour
 
         if (eUnit.type == fUnit.type)
         {
+            AudioManager.Instance.UnitMatch();
             windowRPS.SetActive(true);
             frameRPS.Appear();
         }
 
         if(RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //e
         {
+            AudioManager.Instance.UnitDeath();
             frameRPS.RegularRPS();
             eUnit.isOpen = true;
             eUnit.ChangeType(eUnit.type);
             eUnit.movedOn = false;
-            if(turn)
+            if(turn){
                 turn = !turn;
+                crutchTurn = true;
+            }
+            else
+                crutchTurn = false;
             StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, false));
             //DestroyUnit(fUnitObj);
             //eUnit.highlight.SetActive(false);
@@ -733,12 +746,17 @@ public class GameBoard : MonoBehaviour
         }
         else if(!RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //f
         {
+            AudioManager.Instance.UnitDeath();
             frameRPS.RegularRPS();
             fUnit.isOpen = true;
             fUnit.ChangeType(fUnit.type);
             fUnit.movedOn = false;
-            if(turn)
+            if(turn){
                 turn = !turn;
+                crutchTurn = true;
+            } 
+            else
+                crutchTurn = false;
             StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, true));
             //DestroyUnit(eUnitObj);
             //fUnit.highlight.SetActive(false);
@@ -825,7 +843,6 @@ public class GameBoard : MonoBehaviour
 
     IEnumerator FightAnimation(GameObject unit1, GameObject unit2, float pos1X, float pos1Y, float pos2X, float pos2Y, bool win)
     {
-        //bool tempTurn = turn;
 
         Vector2 place = new Vector2(0, 15f);
         Vector2 fightPlace = new Vector2(((pos1X + pos2X)/2), ((pos1Y + pos2Y)/2));
@@ -852,9 +869,11 @@ public class GameBoard : MonoBehaviour
         print("BeforeTimePause");
         yield return new WaitForSeconds(0.6f);
         print("AfterTimePause");
+        DeselectUnit();
         DestroyUnit(unit2);
-
-        turn = !turn;
+        
+        if(!crutchTurn)
+            turn = !turn;
         if(!turn)
             StartCoroutine(EnemyTurn());
         yield return new WaitForSeconds(1f);
@@ -1094,6 +1113,7 @@ public class GameBoard : MonoBehaviour
 
     IEnumerator EnemyStep(int x, int y, GameObject movingUnit)
     {
+        AudioManager.Instance.AirWhistleSoundFX();
         movingUnit.GetComponent<EnemyAI>().TrailSwitch(true);
         GetTileAtPosition(new Vector2((int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y)).unitLinked = null;
         map[(int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y] = "empty";

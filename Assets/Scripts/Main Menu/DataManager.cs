@@ -14,6 +14,8 @@ public class DataManager : MonoBehaviour
 //OS path selection
 #if UNITY_ANDROID && !UNITY_EDITOR
         path = Path.Combine(Application.persistentDataPath, "Save.json");
+#elif UNITY_IOS
+        path = Path.Combine(Application.persistentDataPath, "Save.json");
 #else
         path = Path.Combine(Application.dataPath, "Save.json");
 #endif
@@ -47,6 +49,8 @@ public class DataManager : MonoBehaviour
     {
 #if UNITY_ANDROID && !UNITY_EDITOR
         File.WriteAllText(path, JsonUtility.ToJson(save));
+#elif UNITY_IOS
+        path = Path.Combine(Application.persistentDataPath, "Save.json");
 #endif
         File.WriteAllText(path, JsonUtility.ToJson(save));
     }
