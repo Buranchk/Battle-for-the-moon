@@ -24,7 +24,7 @@ public class AudioMusic : MonoBehaviour
         playerAudio.clip = ambientMusic;
         playerAudio.Play();
         playerAudio.mute = !DataMan.GetSound();
-        playerAudio.volume=0.35f;
+        playerAudio.volume = 0.35f;
     }
 
   // Realization for AudioManager to initilize it when changig game scenes, and prevents it from duplication

@@ -24,6 +24,12 @@ EditorBuildSettings:
     path: Assets/Scenes/Game Board.unity
     guid: 5cbb782042d3ada40bb71d33ac59c534
   - enabled: 1
+    path: Assets/Scenes/RoomConnection.unity
+    guid: 53456faff20548c4e803d1ed362fcee4
+  - enabled: 1
     path: Assets/Scenes/Game Result.unity
     guid: 584fb9daed93a3b48975b7fc1d3e6199
+  - enabled: 1
+    path: Assets/Scenes/Multiplayer Game Board.unity
+    guid: 5c8aa2cc1adec5b4a96584478b002b11
   m_configObjects: {}

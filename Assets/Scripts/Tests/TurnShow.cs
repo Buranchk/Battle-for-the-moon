@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TurnShow : MonoBehaviour
 {
-    public GameBoard GB;
+    public MultiplayerGameBoard GB;
 
 
     void Update()
