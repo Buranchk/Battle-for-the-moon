@@ -157,7 +157,8 @@ public class MultiplayerGameBoard : MonoBehaviour
                 matrix[x,y] = GetTileAtPosition(new Vector2(x,y)).unitLinked.GetComponent<MultiplayerUnit>().type; 
             }
         }
-        photonView.RPC("EnemySpawn", RpcTarget.Others, GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin(), matrix);
+        //, matrix
+        photonView.RPC("EnemySpawn", RpcTarget.Others, GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin());
         print("sent RPC prekols!!!!!!");
     }
 
@@ -271,8 +272,12 @@ public class MultiplayerGameBoard : MonoBehaviour
     //     return rotatedMatrix;
     // }
 
+
+    //, string[,] matrix
+
+    //enMult.ChangeType(matrix[width - x - 1, height - (height - y) - 1]);
     [PunRPC]
-    public void EnemySpawn(int skin, string[,] matrix)
+    public void EnemySpawn(int skin)
     {
         print("recive RPC prekols!!!!!!");
         switch (skin)
@@ -313,7 +318,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
                 enMult.SpawnAnimation();
 
-                enMult.ChangeType(matrix[width - x - 1, height - (height - y) - 1]);
+
                 
                 map[x, y] = "enemyUnit";
 
