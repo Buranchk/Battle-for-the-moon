@@ -338,7 +338,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
                 enMult.SpawnAnimation();
 
-                enMult.ChangeType(positionsArr[width - x - 1, height - (height - y) - 1]);
+                enMult.ChangeType(positionsArr[x,y]);
                 
                 map[x, y] = "enemyUnit";
 
