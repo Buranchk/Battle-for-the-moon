@@ -315,8 +315,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             break;
         }
 
-        
-        string [, ] positionsArr = ProcessArray(matrix, width, 2);
+        string[,] positionsArr = new string[width, 2];
+
+        positionsArr = ProcessArray(matrix, width, 2);
 
         for (int x = 0; x < width; x++) {
             for (int y = height - 2; y < height; y++) {
