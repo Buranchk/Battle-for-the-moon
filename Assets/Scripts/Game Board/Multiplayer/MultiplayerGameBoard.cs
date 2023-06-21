@@ -12,65 +12,67 @@ public class MultiplayerGameBoard : MonoBehaviour
 {
  //settings
     public int width, height;
-    [SerializeField] private Tile tilePrefab;
+    [SerializeField] private MultiplayerTile tilePrefab;
     [SerializeField] private Camera cam;
-    [SerializeField] private Unit spaceMan;
-    [SerializeField] private Unit XP;
-    [SerializeField] private Unit gold;
-    [SerializeField] private Unit ruby;
-    [SerializeField] private EnemyAI enemyPrefab;
-    
+    [SerializeField] private MultiplayerUnit spaceMan;
+    [SerializeField] private MultiplayerUnit XP;
+    [SerializeField] private MultiplayerUnit gold;
+    [SerializeField] private MultiplayerUnit ruby;
 
-    //in game stuff
-    //selectedUnit suggestSystem windowRPS
+
+    [SerializeField] private MultiplayerEUnit spaceManE;
+    [SerializeField] private MultiplayerEUnit XPE;
+    [SerializeField] private MultiplayerEUnit goldE;
+    [SerializeField] private MultiplayerEUnit rubyE;
+
+
+//In game Data process
+    private Unit gameVarUnit;
     public GameObject selectedUnit;
-    public EnemyAI eUnit;
-    public Unit fUnit;
+    public MultiplayerUnit eUnit;
+    public MultiplayerUnit fUnit;
     private string [ , ] map;
     public bool turn = false;
     public bool suggestSystem = false;
-    public GameObject explosion;
-    public ParticleSystem winParticles;
-    public ParticleSystem oopsParticles;
-    public GameObject windowRPS;
-    public GameObject buttonShuffle;
-    public GameObject arrowShuffle;
-    public GameObject buttonDone;
-    public GameObject decoyText;
-    public GameObject flagText;
-    public GameObject reshuffleText;
-    public GameObject startGameText;
-    public GameObject gradient;
-
-    public GameObject soundIcon;
-    public GameObject noSoundIcon;
-
-    public GameObject UnitDecoy;
-    public GameObject UnitFlag;
-    public RPSMatch frameRPS;
-    public Tweens tweens;
-    public Timer timer;
-
     public int gameStage = 0;
-
-    //private
-    private Unit gameVarUnit;
-    [SerializeField] private Sprite buttonDoneActive;
-    [SerializeField] private Sprite buttonDoneInactive;
-    private GameObject PermFlag = null;
-    private GameObject PermDecoy = null;
-    private bool DecoyAlive = true;
-    private Dictionary<Vector2, Tile> tiles;
+    private Dictionary<Vector2, MultiplayerTile> tiles;
     private GameObject lastSelectedUnit;
     public List<GameObject> units = new List<GameObject>();
     public List<GameObject> enemyUnits = new List<GameObject>();
     public bool gameWin = true;
 
-    private bool crutchTurn;
+//UI & Visuals
+    public RPSMatch frameRPS;
+    [SerializeField] private GameObject explosion;
+    [SerializeField] private ParticleSystem winParticles;
+    [SerializeField] private ParticleSystem oopsParticles;
+    public GameObject windowRPS;
+    [SerializeField] private GameObject buttonShuffle;
+    [SerializeField] private GameObject arrowShuffle;
+    [SerializeField] private GameObject buttonDone;
+    [SerializeField] private GameObject decoyText;
+    [SerializeField] private GameObject flagText;
+    [SerializeField] private GameObject reshuffleText;
+    [SerializeField] private GameObject startGameText;
+    [SerializeField] private GameObject gradient;
 
+    [SerializeField] private GameObject soundIcon;
+    [SerializeField] private GameObject noSoundIcon;
+
+    [SerializeField] private GameObject UnitDecoy;
+    [SerializeField] private GameObject UnitFlag;
+
+    [SerializeField] private Sprite buttonDoneActive;
+    [SerializeField] private Sprite buttonDoneInactive;
+    private GameObject PermFlag = null;
+    private GameObject PermDecoy = null;
+
+//Utility Items
     private DataManager DataMan;
-
+    public Tweens tweens;
     private PhotonView photonView;
+    public Timer timer;
+
 
     void Start()
     {
@@ -87,6 +89,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     private void Update()
     {
+        //Should use different shit here, maybe... someday.....
         //Deselect Unit
         if (Input.GetMouseButtonDown(0))
             if(selectedUnit != null)
@@ -94,14 +97,12 @@ public class MultiplayerGameBoard : MonoBehaviour
                 {
                     DeselectUnit();
                 }
-//Should use different shit here, maybe... someday.....
     }
-
 
 /* Start */
     void GenerateGrid() 
     {
-        tiles = new Dictionary<Vector2, Tile>();
+        tiles = new Dictionary<Vector2, MultiplayerTile>();
         
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -121,74 +122,10 @@ public class MultiplayerGameBoard : MonoBehaviour
         cam.orthographicSize = ((width > height * cam.aspect) ? (float)width + 1 / (float)cam.pixelWidth * cam.pixelHeight : height + 1) / 2;
     }
 
-    public void SpawnEnemies()
-    {
-        // fix this later, i shuffle shit in here
-        int x = 0;
-        for (x = 0; x < width; x++) {
-            for (int y = height - 2; y < height; y++) {
-                var spawnedUnit = Instantiate(enemyPrefab, new Vector2(x, y), Quaternion.identity, transform);
-
-                spawnedUnit.name = $"Enemy {x} {y}";
-
-                spawnedUnit.Init();
-
-                GameObject newEnemy = GameObject.Find($"Enemy {x} {y}");
-
-                //enemyUnits.Add(GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Enemy {x} {y}")); 
-                enemyUnits.Add(newEnemy);
-
-                GetTileAtPosition(new Vector2(x, y)).unitLinked = newEnemy;
-
-                //LeanTween.alpha(newEnemy, 1, 0.75f).setEaseOutBack();
-                newEnemy.GetComponent<EnemyAI>().SpawnAnimation();
-                
-                map[x, y] = "enemyUnit";
-            }
-        }
-        EnemyFlagDecoy();
-        Shuffle(enemyUnits);
-        int temp = 0;
-        x = 0;
-        int[] types = {enemyUnits.Count / 3 + enemyUnits.Count % 3, enemyUnits.Count / 3, enemyUnits.Count / 3};
-        for (int i = 0; i < 3; i++)
-        {
-            temp += types[i];
-            for (; x < temp; x++)
-            {
-                if (i == 0)
-                    enemyUnits[x].GetComponent<EnemyAI>().ChangeType("rock");
-                if (i == 1)
-                    enemyUnits[x].GetComponent<EnemyAI>().ChangeType("paper");
-                if (i == 2)
-                    enemyUnits[x].GetComponent<EnemyAI>().ChangeType("scissors");
-            }
-        }
-        turn = true;
-    }
-
-    public void EnemyFlagDecoy()
-    {
-        int rndF = UnityEngine.Random.Range(0, width - 1);
-        enemyUnits.Remove(GetTileAtPosition(new Vector2(rndF, height-1)).unitLinked);
-        GetUnitObjectAt(rndF, height - 1).GetComponent<EnemyAI>().type = "flag";
-        int rndD = UnityEngine.Random.Range(0, width-1);
-        if (rndD == rndF)
-        {
-            if(rndD == width-1)
-                rndD -= 1;
-            else
-                rndD += 1;
-        }
-        enemyUnits.Remove(GetTileAtPosition(new Vector2(rndD, height-1)).unitLinked);
-        GetUnitObjectAt(rndD, height-1).GetComponent<EnemyAI>().type = "decoy";
-    }
-
     IEnumerator SpawnUnits()
     {
-        //Setup the right unit prefab from the DataManager!!!!!
+        
         SelectUnitSkin();
-        //Unit map
         map = new string [width, height];
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
@@ -202,13 +139,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
                 spawnedUnit.Init();
 
-                //units.Add(GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Unit {x} {y}"));
-
-                //GameObject.Find($"Tile {x} {y}").GetComponent<Tile>().unitLinked = GameObject.Find($"Unit {x} {y}");
-
                 units.Add(GetTileAtPosition(new Vector2(x, y)).unitLinked = GameObject.Find($"Unit {x} {y}"));
-
-                //GetTileAtPosition(new Vector2(x, y)).unitLinked = GetUnitObjectAt(x, y);
 
                 map[x, y] = "myUnit";
                 
@@ -216,6 +147,17 @@ public class MultiplayerGameBoard : MonoBehaviour
             }
         }
         NewStage();
+    }
+
+    public void SendSpawnedUnits()
+    {
+        List<string> spawnedUnits = new List<string>();
+
+        for (int i = 0; i < units.Count; i++)
+        {
+            spawnedUnits[i] = units[i].GetComponent<MultiplayerUnit>().type; 
+        }
+        //Pun RPS - send spawnedUnits list and edit it on the place
     }
 
     private void SelectUnitSkin()
@@ -310,6 +252,76 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
     }
 
+    public static string[,] RotateMatrix180(string[,] matrix)
+    {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
+
+        string[,] rotatedMatrix = new string[rows, cols];
+
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                rotatedMatrix[i, j] = matrix[rows - i - 1, cols - j - 1];
+            }
+        }
+
+        return rotatedMatrix;
+    }
+
+    [PunRPC]
+    public void EnemySpawn(int skin, List<string> spawnedUnits)
+    {
+        switch (skin)
+        {
+            case 0:
+            eUnit = spaceMan;
+            break;
+
+            case 1:
+            eUnit = XP;
+            break;
+
+            case 2:
+            eUnit = gold;
+            break;
+
+            case 3:
+            eUnit = ruby;
+            break;
+        }
+
+        int x = 0;
+        for (x = 0; x < width; x++) {
+            for (int y = height - 2; y < height; y++) {
+
+                RotateMatrix180(spawnedUnits());
+
+                var spawnedUnit = Instantiate(eUnit, new Vector2(x, y), Quaternion.identity, transform);
+
+                spawnedUnit.name = $"Enemy {x} {y}";
+
+                spawnedUnit.Init();
+
+                GameObject newEnemy = GameObject.Find($"Enemy {x} {y}");
+
+                enemyUnits.Add(newEnemy);
+
+                GetTileAtPosition(new Vector2(x, y)).unitLinked = newEnemy;
+
+                EnemyMultiplayer enMult = newEnemy.GetComponent<EnemyMultiplayer>();
+
+                enMult.SpawnAnimation();
+
+                //enMult.ChangeType( );
+                
+                map[x, y] = "enemyUnit";
+
+            }
+        }
+
+    }
 
 /* UI related functions */
     public void SoundSwitch()
@@ -409,7 +421,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         LeanTween.scale(startGameText, new Vector3(30.3f, 0.3f, 30.3f), 0.2f);
         LeanTween.alpha(startGameText, 0f, 0.2f);
 
-        SpawnEnemies();
         yield return new WaitForSeconds(0.2f);
         startGameText.SetActive(false);
     }
@@ -428,22 +439,15 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     IEnumerator MakeTileVisible(Vector2 tilePos)
     {
-        Tile tile;
+        MultiplayerTile tile;
         tile = GetTileAtPosition(tilePos);
         tile.MakeTileVisible();
         yield return new WaitForSeconds(0.05f);
-
-        // for(float opacity = 0; opacity <= 1; opacity += 0.05f)
-        // {
-        //     tile = GetTileAtPosition(tilePos);
-        //     tile.setAlpha(opacity);
-        //     yield return new WaitForSeconds(0.05f);
-        // }
     }
 
 
 /* Usage functions */
-    public Tile GetTileAtPosition(Vector2 pos) 
+    public MultiplayerTile GetTileAtPosition(Vector2 pos) 
     {
         if (tiles.TryGetValue(pos, out var tile)) return tile;
         return null;
@@ -454,9 +458,9 @@ public class MultiplayerGameBoard : MonoBehaviour
         return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<Unit>();
     }
     
-    public EnemyAI GetEnemyAtPosition(int x, int y)
+    public EnemyMultiplayer GetEnemyAtPosition(int x, int y)
     {
-        return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<EnemyAI>();
+        return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<EnemyMultiplayer>();
     }
 
     public GameObject GetUnitObjectAt (int x, int y)
@@ -598,7 +602,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             {
                 GetTileAtPosition(new Vector2(x, y)).TileHighlight(selectedUnit, isActiveSelection);
             }
-            else if (map[x, y] == "enemyUnit") // fix here
+            else if (map[x, y] == "enemyUnit")
             {
                 GetEnemyAtPosition(x, y).movedOn = isActiveSelection;
                 GetEnemyAtPosition(x, y).highlightFX(isActiveSelection);
@@ -613,12 +617,14 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     IEnumerator UnitStep(int x, int y, int xe, int ye)
     {
+        //Make PUNCall of UnitStepEnemy
+
         AudioManager.Instance.AirWhistleSoundFX();
         turn = !turn;
         Unit unitScript = GetUnitObjectAt(xe, ye).GetComponent<Unit>();
         unitScript.TrailSwitch(true);
         //Unit link to a new Tile
-        GetTileAtPosition(new Vector2 (x, y)).GetComponent<Tile>().unitLinked = selectedUnit;
+        GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked = selectedUnit;
 
         //Selected Unit = null, SuggestMoves(false)
         DeselectUnit();
@@ -628,13 +634,13 @@ public class MultiplayerGameBoard : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
 
         //delete old Unit link
-        GetTileAtPosition(new Vector2 (xe, ye)).GetComponent<Tile>().unitLinked = null;
+        GetTileAtPosition(new Vector2 (xe, ye)).GetComponent<MultiplayerTile>().unitLinked = null;
 
         //Map Update
         map[x, y] = (string)map[xe, ye];
         map[xe, ye] = "empty";
 
-        print(GetTileAtPosition(new Vector2 (x, y)).GetComponent<Tile>().unitLinked.name + " makes a step");
+        print(GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked.name + " makes a step");
 
         //switch the turn
         yield return new WaitForSeconds(0.15f);
@@ -687,7 +693,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         {
             print("Enemy Flag is fucked");
             DestroyUnit(eUnitObj);
-            //fUnit.highlight.SetActive(false);
             gameWin = true;
             NewStage();
         }
@@ -696,15 +701,12 @@ public class MultiplayerGameBoard : MonoBehaviour
         {
             print("Friendly Flag is fucked");
             DestroyUnit(fUnitObj);
-            //eUnit.highlight.SetActive(false);
             gameWin = false;
             NewStage();
         }
 
         if(eUnit.type == "decoy" || fUnit.type == "decoy")
         {
-            //fUnit.highlight.SetActive(false);
-            //eUnit.highlight.SetActive(false);
             DestroyUnit(fUnitObj);
             DestroyUnit(eUnitObj);
             turn = !turn;
@@ -728,15 +730,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             eUnit.movedOn = false;
             if(turn){
                 turn = !turn;
-                crutchTurn = true;
             }
             else
-                crutchTurn = false;
             StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, false));
-            //DestroyUnit(fUnitObj);
-            //eUnit.highlight.SetActive(false);
-            // if(!turn)
-            //     StartCoroutine(EnemyTurn());
         }
         else if(!RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //f
         {
@@ -747,24 +743,17 @@ public class MultiplayerGameBoard : MonoBehaviour
             fUnit.movedOn = false;
             if(turn){
                 turn = !turn;
-                crutchTurn = true;
             } 
             else
-                crutchTurn = false;
             StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, true));
-            //DestroyUnit(eUnitObj);
-            //fUnit.highlight.SetActive(false);
-            // if(!turn)
-            //     StartCoroutine(EnemyTurn());
-
         }
 
     }
 
     public void AttackEnemy(GameObject UnitOn)
     {
-        eUnit = UnitOn.GetComponent<EnemyAI>(); //e
-        fUnit = selectedUnit.GetComponent<Unit>(); //f
+        eUnit = UnitOn.GetComponent<MultiplayerUnit>(); //e
+        fUnit = selectedUnit.GetComponent<MultiplayerUnit>(); //f
 
         print(fUnit.name + " is attacking " + eUnit.name);
         
@@ -789,7 +778,6 @@ public class MultiplayerGameBoard : MonoBehaviour
                 break;
 
                 case "decoy":
-                DecoyAlive = false;
                 win = true;
                 break;
 
@@ -808,7 +796,6 @@ public class MultiplayerGameBoard : MonoBehaviour
                 break;
 
                 case "decoy":
-                DecoyAlive = false;
                 win = true;
                 break;
             }
@@ -826,7 +813,6 @@ public class MultiplayerGameBoard : MonoBehaviour
                 break;
 
                 case "decoy":
-                DecoyAlive = false;
                 win = true;
                 break;
             }
@@ -866,10 +852,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         DeselectUnit();
         DestroyUnit(unit2);
         
-        if(!crutchTurn)
-            turn = !turn;
-        if(!turn)
-            EnemyTurn();
         yield return new WaitForSeconds(1f);
         oopsParticles.gameObject.transform.position = place;
         winParticles.gameObject.transform.position = place;
@@ -881,7 +863,6 @@ public class MultiplayerGameBoard : MonoBehaviour
     {
         frameRPS.Match();
         windowRPS.SetActive(false);
-        //movedFromUnit.GetComponent<Unit>().isOpen = true;
         fUnit.ChangeType("rock");
         EnemyPickTurn();
     }
@@ -922,6 +903,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         // Request 
         photonView.RPC("SendData", RpcTarget.OthersBuffered);
     }
+
     [PunRPC]
     public void SendData()
     {
@@ -953,4 +935,5 @@ public class MultiplayerGameBoard : MonoBehaviour
     {
         return (photonView.IsMine);
     }
+
 }
