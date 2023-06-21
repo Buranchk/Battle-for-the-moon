@@ -254,29 +254,23 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
     }
 
-    // public static string[,] RotateMatrix180(string[,] matrix)
-    // {
-    //     int rows = matrix.GetLength(0);
-    //     int cols = matrix.GetLength(1);
+    public static string[,] RotateMatrix180(string[,] matrix)
+    {
+        int rows = matrix.GetLength(0);
+        int cols = matrix.GetLength(1);
 
-    //     string[,] rotatedMatrix = new string[rows, cols];
+        string[,] rotatedMatrix = new string[rows, cols];
 
-    //     for (int i = 0; i < rows; i++)
-    //     {
-    //         for (int j = 0; j < cols; j++)
-    //         {
-    //             rotatedMatrix[i, j] = matrix[rows - i - 1, cols - j - 1];
-    //         }
-    //     }
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                rotatedMatrix[i, j] = matrix[rows - i - 1, cols - j - 1];
+            }
+        }
 
-    //     return rotatedMatrix;
-    // }
-
-
-    //, string[,] matrix
-
-    //
-
+        return rotatedMatrix;
+    }
 
 
     public string[,] ProcessArray(string[] flatArray, int rows, int cols)
@@ -317,7 +311,8 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         string[,] positionsArr = new string[width, 2];
 
-        positionsArr = ProcessArray(matrix, width, 2);
+        positionsArr = RotateMatrix180(ProcessArray(matrix, width, 2));
+
 
         for (int x = 0; x < width; x++) {
             for (int y = height - 2; y < height; y++) {
