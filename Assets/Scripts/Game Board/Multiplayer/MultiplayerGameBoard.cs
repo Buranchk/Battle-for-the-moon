@@ -157,7 +157,7 @@ public class MultiplayerGameBoard : MonoBehaviour
                 matrix[x,y] = GetTileAtPosition(new Vector2(x,y)).unitLinked.GetComponent<MultiplayerUnit>().type; 
             }
         }
-        photonView.RPC("EnemySpawn", RpcTarget.Others, GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin(), matrix);
+        photonView.RPC("EnemySpawn", RpcTarget.Others, 1, matrix);
         print("sent RPC prekols!!!!!!");
     }
 
