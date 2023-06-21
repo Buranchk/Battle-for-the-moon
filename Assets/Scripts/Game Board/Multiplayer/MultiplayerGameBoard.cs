@@ -151,12 +151,13 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void SendSpawnedUnits()
     {
-        List<string> spawnedUnits = new List<string>();
-
-        for (int i = 0; i < units.Count; i++)
-        {
-            spawnedUnits[i] = units[i].GetComponent<MultiplayerUnit>().type; 
+        string[,] matrix = new string[width, 2];
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < 2; y++) {
+                matrix[x,y] = GetTileAtPosition(new Vector2(x,y)).unitLinked.GetComponent<MultiplayerUnit>().type; 
+            }
         }
+        photonView.RPC("EnemySpawn", RpcTarget.Others, GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin(), matrix);
         //Pun RPS - send spawnedUnits list and edit it on the place
     }
 
@@ -252,26 +253,26 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
     }
 
-    public static string[,] RotateMatrix180(string[,] matrix)
-    {
-        int rows = matrix.GetLength(0);
-        int cols = matrix.GetLength(1);
+    // public static string[,] RotateMatrix180(string[,] matrix)
+    // {
+    //     int rows = matrix.GetLength(0);
+    //     int cols = matrix.GetLength(1);
 
-        string[,] rotatedMatrix = new string[rows, cols];
+    //     string[,] rotatedMatrix = new string[rows, cols];
 
-        for (int i = 0; i < rows; i++)
-        {
-            for (int j = 0; j < cols; j++)
-            {
-                rotatedMatrix[i, j] = matrix[rows - i - 1, cols - j - 1];
-            }
-        }
+    //     for (int i = 0; i < rows; i++)
+    //     {
+    //         for (int j = 0; j < cols; j++)
+    //         {
+    //             rotatedMatrix[i, j] = matrix[rows - i - 1, cols - j - 1];
+    //         }
+    //     }
 
-        return rotatedMatrix;
-    }
+    //     return rotatedMatrix;
+    // }
 
     [PunRPC]
-    public void EnemySpawn(int skin, List<string> spawnedUnits)
+    public void EnemySpawn(int skin, string[,] matrix)
     {
         switch (skin)
         {
@@ -292,11 +293,8 @@ public class MultiplayerGameBoard : MonoBehaviour
             break;
         }
 
-        int x = 0;
-        for (x = 0; x < width; x++) {
+        for (int x = 0; x < width; x++) {
             for (int y = height - 2; y < height; y++) {
-
-                RotateMatrix180(spawnedUnits());
 
                 var spawnedUnit = Instantiate(eUnit, new Vector2(x, y), Quaternion.identity, transform);
 
@@ -314,7 +312,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
                 enMult.SpawnAnimation();
 
-                //enMult.ChangeType( );
+                enMult.ChangeType(matrix[width - x - 1, height - (height - y) - 1]);
                 
                 map[x, y] = "enemyUnit";
 
@@ -504,7 +502,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             reshuffleText.SetActive(true);
             tweens.AppearScale(reshuffleText);
             tweens.AppearScale(arrowShuffle);
-
+            
             buttonShuffle.SetActive(true);
             UnitRandomize();
             setDoneActive();
@@ -513,6 +511,8 @@ public class MultiplayerGameBoard : MonoBehaviour
             break;
 
             case 4:
+            SendSpawnedUnits();
+            
             reshuffleText.SetActive(false);
             buttonShuffle.SetActive(false);
             buttonDone.SetActive(false);
