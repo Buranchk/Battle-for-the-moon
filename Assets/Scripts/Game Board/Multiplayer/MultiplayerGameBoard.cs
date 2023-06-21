@@ -151,14 +151,14 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void SendSpawnedUnits()
     {
-        string[,] matrix = new string[width, 2];
+        string[] matrix = new string[width * 2];
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < 2; y++) {
-                matrix[x,y] = GetTileAtPosition(new Vector2(x,y)).unitLinked.GetComponent<MultiplayerUnit>().type; 
+                matrix[x * 2 + y] = GetTileAtPosition(new Vector2(x,y)).unitLinked.GetComponent<MultiplayerUnit>().type;
+  
             }
         }
-        //, matrix
-        photonView.RPC("EnemySpawn", RpcTarget.Others, GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin());
+        photonView.RPC("EnemySpawn", RpcTarget.Others, GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin(), matrix);
         print("sent RPC prekols!!!!!!");
     }
 
@@ -275,9 +275,25 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     //, string[,] matrix
 
-    //enMult.ChangeType(matrix[width - x - 1, height - (height - y) - 1]);
+    //
+
+
+
+    public string[,] ProcessArray(string[] flatArray, int rows, int cols)
+    {
+        string[,] receivedArray = new string[rows, cols];
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < cols; j++)
+            {
+                receivedArray[i, j] = flatArray[i * cols + j];
+            }
+        }
+        return receivedArray;
+    }
+
     [PunRPC]
-    public void EnemySpawn(int skin)
+    public void EnemySpawn(int skin, string[] matrix)
     {
         print("recive RPC prekols!!!!!!");
         switch (skin)
@@ -299,6 +315,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             break;
         }
 
+        
+        string [, ] positionsArr = ProcessArray(matrix, width, 2);
+
         for (int x = 0; x < width; x++) {
             for (int y = height - 2; y < height; y++) {
 
@@ -318,7 +337,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
                 enMult.SpawnAnimation();
 
-
+                enMult.ChangeType(positionsArr[width - x - 1, height - (height - y) - 1]);
                 
                 map[x, y] = "enemyUnit";
 
