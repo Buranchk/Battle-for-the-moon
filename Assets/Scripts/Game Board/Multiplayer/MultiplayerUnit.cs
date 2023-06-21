@@ -217,7 +217,7 @@ public class MultiplayerUnit : MonoBehaviour
     MultiplayerGameBoard GetGameBoard()
     {
         if (Board == null)
-            Board = GameObject.Find("Game Board").GetComponent<MultiplayerGameBoard>();
+            Board = GameObject.Find("Multiplayer Game Board").GetComponent<MultiplayerGameBoard>();
         return Board;
     }
 

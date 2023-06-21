@@ -4,12 +4,11 @@ using UnityEngine;
 
 public class MultiplayerTile : MonoBehaviour
 {
-
     //settings
     public Color baseColor, offsetColor;
     [SerializeField] private SpriteRenderer tileRenderer;
     public GameObject highlight;
-    private GameBoard Board;
+    private MultiplayerGameBoard Board;
 
 
     //condition
@@ -70,10 +69,10 @@ public class MultiplayerTile : MonoBehaviour
             highlight.SetActive(false);
     }
 
-    GameBoard GetGameBoard()
+    MultiplayerGameBoard GetGameBoard()
     {
         if (Board == null)
-            Board = GameObject.Find("Game Board").GetComponent<GameBoard>();
+            Board = GameObject.Find("Multiplayer Game Board").GetComponent<MultiplayerGameBoard>();
         return Board;
     }
 

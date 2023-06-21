@@ -209,6 +209,49 @@ public class MultiplayerEUnit : MonoBehaviour
 
     //Unit highlight exit
 
+    public void highlightFX(bool state)
+    {
+        if(state)
+        {
+            if(isOpen)
+            {
+                switch (type)
+                {
+                    case "rock":
+                        //skeletonAnimation.Skeleton.SetSkin(rockOpen_outline);
+                        skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+                        break;
+
+                    case "paper":
+                        //skeletonAnimation.Skeleton.SetSkin(paperOpen_outline);
+                        skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+                        break;
+
+                    case "scissors":
+                        //skeletonAnimation.Skeleton.SetSkin(scissorsOpen_outline);
+                        skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+                        break;
+
+                    default:
+                        //skeletonAnimation.Skeleton.SetSkin(hidden);
+                        skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+                        break;
+                }
+            }
+            else if (!isOpen)
+            {
+                //skeletonAnimation.Skeleton.SetSkin(outlined);
+                skeletonAnimation.Skeleton.SetSlotsToSetupPose();
+            }
+            skeletonAnimation.AnimationState.SetAnimation(0, "aggressive", true);
+        }
+        else
+        {
+            ChangeType(type);
+            skeletonAnimation.AnimationState.SetAnimation(0, "animation", true);
+        }
+    }
+
     void OnMouseExit()
     {
         isOverTheUnit = false;

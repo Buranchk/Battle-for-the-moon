@@ -301,8 +301,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 933376157}
-        m_TargetAssemblyTypeName: GameBoard, Assembly-CSharp
+      - m_Target: {fileID: 1831445207}
+        m_TargetAssemblyTypeName: MultiplayerGameBoard, Assembly-CSharp
         m_MethodName: pickPaper
         m_Mode: 1
         m_Arguments:
@@ -6371,8 +6371,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 933376157}
-        m_TargetAssemblyTypeName: GameBoard, Assembly-CSharp
+      - m_Target: {fileID: 1831445207}
+        m_TargetAssemblyTypeName: MultiplayerGameBoard, Assembly-CSharp
         m_MethodName: pickScissors
         m_Mode: 1
         m_Arguments:
@@ -6619,8 +6619,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 933376157}
-        m_TargetAssemblyTypeName: GameBoard, Assembly-CSharp
+      - m_Target: {fileID: 1831445207}
+        m_TargetAssemblyTypeName: MultiplayerGameBoard, Assembly-CSharp
         m_MethodName: pickRock
         m_Mode: 1
         m_Arguments:
@@ -12031,8 +12031,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 933376157}
-        m_TargetAssemblyTypeName: GameBoard, Assembly-CSharp
+      - m_Target: {fileID: 1831445207}
+        m_TargetAssemblyTypeName: MultiplayerGameBoard, Assembly-CSharp
         m_MethodName: NewStage
         m_Mode: 1
         m_Arguments:
@@ -12854,8 +12854,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 933376157}
-        m_TargetAssemblyTypeName: GameBoard, Assembly-CSharp
+      - m_Target: {fileID: 1831445207}
+        m_TargetAssemblyTypeName: MultiplayerGameBoard, Assembly-CSharp
         m_MethodName: SoundSwitch
         m_Mode: 1
         m_Arguments:
@@ -14347,8 +14347,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 933376157}
-        m_TargetAssemblyTypeName: GameBoard, Assembly-CSharp
+      - m_Target: {fileID: 1831445207}
+        m_TargetAssemblyTypeName: MultiplayerGameBoard, Assembly-CSharp
         m_MethodName: UnitRandomize
         m_Mode: 1
         m_Arguments:
@@ -15083,45 +15083,48 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5c2da076a3fa4a445875cf18e0cb385a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 0
-  height: 0
-  tilePrefab: {fileID: 0}
-  cam: {fileID: 0}
-  spaceMan: {fileID: 0}
-  XP: {fileID: 0}
-  gold: {fileID: 0}
-  ruby: {fileID: 0}
-  enemyPrefab: {fileID: 0}
+  width: 7
+  height: 6
+  tilePrefab: {fileID: 1565016879827110287, guid: 88be2b28ce760a1449652c66eca098a2, type: 3}
+  cam: {fileID: 865350288}
+  spaceMan: {fileID: 8189628973564321920, guid: b2090b7a031b8b845a8ac2abdd6bac3a, type: 3}
+  XP: {fileID: 5736963221920638844, guid: 23317e692b9e2714b8969195431bdb40, type: 3}
+  gold: {fileID: 6392766170648459681, guid: 483490109b5927b4b8ca3e445cf80d17, type: 3}
+  ruby: {fileID: 2062009573419886675, guid: b905f31807495654e8aceb93ce58e4f9, type: 3}
+  spaceManE: {fileID: 4090665182927360150, guid: da8398e4a9e309f4ab54cfa687b12a48, type: 3}
+  XPE: {fileID: 5224914915519043613, guid: 3d38954060ac4b54d86dd896046c9a73, type: 3}
+  goldE: {fileID: 1877672188916874814, guid: 4a0a6a9a2be43e044b88762c0539c160, type: 3}
+  rubyE: {fileID: 7103979279790970316, guid: 4ace84de362aa3e48af9e895eabca3a1, type: 3}
   selectedUnit: {fileID: 0}
   eUnit: {fileID: 0}
   fUnit: {fileID: 0}
   turn: 0
   suggestSystem: 0
-  explosion: {fileID: 0}
-  winParticles: {fileID: 0}
-  oopsParticles: {fileID: 0}
-  windowRPS: {fileID: 0}
-  buttonShuffle: {fileID: 0}
-  arrowShuffle: {fileID: 0}
-  buttonDone: {fileID: 0}
-  decoyText: {fileID: 0}
-  flagText: {fileID: 0}
-  reshuffleText: {fileID: 0}
-  startGameText: {fileID: 0}
-  gradient: {fileID: 0}
-  soundIcon: {fileID: 0}
-  noSoundIcon: {fileID: 0}
-  UnitDecoy: {fileID: 0}
-  UnitFlag: {fileID: 0}
-  frameRPS: {fileID: 0}
-  tweens: {fileID: 0}
-  timer: {fileID: 0}
   gameStage: 0
-  buttonDoneActive: {fileID: 0}
-  buttonDoneInactive: {fileID: 0}
   units: []
   enemyUnits: []
-  gameWin: 1
+  gameWin: 0
+  frameRPS: {fileID: 1507716280}
+  explosion: {fileID: 0}
+  winParticles: {fileID: 708196057}
+  oopsParticles: {fileID: 237131361}
+  windowRPS: {fileID: 750330715}
+  buttonShuffle: {fileID: 1462820411}
+  arrowShuffle: {fileID: 285471145}
+  buttonDone: {fileID: 817173429}
+  decoyText: {fileID: 997198285}
+  flagText: {fileID: 848695645}
+  reshuffleText: {fileID: 352480043}
+  startGameText: {fileID: 1686035617}
+  gradient: {fileID: 942456248}
+  soundIcon: {fileID: 1645521292}
+  noSoundIcon: {fileID: 1107077517}
+  UnitDecoy: {fileID: 1446119658}
+  UnitFlag: {fileID: 963574535}
+  buttonDoneActive: {fileID: 21300000, guid: 6aed7ff1d81415b4f8d29b222a4365a6, type: 3}
+  buttonDoneInactive: {fileID: 21300000, guid: c12b66a6ff2518149ab3bad048337159, type: 3}
+  tweens: {fileID: 1393290597}
+  timer: {fileID: 63470580}
 --- !u!1 &1832501675
 GameObject:
   m_ObjectHideFlags: 0

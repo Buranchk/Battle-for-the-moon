@@ -27,9 +27,9 @@ public class MultiplayerGameBoard : MonoBehaviour
 
 
 //In game Data process
-    private Unit gameVarUnit;
+    private MultiplayerUnit gameVarUnit;
     public GameObject selectedUnit;
-    public MultiplayerUnit eUnit;
+    public MultiplayerEUnit eUnit;
     public MultiplayerUnit fUnit;
     private string [ , ] map;
     public bool turn = false;
@@ -93,7 +93,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         //Deselect Unit
         if (Input.GetMouseButtonDown(0))
             if(selectedUnit != null)
-                if(!selectedUnit.GetComponent<Unit>().isOverTheUnit)
+                if(!selectedUnit.GetComponent<MultiplayerUnit>().isOverTheUnit)
                 {
                     DeselectUnit();
                 }
@@ -158,7 +158,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             }
         }
         photonView.RPC("EnemySpawn", RpcTarget.Others, GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin(), matrix);
-        //Pun RPS - send spawnedUnits list and edit it on the place
+        print("sent RPC prekols!!!!!!");
     }
 
     private void SelectUnitSkin()
@@ -191,7 +191,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             PermFlag = Unit;
             Vector2 flagPos = Unit.transform.position;
             GameObject.Find("Flag").transform.position = flagPos;
-            SelectUnselectUnit(Unit.GetComponent<Unit>(), true);
+            SelectUnselectUnit(Unit.GetComponent<MultiplayerUnit>(), true);
             setDoneActive();
         } 
         
@@ -202,13 +202,13 @@ public class MultiplayerGameBoard : MonoBehaviour
                 PermDecoy = Unit;
                 Vector2 decayPos = Unit.transform.position;
                 GameObject.Find("Decoy").transform.position = decayPos;
-                SelectUnselectUnit(Unit.GetComponent<Unit>(), false);
+                SelectUnselectUnit(Unit.GetComponent<MultiplayerUnit>(), false);
                 setDoneActive();
             }
         }
     }
 
-    private void SelectUnselectUnit(Unit unit, bool isFlag)
+    private void SelectUnselectUnit(MultiplayerUnit unit, bool isFlag)
     {
         if(gameVarUnit == null)
         {
@@ -274,22 +274,23 @@ public class MultiplayerGameBoard : MonoBehaviour
     [PunRPC]
     public void EnemySpawn(int skin, string[,] matrix)
     {
+        print("recive RPC prekols!!!!!!");
         switch (skin)
         {
             case 0:
-            eUnit = spaceMan;
+            eUnit = spaceManE;
             break;
 
             case 1:
-            eUnit = XP;
+            eUnit = XPE;
             break;
 
             case 2:
-            eUnit = gold;
+            eUnit = goldE;
             break;
 
             case 3:
-            eUnit = ruby;
+            eUnit = rubyE;
             break;
         }
 
@@ -308,7 +309,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
                 GetTileAtPosition(new Vector2(x, y)).unitLinked = newEnemy;
 
-                EnemyMultiplayer enMult = newEnemy.GetComponent<EnemyMultiplayer>();
+                MultiplayerEUnit enMult = newEnemy.GetComponent<MultiplayerEUnit>();
 
                 enMult.SpawnAnimation();
 
@@ -359,11 +360,11 @@ public class MultiplayerGameBoard : MonoBehaviour
             for (; x < temp; x++)
             {
                 if (i == 0)
-                    units[x].GetComponent<Unit>().ChangeType("rock");
+                    units[x].GetComponent<MultiplayerUnit>().ChangeType("rock");
                 if (i == 1)
-                    units[x].GetComponent<Unit>().ChangeType("paper");
+                    units[x].GetComponent<MultiplayerUnit>().ChangeType("paper");
                 if (i == 2)
-                    units[x].GetComponent<Unit>().ChangeType("scissors");
+                    units[x].GetComponent<MultiplayerUnit>().ChangeType("scissors");
             }
         }
     }
@@ -372,7 +373,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     {
         foreach (GameObject obj in units)
         {
-            obj.GetComponent<Unit>().ChangeType("outline");
+            obj.GetComponent<MultiplayerUnit>().ChangeType("outline");
         }
         
     }
@@ -451,14 +452,14 @@ public class MultiplayerGameBoard : MonoBehaviour
         return null;
     }
 
-    public Unit GetUnitAtPosition(int x, int y)
+    public MultiplayerUnit GetUnitAtPosition(int x, int y)
     {
-        return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<Unit>();
+        return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<MultiplayerUnit>();
     }
     
-    public EnemyMultiplayer GetEnemyAtPosition(int x, int y)
+    public MultiplayerEUnit GetEnemyAtPosition(int x, int y)
     {
-        return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<EnemyMultiplayer>();
+        return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<MultiplayerEUnit>();
     }
 
     public GameObject GetUnitObjectAt (int x, int y)
@@ -476,7 +477,6 @@ public class MultiplayerGameBoard : MonoBehaviour
             break;
 
             case 1:
-            UnitOutline();
             UnitFlag.SetActive(true);
             flagText.SetActive(true);
             tweens.AppearScale(flagText);
@@ -552,8 +552,8 @@ public class MultiplayerGameBoard : MonoBehaviour
     public void SelectUnit(GameObject newSelectedUnit)
     {
         AudioManager.Instance.SelectionSoundFX();
-        //newSelectedUnit.GetComponent<Unit>().highlight.SetActive(true);
-        newSelectedUnit.GetComponent<Unit>().PlayOneShotAnimation("jump", 0.6f);
+
+        newSelectedUnit.GetComponent<MultiplayerUnit>().PlayOneShotAnimation("jump", 0.6f);
         if (selectedUnit != newSelectedUnit && selectedUnit != null)
             ChangeUnit(newSelectedUnit);
         else if (selectedUnit == newSelectedUnit && selectedUnit != null)
@@ -568,7 +568,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     {   
         if(selectedUnit != null){
             //selectedUnit.GetComponent<Unit>().highlight.SetActive(false);
-            selectedUnit.GetComponent<Unit>().setAnimation("animation");
+            selectedUnit.GetComponent<MultiplayerUnit>().setAnimation("animation");
             SuggestMoves(false);
             selectedUnit = null;
         }
@@ -621,7 +621,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         AudioManager.Instance.AirWhistleSoundFX();
         turn = !turn;
-        Unit unitScript = GetUnitObjectAt(xe, ye).GetComponent<Unit>();
+        MultiplayerUnit unitScript = GetUnitObjectAt(xe, ye).GetComponent<MultiplayerUnit>();
         unitScript.TrailSwitch(true);
         //Unit link to a new Tile
         GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked = selectedUnit;
@@ -752,7 +752,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void AttackEnemy(GameObject UnitOn)
     {
-        eUnit = UnitOn.GetComponent<MultiplayerUnit>(); //e
+        eUnit = UnitOn.GetComponent<MultiplayerEUnit>(); //e
         fUnit = selectedUnit.GetComponent<MultiplayerUnit>(); //f
 
         print(fUnit.name + " is attacking " + eUnit.name);
