@@ -634,11 +634,15 @@ public class MultiplayerGameBoard : MonoBehaviour
         StartCoroutine(UnitStep(x, y, xe, ye));
     }
 
-    // [PunRPC]
-    // public void SendDataStep(GameObject unit, int x, int y, int xe, int ye)
-    // {
-
-    // }
+    [PunRPC]
+    public void SendDataStep (int x, int y, int xe, int ye)
+    {
+        x = width - x - 1;
+        y = height - y - 1;
+        xe = width - xe - 1;
+        ye = height - ye - 1;
+        UnitStep(x,y,xe,ye);
+    }
 
     IEnumerator UnitStep(int x, int y, int xe, int ye)
     {
@@ -666,6 +670,8 @@ public class MultiplayerGameBoard : MonoBehaviour
         map[xe, ye] = "empty";
 
         print(GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked.name + " makes a step");
+
+        photonView.RPC("SendDataStep", RpcTarget.Others, x,y,xe,ye);
 
         //switch the turn
         yield return new WaitForSeconds(0.15f);
