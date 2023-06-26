@@ -651,8 +651,39 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         print("Data modify send = " + x + " " + y + " " + xe + " " + ye);
 
-        UnitStep(x,y,xe,ye);
+        UnitEStep(x,y,xe,ye);
     }
+
+    IEnumerator UnitEStep(int x, int y, int xe, int ye)
+    {
+        //Make PUNCall of UnitStepEnemy
+
+        AudioManager.Instance.AirWhistleSoundFX();
+        turn = !turn;
+        MultiplayerEUnit unitScript = GetUnitObjectAt(xe, ye).GetComponent<MultiplayerEUnit>();
+        unitScript.TrailSwitch(true);
+        //Unit link to a new Tile
+        GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked = unitScript.gameObject;
+
+        //move Unit
+        LeanTween.move(GetUnitObjectAt(xe, ye), new Vector2(x, y), 0.4f).setEaseInOutQuint();
+        yield return new WaitForSeconds(0.4f);
+
+        //delete old Unit link
+        GetTileAtPosition(new Vector2 (xe, ye)).GetComponent<MultiplayerTile>().unitLinked = null;
+
+        //Map Update
+        map[x, y] = (string)map[xe, ye];
+        map[xe, ye] = "empty";
+
+        print(GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked.name + " makes a step");
+
+        //switch the turn
+        yield return new WaitForSeconds(0.15f);
+        unitScript.TrailSwitch(false);
+        EnemyTurn();
+    }
+
 
     IEnumerator UnitStep(int x, int y, int xe, int ye)
     {
