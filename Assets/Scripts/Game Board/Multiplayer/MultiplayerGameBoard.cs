@@ -641,6 +641,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         y = height - y - 1;
         xe = width - xe - 1;
         ye = height - ye - 1;
+        
         UnitStep(x,y,xe,ye);
     }
 

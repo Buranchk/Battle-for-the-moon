@@ -243,7 +243,7 @@ public class MultiplayerEUnit : MonoBehaviour
                 //skeletonAnimation.Skeleton.SetSkin(outlined);
                 skeletonAnimation.Skeleton.SetSlotsToSetupPose();
             }
-            skeletonAnimation.AnimationState.SetAnimation(0, "aggressive", true);
+            //skeletonAnimation.AnimationState.SetAnimation(0, "aggressive", true);
         }
         else
         {
