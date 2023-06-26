@@ -661,9 +661,15 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         AudioManager.Instance.AirWhistleSoundFX();
         turn = !turn;
+
+        print("we take this shit" + GetEnemyAtPosition(xe, ye).name);
+
         MultiplayerEUnit unitScript = GetEnemyAtPosition(xe, ye);
         unitScript.TrailSwitch(true);
         //Unit link to a new Tile
+
+        print("we go to there" +  GetTileAtPosition(new Vector2 (x, y)).name);
+
         GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked = unitScript.gameObject;
 
         //move Unit
@@ -671,6 +677,9 @@ public class MultiplayerGameBoard : MonoBehaviour
         yield return new WaitForSeconds(0.4f);
 
         //delete old Unit link
+        
+        print("we from there" +  GetTileAtPosition(new Vector2 (xe, ye)).name);
+
         GetTileAtPosition(new Vector2 (xe, ye)).GetComponent<MultiplayerTile>().unitLinked = null;
 
         //Map Update
@@ -682,7 +691,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         //switch the turn
         yield return new WaitForSeconds(0.15f);
         unitScript.TrailSwitch(false);
-        EnemyTurn();
     }
 
 
