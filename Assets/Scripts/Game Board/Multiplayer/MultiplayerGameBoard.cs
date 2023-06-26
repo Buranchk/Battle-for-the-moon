@@ -632,6 +632,13 @@ public class MultiplayerGameBoard : MonoBehaviour
     public void TileStep(int x, int y, int xe, int ye)
     {
         StartCoroutine(UnitStep(x, y, xe, ye));
+        photonView.RPC("SendDataStep", RpcTarget.Others, x,y,xe,ye);
+        x = width - x - 1;
+        y = height - y - 1;
+        xe = width - xe - 1;
+        ye = height - ye - 1;
+        print("Data modify Host send = " + x + " " + y + " " + xe + " " + ye);
+
     }
 
     [PunRPC]
@@ -641,7 +648,9 @@ public class MultiplayerGameBoard : MonoBehaviour
         y = height - y - 1;
         xe = width - xe - 1;
         ye = height - ye - 1;
-        
+
+        print("Data modify send = " + x + " " + y + " " + xe + " " + ye);
+
         UnitStep(x,y,xe,ye);
     }
 
@@ -671,8 +680,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         map[xe, ye] = "empty";
 
         print(GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked.name + " makes a step");
-
-        photonView.RPC("SendDataStep", RpcTarget.Others, x,y,xe,ye);
 
         //switch the turn
         yield return new WaitForSeconds(0.15f);
