@@ -268,7 +268,6 @@ public class MultiplayerGameBoard : MonoBehaviour
                 rotatedMatrix[i, j] = matrix[rows - i - 1, cols - j - 1];
             }
         }
-
         return rotatedMatrix;
     }
 
@@ -334,7 +333,7 @@ public class MultiplayerGameBoard : MonoBehaviour
                 enMult.SpawnAnimation();
 
                 enMult.ChangeType(positionsArr[x, y - (height - 2)]);
-                
+
                 map[x, y] = "enemyUnit";
 
             }
@@ -634,6 +633,12 @@ public class MultiplayerGameBoard : MonoBehaviour
     {
         StartCoroutine(UnitStep(x, y, xe, ye));
     }
+
+    // [PunRPC]
+    // public void SendDataStep(GameObject unit, int x, int y, int xe, int ye)
+    // {
+
+    // }
 
     IEnumerator UnitStep(int x, int y, int xe, int ye)
     {

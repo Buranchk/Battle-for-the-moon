@@ -204,7 +204,7 @@ public class MultiplayerEUnit : MonoBehaviour
     public void SpawnAnimation()
     {
         transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
-        LeanTween.scale(gameObject, new Vector3(0.32f, 0.32f), 0.7f).setEaseOutElastic();
+        LeanTween.scale(gameObject, new Vector3(0.4f, 0.4f), 0.7f).setEaseOutElastic();
     }
 
     //Unit highlight exit
