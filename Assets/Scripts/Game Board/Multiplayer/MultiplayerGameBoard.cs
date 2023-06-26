@@ -637,6 +637,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         y = height - y - 1;
         xe = width - xe - 1;
         ye = height - ye - 1;
+
         print("Data modify Host send = " + x + " " + y + " " + xe + " " + ye);
 
     }
@@ -660,7 +661,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         AudioManager.Instance.AirWhistleSoundFX();
         turn = !turn;
-        MultiplayerEUnit unitScript = GetUnitObjectAt(xe, ye).GetComponent<MultiplayerEUnit>();
+        MultiplayerEUnit unitScript = GetEnemyAtPosition(xe, ye);
         unitScript.TrailSwitch(true);
         //Unit link to a new Tile
         GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked = unitScript.gameObject;
