@@ -655,7 +655,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         UnitEStep(x,y,xe,ye);
     }
 
-    IEnumerator UnitEStep(int x, int y, int xe, int ye)
+    public void UnitEStep(int x, int y, int xe, int ye)
     {
         //Make PUNCall of UnitStepEnemy
 
@@ -674,10 +674,10 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         //move Unit
         LeanTween.move(GetUnitObjectAt(xe, ye), new Vector2(x, y), 0.4f).setEaseInOutQuint();
-        yield return new WaitForSeconds(0.4f);
+        //yield return new WaitForSeconds(0.4f);
 
         //delete old Unit link
-        
+
         print("we from there" +  GetTileAtPosition(new Vector2 (xe, ye)).name);
 
         GetTileAtPosition(new Vector2 (xe, ye)).GetComponent<MultiplayerTile>().unitLinked = null;
@@ -689,7 +689,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         print(GetTileAtPosition(new Vector2 (x, y)).GetComponent<MultiplayerTile>().unitLinked.name + " makes a step");
 
         //switch the turn
-        yield return new WaitForSeconds(0.15f);
+        //yield return new WaitForSeconds(0.15f);
         unitScript.TrailSwitch(false);
     }
 
