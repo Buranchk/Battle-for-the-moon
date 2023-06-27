@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using Spine.Unity;
 
-
 public class MultiplayerEUnit : MonoBehaviour
 {
     //settings

@@ -806,8 +806,11 @@ public class MultiplayerGameBoard : MonoBehaviour
         {
             AudioManager.Instance.UnitDeath();
             frameRPS.RegularRPS();
-            eUnit.isOpen = true;
-            eUnit.ChangeType(eUnit.type);
+            if(!fUnit.isOpen)
+            {
+                eUnit.isOpen = true;
+                eUnit.ChangeType(eUnit.type);
+            }
             eUnit.movedOn = false;
             DeselectUnit();
             StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false));
@@ -817,8 +820,12 @@ public class MultiplayerGameBoard : MonoBehaviour
         {
             AudioManager.Instance.UnitDeath();
             frameRPS.RegularRPS();
-            fUnit.isOpen = true;
-            fUnit.ChangeType(fUnit.type);
+            if(!fUnit.isOpen)
+            {
+                fUnit.isOpen = true;
+                fUnit.ChangeType(fUnit.type);
+            }
+
             fUnit.movedOn = false;
             DeselectUnit();
             StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.gameObject.transform.position.y, true));
@@ -913,8 +920,11 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
          else if(result)
         {
-            eUnit.isOpen = true;
-            eUnit.ChangeType(eUnit.type);
+            if(!eUnit.isOpen)
+            {
+                eUnit.isOpen = true;
+                eUnit.ChangeType(eUnit.type);
+            }
             DestroyUnit(myUnit.gameObject);
         }
         DeselectUnit();
