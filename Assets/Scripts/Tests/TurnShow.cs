@@ -1,17 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+// using System.Collections;
+// using System.Collections.Generic;
+// using UnityEngine;
 
-public class TurnShow : MonoBehaviour
-{
-    public MultiplayerGameBoard GB;
+// public class TurnShow : MonoBehaviour
+// {
+//     public MultiplayerGameBoard GB;
 
 
-    void Update()
-    {
-        if(GB.turn)
-            gameObject.GetComponent<SpriteRenderer>().color = Color.green;
-        else
-            gameObject.GetComponent<SpriteRenderer>().color = Color.red;
-    }
-}
+//     void Update()
+//     {
+//         if(GB.turn)
+//             gameObject.GetComponent<SpriteRenderer>().color = Color.green;
+//         else
+//             gameObject.GetComponent<SpriteRenderer>().color = Color.red;
+//     }
+// }

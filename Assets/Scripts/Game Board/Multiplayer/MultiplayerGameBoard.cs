@@ -32,7 +32,6 @@ public class MultiplayerGameBoard : MonoBehaviour
     public MultiplayerEUnit eUnit;
     public MultiplayerUnit fUnit;
     private string [ , ] map;
-    public bool turn = false;
     public bool suggestSystem = false;
     public int gameStage = 0;
     private Dictionary<Vector2, MultiplayerTile> tiles;
@@ -66,6 +65,9 @@ public class MultiplayerGameBoard : MonoBehaviour
     [SerializeField] private Sprite buttonDoneInactive;
     private GameObject PermFlag = null;
     private GameObject PermDecoy = null;
+
+    private string myRPSpick = "empty";
+    private string enemyRPSpick = "empty";
 
 //Utility Items
     private DataManager DataMan;
@@ -662,7 +664,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         //Make PUNCall of UnitStepEnemy
 
         AudioManager.Instance.AirWhistleSoundFX();
-        turn = !turn;
 
         print("we take this shit" + GetEnemyAtPosition(xe, ye).name);
 
@@ -701,7 +702,6 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         AudioManager.Instance.AirWhistleSoundFX();
         EnemyTurn();
-        turn = !turn;
         MultiplayerUnit unitScript = GetUnitObjectAt(xe, ye).GetComponent<MultiplayerUnit>();
         unitScript.TrailSwitch(true);
         //Unit link to a new Tile
@@ -791,9 +791,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             DeselectUnit();
             DestroyUnit(fUnitObj);
             DestroyUnit(eUnitObj);
-            turn = !turn;
-            if(!turn)
-                EnemyTurn();
+            EnemyTurn();
         }
 
         if (eUnit.type == fUnit.type)
@@ -801,7 +799,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             AudioManager.Instance.UnitMatch();
             windowRPS.SetActive(true);
             frameRPS.Appear();
-            EnemyTurn();
+            photonView.RPC("OpenRPSSituation", RpcTarget.Others);
         }
 
         if(RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //e
@@ -812,7 +810,6 @@ public class MultiplayerGameBoard : MonoBehaviour
             eUnit.ChangeType(eUnit.type);
             eUnit.movedOn = false;
             DeselectUnit();
-            turn = !turn;
             StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false));
             photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false);
         }
@@ -824,10 +821,93 @@ public class MultiplayerGameBoard : MonoBehaviour
             fUnit.ChangeType(fUnit.type);
             fUnit.movedOn = false;
             DeselectUnit();
-            turn = !turn;
             StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.gameObject.transform.position.y, true));
             photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, true);
         }
+    }
+
+    [PunRPC]
+    public void FightResultTie(string pick)
+    {
+        enemyRPSpick = pick;
+        if(myRPSpick != "empty")
+        {
+            fUnit.ChangeType(myRPSpick);
+            eUnit.ChangeType(enemyRPSpick);
+
+            photonView.RPC("UpdateUnitType", RpcTarget.Others, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, myRPSpick, true);
+            photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
+
+            UnitFight();
+            // if(RPS(enemyRPSpick, myRPSpick))
+            // {
+                
+            //     //EnemyWin
+            // }
+            //     else if (!RPS(enemyRPSpick, myRPSpick))
+            // {
+            //     //my WIN
+            // }
+            //     else if (myRPSpick == enemyRPSpick)
+            // {
+            //     //Again!!
+            // }
+            enemyRPSpick = "empty";
+            myRPSpick = "empty";
+        }
+    }
+
+    [PunRPC]
+    public void UpdateUnitType(float x, float y, string type, bool isEnemy)
+    {
+
+        if(isEnemy)
+            GetEnemyAtPosition((int)x, (int)y).ChangeType(type);
+        else if(!isEnemy)
+            GetUnitAtPosition((int)x, (int)y).ChangeType(type);
+    }
+
+    public void FightResultTieMine(string pick)
+    {
+        myRPSpick = pick;
+        if(enemyRPSpick != "empty")
+        {
+            fUnit.ChangeType(myRPSpick);
+            eUnit.ChangeType(enemyRPSpick);
+
+            photonView.RPC("UpdateUnitType", RpcTarget.Others, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, myRPSpick, true);
+            photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
+
+            UnitFight();
+            // if(RPS(enemyRPSpick, myRPSpick))
+            // {
+
+            //     //EnemyWin
+            // }
+            //     else if (!RPS(enemyRPSpick, myRPSpick))
+            // {
+
+            //     //my WIN
+            // }
+            //     else if (myRPSpick == enemyRPSpick)
+            // {
+            //     //Again!!
+            // }
+            enemyRPSpick = "empty";
+            myRPSpick = "empty";
+
+        }
+    }
+
+
+    [PunRPC]
+    public void OpenRPSSituation()
+    {
+        //opens square with RPS variants
+        AudioManager.Instance.UnitMatch();
+        windowRPS.SetActive(true);
+        frameRPS.Appear();
+
     }
 
     [PunRPC]
@@ -848,6 +928,8 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
          else if(result)
         {
+            eUnit.isOpen = true;
+            eUnit.ChangeType(eUnit.type);
             DestroyUnit(myUnit.gameObject);
         }
         DeselectUnit();
@@ -933,7 +1015,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         Vector2 place = new Vector2(0, 15f);
         Vector2 fightPlace = new Vector2(((pos1X + pos2X)/2), ((pos1Y + pos2Y)/2));
 
-        if(turn)
+        if(TurnCheck())
             tweens.UnitsMeet(fUnit.gameObject, eUnit.gameObject, win);
         else
             tweens.UnitsMeet(eUnit.gameObject, fUnit.gameObject, !win);
@@ -969,7 +1051,11 @@ public class MultiplayerGameBoard : MonoBehaviour
         frameRPS.Match();
         windowRPS.SetActive(false);
         fUnit.ChangeType("rock");
-        EnemyPickTurn();
+
+        if(!TurnCheck())
+            photonView.RPC("FightResultTie", RpcTarget.Others, "rock");
+        else if(TurnCheck())
+            FightResultTieMine("rock");
     }
 
     public void pickPaper()
@@ -977,7 +1063,12 @@ public class MultiplayerGameBoard : MonoBehaviour
         frameRPS.Match();
         windowRPS.SetActive(false);
         fUnit.ChangeType("paper");
-        EnemyPickTurn();
+
+        if(!TurnCheck())
+            photonView.RPC("FightResultTie", RpcTarget.Others, "paper");
+        else if(TurnCheck())
+            FightResultTieMine("paper");
+
     }
 
     public void pickScissors()
@@ -985,7 +1076,12 @@ public class MultiplayerGameBoard : MonoBehaviour
         frameRPS.Match();
         windowRPS.SetActive(false);
         fUnit.ChangeType("scissors");
-        EnemyPickTurn();
+
+        if(!TurnCheck())
+            photonView.RPC("FightResultTie", RpcTarget.Others, "scissors");
+        else if(TurnCheck())
+            FightResultTieMine("scissors");
+
     }
 
     public void setDoneInactive()
@@ -1003,17 +1099,12 @@ public class MultiplayerGameBoard : MonoBehaviour
 
 
 /* EnemyPlayer */
-    public void EnemyPickTurn()
-    {
-        // Request 
-        photonView.RPC("SendData", RpcTarget.OthersBuffered);
-    }
+    // public void EnemyPickTurn()
+    // {
+    //     // Request 
+    //     photonView.RPC("SendData", RpcTarget.OthersBuffered);
+    // }
 
-    [PunRPC]
-    public void SendData()
-    {
-        UnitFight();
-    }
 
     public void EnemyTurn()
     {
