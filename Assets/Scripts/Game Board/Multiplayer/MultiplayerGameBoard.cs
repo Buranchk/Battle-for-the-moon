@@ -66,8 +66,8 @@ public class MultiplayerGameBoard : MonoBehaviour
     private GameObject PermFlag = null;
     private GameObject PermDecoy = null;
 
-    private string myRPSpick = "empty";
-    private string enemyRPSpick = "empty";
+    public string myRPSpick = "empty";
+    public string enemyRPSpick = "empty";
 
 //Utility Items
     private DataManager DataMan;
@@ -868,9 +868,9 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         print("Change dude who is = " + isEnemy + " at location " + x + " " + y);
 
-        if(isEnemy)
+        if(!isEnemy)
             GetEnemyAtPosition((int)x, (int)y).ChangeType(type);
-        else if(!isEnemy)
+        else if(isEnemy)
             GetUnitAtPosition((int)x, (int)y).ChangeType(type);
     }
 
