@@ -839,7 +839,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     }
 
     [PunRPC]
-    public void FightResult(int x, int y, int xe, int ye, bool result)
+    public void FightResult(float x, float y, float xe, float ye, bool result)
     {
         timer.ResetTimer();
         x = width - x - 1;
@@ -847,8 +847,8 @@ public class MultiplayerGameBoard : MonoBehaviour
         xe = width - xe - 1;
         ye = height - ye - 1;
 
-        MultiplayerUnit myUnit = GetUnitAtPosition(x, y);
-        MultiplayerEUnit enemyUnit = GetEnemyAtPosition(xe, ye);
+        MultiplayerUnit myUnit = GetUnitAtPosition((int)x, (int)y);
+        MultiplayerEUnit enemyUnit = GetEnemyAtPosition((int)xe, (int)ye);
 
         if(!result)
         {
