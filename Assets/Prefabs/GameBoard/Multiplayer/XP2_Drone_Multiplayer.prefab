@@ -165,7 +165,7 @@ GameObject:
   - component: {fileID: 5736963221920638844}
   m_Layer: 0
   m_Name: XP2_Drone_Multiplayer
-  m_TagString: Untagged
+  m_TagString: MyUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

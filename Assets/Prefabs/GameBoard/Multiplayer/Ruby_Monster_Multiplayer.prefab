@@ -16,7 +16,7 @@ GameObject:
   - component: {fileID: 2062009573419886675}
   m_Layer: 0
   m_Name: Ruby_Monster_Multiplayer
-  m_TagString: Untagged
+  m_TagString: MyUnit
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

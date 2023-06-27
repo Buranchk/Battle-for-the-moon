@@ -631,6 +631,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void TileStep(int x, int y, int xe, int ye)
     {
+        timer.ResetTimer();
         StartCoroutine(UnitStep(x, y, xe, ye));
         photonView.RPC("SendDataStep", RpcTarget.Others, x, y, xe, ye);
         x = width - x - 1;
@@ -645,6 +646,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     [PunRPC]
     public void SendDataStep (int x, int y, int xe, int ye)
     {
+        timer.ResetTimer();
         x = width - x - 1;
         y = height - y - 1;
         xe = width - xe - 1;
@@ -760,6 +762,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void UnitFight()
     {
+        timer.ResetTimer();
         AudioManager.Instance.UnitFight();
         print("Units duel now");
         GameObject fUnitObj = GameObject.Find(fUnit.name); //f
@@ -838,6 +841,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     [PunRPC]
     public void FightResult(int x, int y, int xe, int ye, bool result)
     {
+        timer.ResetTimer();
         x = width - x - 1;
         y = height - y - 1;
         xe = width - xe - 1;
@@ -846,7 +850,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         MultiplayerUnit myUnit = GetUnitAtPosition(x, y);
         MultiplayerEUnit enemyUnit = GetEnemyAtPosition(xe, ye);
 
-        DeselectUnit();
         if(!result)
         {
 
@@ -857,6 +860,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
             DestroyUnit(enemyUnit.gameObject);
         }
+        DeselectUnit();
 
     }
 
