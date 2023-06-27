@@ -835,6 +835,8 @@ public class MultiplayerGameBoard : MonoBehaviour
             fUnit.ChangeType(myRPSpick);
             eUnit.ChangeType(enemyRPSpick);
 
+            print(fUnit.name + " and the guy named " + eUnit.name);
+
             photonView.RPC("UpdateUnitType", RpcTarget.Others, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, myRPSpick, true);
             photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
 
@@ -861,6 +863,11 @@ public class MultiplayerGameBoard : MonoBehaviour
     public void UpdateUnitType(float x, float y, string type, bool isEnemy)
     {
 
+        x = width - x - 1;
+        y = height - y - 1;
+
+        print("Change dude who is = " + isEnemy + " at location " + x + " " + y);
+
         if(isEnemy)
             GetEnemyAtPosition((int)x, (int)y).ChangeType(type);
         else if(!isEnemy)
@@ -870,10 +877,13 @@ public class MultiplayerGameBoard : MonoBehaviour
     public void FightResultTieMine(string pick)
     {
         myRPSpick = pick;
+
         if(enemyRPSpick != "empty")
         {
             fUnit.ChangeType(myRPSpick);
             eUnit.ChangeType(enemyRPSpick);
+
+            print(fUnit.name + " and the guy named " + eUnit.name);
 
             photonView.RPC("UpdateUnitType", RpcTarget.Others, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, myRPSpick, true);
             photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
@@ -1048,6 +1058,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 /*(UI related)*/
     public void pickRock()
     {
+        timer.ResetTimer();
         frameRPS.Match();
         windowRPS.SetActive(false);
         fUnit.ChangeType("rock");
@@ -1060,6 +1071,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void pickPaper()
     {
+        timer.ResetTimer();
         frameRPS.Match();
         windowRPS.SetActive(false);
         fUnit.ChangeType("paper");
@@ -1073,6 +1085,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void pickScissors()
     {
+        timer.ResetTimer();
         frameRPS.Match();
         windowRPS.SetActive(false);
         fUnit.ChangeType("scissors");
