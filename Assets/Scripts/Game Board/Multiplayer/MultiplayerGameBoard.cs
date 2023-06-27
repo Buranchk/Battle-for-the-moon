@@ -841,19 +841,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
 
             UnitFight();
-            // if(RPS(enemyRPSpick, myRPSpick))
-            // {
-                
-            //     //EnemyWin
-            // }
-            //     else if (!RPS(enemyRPSpick, myRPSpick))
-            // {
-            //     //my WIN
-            // }
-            //     else if (myRPSpick == enemyRPSpick)
-            // {
-            //     //Again!!
-            // }
+
             enemyRPSpick = "empty";
             myRPSpick = "empty";
         }
@@ -868,9 +856,9 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         print("Change dude who is = " + isEnemy + " at location " + x + " " + y);
 
-        if(!isEnemy)
+        if(isEnemy)
             GetEnemyAtPosition((int)x, (int)y).ChangeType(type);
-        else if(isEnemy)
+        else if(!isEnemy)
             GetUnitAtPosition((int)x, (int)y).ChangeType(type);
     }
 
@@ -889,20 +877,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
 
             UnitFight();
-            // if(RPS(enemyRPSpick, myRPSpick))
-            // {
 
-            //     //EnemyWin
-            // }
-            //     else if (!RPS(enemyRPSpick, myRPSpick))
-            // {
-
-            //     //my WIN
-            // }
-            //     else if (myRPSpick == enemyRPSpick)
-            // {
-            //     //Again!!
-            // }
             enemyRPSpick = "empty";
             myRPSpick = "empty";
 
@@ -1061,7 +1036,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         timer.ResetTimer();
         frameRPS.Match();
         windowRPS.SetActive(false);
-        fUnit.ChangeType("rock");
 
         if(!TurnCheck())
             photonView.RPC("FightResultTie", RpcTarget.Others, "rock");
@@ -1074,7 +1048,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         timer.ResetTimer();
         frameRPS.Match();
         windowRPS.SetActive(false);
-        fUnit.ChangeType("paper");
 
         if(!TurnCheck())
             photonView.RPC("FightResultTie", RpcTarget.Others, "paper");
@@ -1088,7 +1061,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         timer.ResetTimer();
         frameRPS.Match();
         windowRPS.SetActive(false);
-        fUnit.ChangeType("scissors");
 
         if(!TurnCheck())
             photonView.RPC("FightResultTie", RpcTarget.Others, "scissors");
@@ -1146,3 +1118,18 @@ public class MultiplayerGameBoard : MonoBehaviour
     }
 
 }
+
+            // if(RPS(enemyRPSpick, myRPSpick))
+            // {
+
+            //     //EnemyWin
+            // }
+            //     else if (!RPS(enemyRPSpick, myRPSpick))
+            // {
+
+            //     //my WIN
+            // }
+            //     else if (myRPSpick == enemyRPSpick)
+            // {
+            //     //Again!!
+            // }
