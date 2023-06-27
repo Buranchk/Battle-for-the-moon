@@ -700,6 +700,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         //Make PUNCall of UnitStepEnemy
 
         AudioManager.Instance.AirWhistleSoundFX();
+        EnemyTurn();
         turn = !turn;
         MultiplayerUnit unitScript = GetUnitObjectAt(xe, ye).GetComponent<MultiplayerUnit>();
         unitScript.TrailSwitch(true);
@@ -725,7 +726,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         //switch the turn
         yield return new WaitForSeconds(0.15f);
         unitScript.TrailSwitch(false);
-        EnemyTurn();
     }
 
 
@@ -925,6 +925,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     IEnumerator FightAnimation(GameObject unit1, GameObject unit2, float pos1X, float pos1Y, float pos2X, float pos2Y, bool win)
     {
         EnemyTurn();
+        DeselectUnit();
 
         Vector2 place = new Vector2(0, 15f);
         Vector2 fightPlace = new Vector2(((pos1X + pos2X)/2), ((pos1Y + pos2Y)/2));
@@ -951,7 +952,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         print("BeforeTimePause");
         yield return new WaitForSeconds(0.6f);
         print("AfterTimePause");
-        DeselectUnit();
         DestroyUnit(unit2);
         
         yield return new WaitForSeconds(1f);
