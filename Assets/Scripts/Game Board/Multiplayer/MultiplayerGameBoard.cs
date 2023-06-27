@@ -788,6 +788,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         if(eUnit.type == "decoy" || fUnit.type == "decoy")
         {
+            DeselectUnit();
             DestroyUnit(fUnitObj);
             DestroyUnit(eUnitObj);
             turn = !turn;
@@ -810,8 +811,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             eUnit.isOpen = true;
             eUnit.ChangeType(eUnit.type);
             eUnit.movedOn = false;
+            DeselectUnit();
             turn = !turn;
-            StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, false));
+            StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false));
             photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false);
         }
         else if(!RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //f
@@ -821,8 +823,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             fUnit.isOpen = true;
             fUnit.ChangeType(fUnit.type);
             fUnit.movedOn = false;
+            DeselectUnit();
             turn = !turn;
-            StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, true));
+            StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.gameObject.transform.position.y, true));
             photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, true);
         }
     }
