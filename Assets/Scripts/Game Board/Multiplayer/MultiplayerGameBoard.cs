@@ -852,13 +852,11 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         if(!result)
         {
-
-            DestroyUnit(myUnit.gameObject);
-        }
-         else
-        {
-
             DestroyUnit(enemyUnit.gameObject);
+        }
+         else if(result)
+        {
+            DestroyUnit(myUnit.gameObject);
         }
         DeselectUnit();
 
