@@ -765,8 +765,8 @@ public class MultiplayerGameBoard : MonoBehaviour
         timer.ResetTimer();
         AudioManager.Instance.UnitFight();
         print("Units duel now");
-        GameObject fUnitObj = GameObject.Find(fUnit.name); //f
-        GameObject eUnitObj = GameObject.Find(eUnit.name); //e
+        GameObject fUnitObj = fUnit.gameObject; //f
+        GameObject eUnitObj = eUnit.gameObject; //e
 
         print("Enemy was - " + eUnit.type + "    Friend was - " + fUnit.type);
 
@@ -810,14 +810,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             eUnit.isOpen = true;
             eUnit.ChangeType(eUnit.type);
             eUnit.movedOn = false;
-            if(turn){
-                turn = !turn;
-            }
-            else
+            turn = !turn;
             StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, false));
-            //destroy unit play fight
             photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false);
-            EnemyTurn();
         }
         else if(!RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //f
         {
@@ -826,15 +821,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             fUnit.isOpen = true;
             fUnit.ChangeType(fUnit.type);
             fUnit.movedOn = false;
-            if(turn){
-                turn = !turn;
-            } 
-            else
+            turn = !turn;
             StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, true));
-            //destroy unit play fight
             photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, true);
-            EnemyTurn();
-            
         }
     }
 
@@ -967,6 +956,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         yield return new WaitForSeconds(1f);
         oopsParticles.gameObject.transform.position = place;
         winParticles.gameObject.transform.position = place;
+        EnemyTurn();
     }
 
 
