@@ -632,7 +632,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     public void TileStep(int x, int y, int xe, int ye)
     {
         StartCoroutine(UnitStep(x, y, xe, ye));
-        photonView.RPC("SendDataStep", RpcTarget.Others, x,y,xe,ye);
+        photonView.RPC("SendDataStep", RpcTarget.Others, x, y, xe, ye);
         x = width - x - 1;
         y = height - y - 1;
         xe = width - xe - 1;
@@ -652,7 +652,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         print("Data modify send = " + x + " " + y + " " + xe + " " + ye);
 
-        UnitEStep(x,y,xe,ye);
+        UnitEStep(x, y, xe, ye);
     }
 
     public void UnitEStep(int x, int y, int xe, int ye)
@@ -692,7 +692,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         //yield return new WaitForSeconds(0.15f);
         unitScript.TrailSwitch(false);
     }
-
 
     IEnumerator UnitStep(int x, int y, int xe, int ye)
     {
@@ -798,6 +797,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             AudioManager.Instance.UnitMatch();
             windowRPS.SetActive(true);
             frameRPS.Appear();
+            EnemyTurn();
         }
 
         if(RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //e
@@ -812,6 +812,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             }
             else
             StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, false));
+            //destroy unit play fight
+            photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false);
+            EnemyTurn();
         }
         else if(!RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //f
         {
@@ -825,6 +828,34 @@ public class MultiplayerGameBoard : MonoBehaviour
             } 
             else
             StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, true));
+            //destroy unit play fight
+            photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, true);
+            EnemyTurn();
+            
+        }
+    }
+
+    [PunRPC]
+    public void FightResult(int x, int y, int xe, int ye, bool result)
+    {
+        x = width - x - 1;
+        y = height - y - 1;
+        xe = width - xe - 1;
+        ye = height - ye - 1;
+
+        MultiplayerUnit myUnit = GetUnitAtPosition(x, y);
+        MultiplayerEUnit enemyUnit = GetEnemyAtPosition(xe, ye);
+
+        DeselectUnit();
+        if(!result)
+        {
+
+            DestroyUnit(myUnit.gameObject);
+        }
+         else
+        {
+
+            DestroyUnit(enemyUnit.gameObject);
         }
 
     }
