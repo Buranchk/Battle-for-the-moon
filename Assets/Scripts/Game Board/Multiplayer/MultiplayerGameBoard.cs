@@ -999,7 +999,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             Debug.Log("Ownership was: "+ photonView.Owner);
             // Find the index of the current owner in the player list
             int currentOwnerIndex = System.Array.IndexOf(players, photonView.Owner);
-            Debug.Log ("Current owner index " +currentOwnerIndex);
+            Debug.Log ("Current owner index " + currentOwnerIndex);
             // Calculate the index of the next player in a circular manner
             int nextOwnerIndex = (currentOwnerIndex + 1) % players.Length;
             Debug.Log ("Next owner index "+nextOwnerIndex);

@@ -4,7 +4,7 @@ using UnityEngine;
 using Spine.Unity;
 
 
-public class EnemyMultiplayer : MonoBehaviour
+public class EnemyAI : MonoBehaviour
 {
 
     private string hidden = "Enemy_wait";

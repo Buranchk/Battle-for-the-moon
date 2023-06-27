@@ -16,13 +16,13 @@ public class GameBoard : MonoBehaviour
     [SerializeField] private Unit XP;
     [SerializeField] private Unit gold;
     [SerializeField] private Unit ruby;
-    [SerializeField] private EnemyMultiplayer enemyPrefab;
+    [SerializeField] private EnemyAI enemyPrefab;
     
 
     //in game stuff
     //selectedUnit suggestSystem windowRPS
     public GameObject selectedUnit;
-    public EnemyMultiplayer eUnit;
+    public EnemyAI eUnit;
     public Unit fUnit;
     private string [ , ] map;
     public bool turn = false;
@@ -136,7 +136,7 @@ public class GameBoard : MonoBehaviour
                 GetTileAtPosition(new Vector2(x, y)).unitLinked = newEnemy;
 
                 //LeanTween.alpha(newEnemy, 1, 0.75f).setEaseOutBack();
-                newEnemy.GetComponent<EnemyMultiplayer>().SpawnAnimation();
+                newEnemy.GetComponent<EnemyAI>().SpawnAnimation();
                 
                 map[x, y] = "enemyUnit";
             }
@@ -152,11 +152,11 @@ public class GameBoard : MonoBehaviour
             for (; x < temp; x++)
             {
                 if (i == 0)
-                    enemyUnits[x].GetComponent<EnemyMultiplayer>().ChangeType("rock");
+                    enemyUnits[x].GetComponent<EnemyAI>().ChangeType("rock");
                 if (i == 1)
-                    enemyUnits[x].GetComponent<EnemyMultiplayer>().ChangeType("paper");
+                    enemyUnits[x].GetComponent<EnemyAI>().ChangeType("paper");
                 if (i == 2)
-                    enemyUnits[x].GetComponent<EnemyMultiplayer>().ChangeType("scissors");
+                    enemyUnits[x].GetComponent<EnemyAI>().ChangeType("scissors");
             }
         }
         turn = true;
@@ -166,7 +166,7 @@ public class GameBoard : MonoBehaviour
     {
         int rndF = UnityEngine.Random.Range(0, width - 1);
         enemyUnits.Remove(GetTileAtPosition(new Vector2(rndF, height-1)).unitLinked);
-        GetUnitObjectAt(rndF, height - 1).GetComponent<EnemyMultiplayer>().type = "flag";
+        GetUnitObjectAt(rndF, height - 1).GetComponent<EnemyAI>().type = "flag";
         int rndD = UnityEngine.Random.Range(0, width-1);
         if (rndD == rndF)
         {
@@ -176,7 +176,7 @@ public class GameBoard : MonoBehaviour
                 rndD += 1;
         }
         enemyUnits.Remove(GetTileAtPosition(new Vector2(rndD, height-1)).unitLinked);
-        GetUnitObjectAt(rndD, height-1).GetComponent<EnemyMultiplayer>().type = "decoy";
+        GetUnitObjectAt(rndD, height-1).GetComponent<EnemyAI>().type = "decoy";
     }
 
     IEnumerator SpawnUnits()
@@ -460,9 +460,9 @@ public class GameBoard : MonoBehaviour
         return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<Unit>();
     }
     
-    public EnemyMultiplayer GetEnemyAtPosition(int x, int y)
+    public EnemyAI GetEnemyAtPosition(int x, int y)
     {
-        return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<EnemyMultiplayer>();
+        return GetTileAtPosition(new Vector2(x, y)).unitLinked.GetComponent<EnemyAI>();
     }
 
     public GameObject GetUnitObjectAt (int x, int y)
@@ -769,7 +769,7 @@ public class GameBoard : MonoBehaviour
 
     public void AttackEnemy(GameObject UnitOn)
     {
-        eUnit = UnitOn.GetComponent<EnemyMultiplayer>(); //e
+        eUnit = UnitOn.GetComponent<EnemyAI>(); //e
         fUnit = selectedUnit.GetComponent<Unit>(); //f
 
         print(fUnit.name + " is attacking " + eUnit.name);
@@ -1008,7 +1008,7 @@ public class GameBoard : MonoBehaviour
         int posX =(int)movingUnit.transform.position.x;
         int posY =(int)movingUnit.transform.position.y;
 
-        eUnit = movingUnit.GetComponent<EnemyMultiplayer>();
+        eUnit = movingUnit.GetComponent<EnemyAI>();
 
         if(posY + 1 < height)
         {
@@ -1040,14 +1040,14 @@ public class GameBoard : MonoBehaviour
             if(GetUnitAtPosition(pX, pY).isOpen)
             {
                 //win RPS prediction
-                if(RPS(movingUnit.GetComponent<EnemyMultiplayer>().type, GetUnitAtPosition(pX, pY).type))
+                if(RPS(movingUnit.GetComponent<EnemyAI>().type, GetUnitAtPosition(pX, pY).type))
                 {
                     fUnit = GetTileAtPosition(new Vector2(pX, pY)).unitLinked.GetComponent<Unit>(); //f
-                    eUnit = movingUnit.GetComponent<EnemyMultiplayer>(); //e
+                    eUnit = movingUnit.GetComponent<EnemyAI>(); //e
                     UnitFight();
                     return true;
                 } 
-                else if(!RPS(movingUnit.GetComponent<EnemyMultiplayer>().type, GetUnitAtPosition(pX, pY).type))
+                else if(!RPS(movingUnit.GetComponent<EnemyAI>().type, GetUnitAtPosition(pX, pY).type))
                 {
                     int posX =(int)movingUnit.transform.position.x;
                     int posY =(int)movingUnit.transform.position.y;
@@ -1058,7 +1058,7 @@ public class GameBoard : MonoBehaviour
                         else if (posY <= 1)
                     {
                         fUnit = GetTileAtPosition(new Vector2(pX, pY)).unitLinked.GetComponent<Unit>(); //f
-                        eUnit = movingUnit.GetComponent<EnemyMultiplayer>(); //e
+                        eUnit = movingUnit.GetComponent<EnemyAI>(); //e
                         UnitFight();
                         return true;
                     }
@@ -1069,7 +1069,7 @@ public class GameBoard : MonoBehaviour
             else if(!GetUnitAtPosition(pX, pY).isOpen)
             {
                 fUnit = GetTileAtPosition(new Vector2(pX, pY)).unitLinked.GetComponent<Unit>(); //f
-                eUnit = movingUnit.GetComponent<EnemyMultiplayer>(); //e
+                eUnit = movingUnit.GetComponent<EnemyAI>(); //e
                 print (eUnit.name + " is fighting");
                 UnitFight();
                 return true;
@@ -1114,7 +1114,7 @@ public class GameBoard : MonoBehaviour
     IEnumerator EnemyStep(int x, int y, GameObject movingUnit)
     {
         AudioManager.Instance.AirWhistleSoundFX();
-        movingUnit.GetComponent<EnemyMultiplayer>().TrailSwitch(true);
+        movingUnit.GetComponent<EnemyAI>().TrailSwitch(true);
         GetTileAtPosition(new Vector2((int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y)).unitLinked = null;
         map[(int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y] = "empty";
         LeanTween.move(movingUnit, new Vector2(movingUnit.transform.position.x + x, movingUnit.transform.position.y + y), 0.4f).setEaseInOutQuint();
@@ -1123,7 +1123,7 @@ public class GameBoard : MonoBehaviour
         map[(int)movingUnit.transform.position.x, (int)movingUnit.transform.position.y] = "enemyUnit";
         movingUnit.transform.position = new Vector2(movingUnit.transform.position.x, movingUnit.transform.position.y);
         yield return new WaitForSeconds(0.2f);
-        movingUnit.GetComponent<EnemyMultiplayer>().TrailSwitch(false);
+        movingUnit.GetComponent<EnemyAI>().TrailSwitch(false);
         turn = true;
     }
 
