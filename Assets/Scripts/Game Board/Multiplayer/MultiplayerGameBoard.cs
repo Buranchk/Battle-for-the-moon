@@ -924,6 +924,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     IEnumerator FightAnimation(GameObject unit1, GameObject unit2, float pos1X, float pos1Y, float pos2X, float pos2Y, bool win)
     {
+        EnemyTurn();
 
         Vector2 place = new Vector2(0, 15f);
         Vector2 fightPlace = new Vector2(((pos1X + pos2X)/2), ((pos1Y + pos2Y)/2));
@@ -956,7 +957,6 @@ public class MultiplayerGameBoard : MonoBehaviour
         yield return new WaitForSeconds(1f);
         oopsParticles.gameObject.transform.position = place;
         winParticles.gameObject.transform.position = place;
-        EnemyTurn();
     }
 
 
