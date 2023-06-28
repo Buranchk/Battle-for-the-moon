@@ -46,6 +46,9 @@ MonoBehaviour:
   - FightResultTie
   - OpenRPSSituation
   - UpdateUnitType
+  - DecoySituationCall
+  - FlagFucked
+  - LoadScene
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

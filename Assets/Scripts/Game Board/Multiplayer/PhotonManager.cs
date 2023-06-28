@@ -12,6 +12,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] public TMP_InputField roomName;
     [SerializeField] Room itemPrefab;
     [SerializeField] Transform content;
+    private PhotonView photonView;
     
 
     void Update()
@@ -22,6 +23,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
+        photonView = GetComponent<PhotonView>();
+
     }
 
     public override void OnConnectedToMaster()
@@ -48,7 +51,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         Debug.Log("Created room with name: "+ PhotonNetwork.CurrentRoom.Name);
-        PhotonNetwork.LoadLevel("Multiplayer Game Board");
+        //PhotonNetwork.LoadLevel("Multiplayer Game Board");
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -68,7 +71,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log ("You joined room: " + PhotonNetwork.CurrentRoom.Name );
-        PhotonNetwork.LoadLevel("Multiplayer Game Board");
+        //PhotonNetwork.LoadLevel("Multiplayer Game Board");
+        photonView.RPC("LoadScene", RpcTarget.All);
+
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
@@ -84,5 +89,10 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         Debug.Log("You left room");
         PhotonNetwork.LoadLevel("RoomConnecton");
+    }
+    [PunRPC]
+    public void LoadScene()
+    {
+        PhotonNetwork.LoadLevel("Multiplayer Game Board");
     }
 }
