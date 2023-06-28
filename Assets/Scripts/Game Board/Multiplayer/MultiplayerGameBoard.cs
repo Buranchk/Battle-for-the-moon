@@ -856,7 +856,10 @@ public class MultiplayerGameBoard : MonoBehaviour
         MultiplayerUnit myUnit = GetUnitAtPosition((int)x, (int)y);
         MultiplayerEUnit enemyUnit = GetEnemyAtPosition((int)xe, (int)ye);
 
-        DestroyUnit(myUnit.gameObject);
+        GetTileAtPosition(myUnit.gameObject.transform.position).unitLinked = null;
+        map[(int)myUnit.gameObject.transform.position.x, (int)myUnit.gameObject.transform.position.y] = "empty";
+        Destroy(myUnit.gameObject);
+
         DestroyUnit(enemyUnit.gameObject);
 
     }
