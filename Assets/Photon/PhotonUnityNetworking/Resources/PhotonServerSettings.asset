@@ -43,6 +43,9 @@ MonoBehaviour:
   - EnemySpawn
   - SendDataStep
   - FightResult
+  - FightResultTie
+  - OpenRPSSituation
+  - UpdateUnitType
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

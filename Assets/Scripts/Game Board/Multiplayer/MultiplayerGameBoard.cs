@@ -806,7 +806,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         {
             AudioManager.Instance.UnitDeath();
             frameRPS.RegularRPS();
-            if(!fUnit.isOpen)
+            if(!eUnit.isOpen)
             {
                 eUnit.isOpen = true;
                 eUnit.ChangeType(eUnit.type);
@@ -847,11 +847,12 @@ public class MultiplayerGameBoard : MonoBehaviour
             photonView.RPC("UpdateUnitType", RpcTarget.Others, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, myRPSpick, true);
             photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
 
-            UnitFight();
-
-            enemyRPSpick = "empty";
             myRPSpick = "empty";
+            enemyRPSpick = "empty";
+
+            UnitFight();
         }
+
     }
 
     [PunRPC]
@@ -883,11 +884,10 @@ public class MultiplayerGameBoard : MonoBehaviour
             photonView.RPC("UpdateUnitType", RpcTarget.Others, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, myRPSpick, true);
             photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
 
-            UnitFight();
-
             enemyRPSpick = "empty";
             myRPSpick = "empty";
 
+            UnitFight();
         }
     }
 
@@ -920,11 +920,11 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
          else if(result)
         {
-            if(!eUnit.isOpen)
-            {
-                eUnit.isOpen = true;
-                eUnit.ChangeType(eUnit.type);
-            }
+            // if(!enemyUnit.isOpen)
+            // {
+            //     enemyUnit.isOpen = true;
+            //     enemyUnit.ChangeType(enemyUnit.type);
+            // }
             DestroyUnit(myUnit.gameObject);
         }
         DeselectUnit();
