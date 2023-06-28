@@ -563,6 +563,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             //     print("GameResult: Loose");
             //     PlayerPrefs.SetInt("GameResult", 0);
             // }
+            PhotonNetwork.LeaveRoom();
             GameResult();
             break;
         }
@@ -743,6 +744,7 @@ public class MultiplayerGameBoard : MonoBehaviour
                 {
                     gameWin = true;
                     NewStage();
+                    photonView.RPC("FlagFucked", RpcTarget.Others);
                 }
 
             }
@@ -775,6 +777,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             print("Enemy Flag is fucked");
             DestroyUnit(eUnitObj);
             gameWin = true;
+            photonView.RPC("FlagFucked", RpcTarget.Others);
             NewStage();
         }
 
@@ -834,6 +837,12 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
     }
 
+    [PunRPC]
+    public void FlagFucked()
+    {
+        gameWin = false;
+        NewStage();
+    }
 
     [PunRPC]
     public void DecoySituationCall(float x, float y, float xe, float ye)
