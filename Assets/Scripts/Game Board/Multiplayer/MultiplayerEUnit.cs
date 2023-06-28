@@ -75,7 +75,7 @@ public class MultiplayerEUnit : MonoBehaviour
                     skeletonAnimation.Skeleton.SetSlotsToSetupPose();
                 } else
                 {
-                    skeletonAnimation.Skeleton.SetSkin(rock);
+                    skeletonAnimation.Skeleton.SetSkin(empty);
                     skeletonAnimation.Skeleton.SetSlotsToSetupPose();
                 }
             break;
@@ -87,7 +87,7 @@ public class MultiplayerEUnit : MonoBehaviour
                     skeletonAnimation.Skeleton.SetSlotsToSetupPose();                    
                 } else
                 {
-                    skeletonAnimation.Skeleton.SetSkin(paper);
+                    skeletonAnimation.Skeleton.SetSkin(empty);
                     skeletonAnimation.Skeleton.SetSlotsToSetupPose();
                 }
 
@@ -100,23 +100,23 @@ public class MultiplayerEUnit : MonoBehaviour
                     skeletonAnimation.Skeleton.SetSlotsToSetupPose();                    
                 } else
                 {
-                    skeletonAnimation.Skeleton.SetSkin(scissors);
+                    skeletonAnimation.Skeleton.SetSkin(empty);
                     skeletonAnimation.Skeleton.SetSlotsToSetupPose();                    
                 }
             break;
 
             case "flag":
-                skeletonAnimation.Skeleton.SetSkin(flag);
+                skeletonAnimation.Skeleton.SetSkin(empty);
                 skeletonAnimation.Skeleton.SetSlotsToSetupPose();            
             break;
 
             case "decoy":
-                skeletonAnimation.Skeleton.SetSkin(decoy);
+                skeletonAnimation.Skeleton.SetSkin(empty);
                 skeletonAnimation.Skeleton.SetSlotsToSetupPose();
             break;
 
             case "outline":
-                skeletonAnimation.Skeleton.SetSkin(outline);
+                skeletonAnimation.Skeleton.SetSkin(empty);
                 skeletonAnimation.Skeleton.SetSlotsToSetupPose();
             break;
         }
