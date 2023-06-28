@@ -791,6 +791,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             DeselectUnit();
             DestroyUnit(fUnitObj);
             DestroyUnit(eUnitObj);
+            photonView.RPC("DecoySituationCall", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y);
             EnemyTurn();
         }
 
@@ -831,6 +832,24 @@ public class MultiplayerGameBoard : MonoBehaviour
             StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.gameObject.transform.position.y, true));
             photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, true);
         }
+    }
+
+
+    [PunRPC]
+    public void DecoySituationCall(float x, float y, float xe, float ye)
+    {
+        timer.ResetTimer();
+        x = width - x - 1;
+        y = height - y - 1;
+        xe = width - xe - 1;
+        ye = height - ye - 1;
+
+        MultiplayerUnit myUnit = GetUnitAtPosition((int)x, (int)y);
+        MultiplayerEUnit enemyUnit = GetEnemyAtPosition((int)xe, (int)ye);
+
+        DestroyUnit(myUnit.gameObject);
+        DestroyUnit(enemyUnit.gameObject);
+
     }
 
     [PunRPC]
