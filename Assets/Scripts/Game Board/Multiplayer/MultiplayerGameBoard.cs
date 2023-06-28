@@ -563,6 +563,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             //     print("GameResult: Loose");
             //     PlayerPrefs.SetInt("GameResult", 0);
             // }
+            PhotonNetwork.LeaveRoom();
             GameResult();
             break;
         }
@@ -743,6 +744,7 @@ public class MultiplayerGameBoard : MonoBehaviour
                 {
                     gameWin = true;
                     NewStage();
+                    photonView.RPC("FlagFucked", RpcTarget.Others);
                 }
 
             }
@@ -776,6 +778,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             DestroyUnit(eUnitObj);
             gameWin = true;
             NewStage();
+            photonView.RPC("FlagFucked", RpcTarget.Others);
         }
 
         if(fUnit.type == "flag")
@@ -791,7 +794,6 @@ public class MultiplayerGameBoard : MonoBehaviour
             DeselectUnit();
             DestroyUnit(fUnitObj);
             DestroyUnit(eUnitObj);
-            photonView.RPC("DecoySituationCall", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y);
             EnemyTurn();
         }
 
@@ -807,7 +809,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         {
             AudioManager.Instance.UnitDeath();
             frameRPS.RegularRPS();
-            if(!eUnit.isOpen)
+            if(!fUnit.isOpen)
             {
                 eUnit.isOpen = true;
                 eUnit.ChangeType(eUnit.type);
@@ -834,22 +836,11 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
     }
 
-
     [PunRPC]
-    public void DecoySituationCall(float x, float y, float xe, float ye)
+    public void FlagFucked()
     {
-        timer.ResetTimer();
-        x = width - x - 1;
-        y = height - y - 1;
-        xe = width - xe - 1;
-        ye = height - ye - 1;
-
-        MultiplayerUnit myUnit = GetUnitAtPosition((int)x, (int)y);
-        MultiplayerEUnit enemyUnit = GetEnemyAtPosition((int)xe, (int)ye);
-
-        DestroyUnit(myUnit.gameObject);
-        DestroyUnit(enemyUnit.gameObject);
-
+        gameWin = false;
+        NewStage();
     }
 
     [PunRPC]
@@ -866,12 +857,11 @@ public class MultiplayerGameBoard : MonoBehaviour
             photonView.RPC("UpdateUnitType", RpcTarget.Others, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, myRPSpick, true);
             photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
 
-            myRPSpick = "empty";
-            enemyRPSpick = "empty";
-
             UnitFight();
-        }
 
+            enemyRPSpick = "empty";
+            myRPSpick = "empty";
+        }
     }
 
     [PunRPC]
@@ -903,10 +893,11 @@ public class MultiplayerGameBoard : MonoBehaviour
             photonView.RPC("UpdateUnitType", RpcTarget.Others, fUnit.gameObject.transform.position.x, fUnit.gameObject.transform.position.y, myRPSpick, true);
             photonView.RPC("UpdateUnitType", RpcTarget.Others, eUnit.gameObject.transform.position.x, eUnit.gameObject.transform.position.y, enemyRPSpick, false);
 
+            UnitFight();
+
             enemyRPSpick = "empty";
             myRPSpick = "empty";
 
-            UnitFight();
         }
     }
 
@@ -935,19 +926,14 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         if(!result)
         {
-            if(!myUnit.isOpen)
-            {
-                myUnit.isOpen = true;
-                myUnit.ChangeType(myUnit.type);
-            }
             DestroyUnit(enemyUnit.gameObject);
         }
          else if(result)
         {
             if(!enemyUnit.isOpen)
             {
-                enemyUnit.isOpen = true;
-                enemyUnit.ChangeType(enemyUnit.type);
+                eUnit.isOpen = true;
+                eUnit.ChangeType(eUnit.type);
             }
             DestroyUnit(myUnit.gameObject);
         }
