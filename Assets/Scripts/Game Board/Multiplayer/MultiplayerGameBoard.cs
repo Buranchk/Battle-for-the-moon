@@ -916,15 +916,20 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         if(!result)
         {
+            if(!myUnit.isOpen)
+            {
+                myUnit.isOpen = true;
+                myUnit.ChangeType(myUnit.type);
+            }
             DestroyUnit(enemyUnit.gameObject);
         }
          else if(result)
         {
-            // if(!enemyUnit.isOpen)
-            // {
-            //     enemyUnit.isOpen = true;
-            //     enemyUnit.ChangeType(enemyUnit.type);
-            // }
+            if(!enemyUnit.isOpen)
+            {
+                enemyUnit.isOpen = true;
+                enemyUnit.ChangeType(enemyUnit.type);
+            }
             DestroyUnit(myUnit.gameObject);
         }
         DeselectUnit();
