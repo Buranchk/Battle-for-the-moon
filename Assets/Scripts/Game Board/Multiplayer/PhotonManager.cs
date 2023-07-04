@@ -51,7 +51,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnCreatedRoom()
     {
         Debug.Log("Created room with name: "+ PhotonNetwork.CurrentRoom.Name);
-        //PhotonNetwork.LoadLevel("Multiplayer Game Board");
+        PhotonNetwork.LoadLevel("Multiplayer Game Board");
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -71,8 +71,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log ("You joined room: " + PhotonNetwork.CurrentRoom.Name );
-        //PhotonNetwork.LoadLevel("Multiplayer Game Board");
-        photonView.RPC("LoadScene", RpcTarget.All);
+        PhotonNetwork.LoadLevel("Multiplayer Game Board");
+        //photonView.RPC("LoadScene", RpcTarget.All);
 
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
@@ -88,7 +88,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnLeftRoom()
     {
         Debug.Log("You left room");
-        PhotonNetwork.LoadLevel("RoomConnecton");
     }
     [PunRPC]
     public void LoadScene()
