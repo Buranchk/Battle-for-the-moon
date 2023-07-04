@@ -13,6 +13,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] Room itemPrefab;
     [SerializeField] Transform content;
     private PhotonView photonView;
+    public GameObject roomContent;
     
 
     void Update()
@@ -24,7 +25,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.ConnectUsingSettings();
         photonView = GetComponent<PhotonView>();
-
+        roomContent.SetActive(true);
     }
 
     public override void OnConnectedToMaster()
