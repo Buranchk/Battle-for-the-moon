@@ -10,10 +10,22 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 {
     [SerializeField] string region;
     [SerializeField] public TMP_InputField roomName;
-    [SerializeField] Room itemPrefab;
-    [SerializeField] Transform content;
     private PhotonView photonView;
-    private bool readyCheck=false; 
+    private bool readyCheck=false;
+
+
+    public Transform buttonContainer; // The parent transform of the room buttons
+    public GameObject roomButtonPrefab; // Prefab for the room button
+
+    private List<RoomInfo> activeRooms = new List<RoomInfo>();
+
+
+    // [SerializeField] Room itemPrefab;
+    // [SerializeField] Transform content;
+
+
+
+    // Componets of UI that need to be shown/hide
     public GameObject roomContent;
     public GameObject scrollView;
 
@@ -38,7 +50,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
     }
 
-//Creates room with defined parametres
+ //Creates room with defined parametres
     public void CreateRoomButton()
     {
         RoomOptions roomOptions = new RoomOptions();
@@ -64,13 +76,46 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     
      public override void OnRoomListUpdate(List<RoomInfo> roomList)
      {
-         foreach (RoomInfo info in roomList)
-         {
-             Room listItem =Instantiate(itemPrefab, content);
-             if(listItem != null)
-                 listItem.SetInfo(info);
-         }
+        activeRooms.Clear();
+        activeRooms.AddRange(roomList);
+        UpdateRoomListUI();
+
+        //  foreach (RoomInfo info in roomList)
+        //  {
+        //      Room listItem =Instantiate(itemPrefab, content);
+        //      if(listItem != null)
+        //          listItem.SetInfo(info);
+        //}
      }
+
+    private void UpdateRoomListUI()
+    {
+        // Clear existing buttons
+        foreach (Transform child in buttonContainer)
+        {
+            Destroy(child.gameObject);
+        }
+
+        // Instantiate buttons for each active room
+        foreach (RoomInfo room in activeRooms)
+        {
+            GameObject button = Instantiate(roomButtonPrefab, buttonContainer);
+            Button roomButton = button.GetComponent<Button>();
+
+            // Set button label to room name and number of players
+            roomButton.GetComponentInChildren<Text>().text = $"{room.Name}";
+
+            // Add a click event to join the room
+            roomButton.onClick.AddListener(() => JoinRoom(room.Name));
+        }
+    }
+
+    private void JoinRoom(string roomName)
+    {
+        PhotonNetwork.JoinRoom(roomName);
+    }
+
+
 
     public override void OnJoinedRoom()
     {
@@ -122,5 +167,5 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         readyCheck=true;
         return readyCheck;
     }
-
 }
+
