@@ -160,6 +160,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public void LoadScene()
     {
         PhotonNetwork.LoadLevel("Multiplayer Game Board");
+        AudioMusic.Instance.GameMusic();
+
     }
     [PunRPC]
     public bool Ready()

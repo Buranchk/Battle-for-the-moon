@@ -954,9 +954,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerAudio: {fileID: 0}
   soundVolume: 0.5
-  mainMenuMusic: {fileID: 8300000, guid: 30510a35bfd53435e9963c3a7594417b, type: 3}
-  ambientMusic: {fileID: 8300000, guid: bb32fbe58e3904a5d94ef8995c7d5570, type: 3}
-  gameMusic: {fileID: 8300000, guid: 3d472c788bcb94841ad65e6ddcdbc28f, type: 3}
+  mainMenuMusic: {fileID: 8300000, guid: 3d472c788bcb94841ad65e6ddcdbc28f, type: 3}
+  ambientMusic: {fileID: 8300000, guid: 30510a35bfd53435e9963c3a7594417b, type: 3}
+  gameMusic: {fileID: 8300000, guid: bb32fbe58e3904a5d94ef8995c7d5570, type: 3}
 --- !u!4 &1605332723
 Transform:
   m_ObjectHideFlags: 0
