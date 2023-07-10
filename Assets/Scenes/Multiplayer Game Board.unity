@@ -541,6 +541,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 191051885}
+        m_TargetAssemblyTypeName: ButtonScript, Assembly-CSharp
+        m_MethodName: ExitButton
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &220658151
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15099,7 +15111,6 @@ MonoBehaviour:
   selectedUnit: {fileID: 0}
   eUnit: {fileID: 0}
   fUnit: {fileID: 0}
-  turn: 0
   suggestSystem: 0
   gameStage: 0
   units: []
@@ -15124,6 +15135,8 @@ MonoBehaviour:
   UnitFlag: {fileID: 963574535}
   buttonDoneActive: {fileID: 21300000, guid: 6aed7ff1d81415b4f8d29b222a4365a6, type: 3}
   buttonDoneInactive: {fileID: 21300000, guid: c12b66a6ff2518149ab3bad048337159, type: 3}
+  myRPSpick: empty
+  enemyRPSpick: empty
   tweens: {fileID: 1393290597}
   timer: {fileID: 63470580}
 --- !u!114 &1831445208

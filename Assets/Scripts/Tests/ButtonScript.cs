@@ -1,5 +1,6 @@
 
 using UnityEngine;
+using Photon.Pun;
 
 public class ButtonScript : MonoBehaviour
 {
@@ -32,4 +33,9 @@ public class ButtonScript : MonoBehaviour
         AudioManager.Instance.Mutebutton();
         AudioMusic.Instance.Mutebutton();
     }
+    public void ExitButton()
+    {
+        PhotonNetwork.LeaveRoom();
+    }
+
 }

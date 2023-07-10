@@ -103,7 +103,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             Button roomButton = button.GetComponent<Button>();
 
             // Set button label to room name and number of players
-            roomButton.GetComponentInChildren<Text>().text = $"{room.Name}";
+            roomButton.GetComponentInChildren<TMP_Text>().text = $"{room.Name} ({room.PlayerCount}/{room.MaxPlayers})";
 
             // Add a click event to join the room
             roomButton.onClick.AddListener(() => JoinRoom(room.Name));
