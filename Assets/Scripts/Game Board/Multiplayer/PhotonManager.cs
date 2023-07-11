@@ -19,15 +19,22 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     private List<RoomInfo> activeRooms = new List<RoomInfo>();
 
-
-    // [SerializeField] Room itemPrefab;
-    // [SerializeField] Transform content;
-
-
-
     // Componets of UI that need to be shown/hide
     public GameObject roomContent;
-    public GameObject scrollView;
+    public GameObject roomList;
+
+    public GameObject roomNameSpace;
+    public GameObject LoadingHead;
+    public GameObject enemyLoadingIcon;
+    public GameObject loadingIcon;
+    public GameObject readyIcon;
+    public GameObject enemyReadyIcon;
+    [SerializeField] string nickName;
+    [SerializeField] string enemyNickName;
+
+    public LobbyHelper helper;
+
+
 
 
     
@@ -66,6 +73,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     }
     public override void OnCreatedRoom()
     {
+        helper.RoomInit();
         Debug.Log("Created room with name: "+ PhotonNetwork.CurrentRoom.Name);
         //PhotonNetwork.LoadLevel("Multiplayer Game Board");
     }
@@ -79,14 +87,36 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         activeRooms.Clear();
         activeRooms.AddRange(roomList);
         UpdateRoomListUI();
-
-        //  foreach (RoomInfo info in roomList)
-        //  {
-        //      Room listItem =Instantiate(itemPrefab, content);
-        //      if(listItem != null)
-        //          listItem.SetInfo(info);
-        //}
      }
+    public override void OnPlayerEnteredRoom(Player newPlayer)
+    {
+        // Check if the room is full
+        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers )
+        {
+            photonView.RPC("EnemyJoin", RpcTarget.All);
+            RemoveRoom(PhotonNetwork.CurrentRoom.Name);
+            UpdateRoomListUI();
+        }
+
+    }
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        UpdateRoomListUI();
+    }
+
+
+private void RemoveRoom(string roomName)
+{
+    Debug.Log (roomName);
+    RoomInfo roomToRemove = activeRooms.Find(room => room.Name == roomName);
+    if (roomToRemove != null)
+    {
+        activeRooms.Remove(roomToRemove);
+        Debug.Log(roomName+"Room has been removed from list");
+    }
+    else
+        Debug.Log("roomToRemove is null");
+}
 
     private void UpdateRoomListUI()
     {
@@ -108,11 +138,16 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             // Add a click event to join the room
             roomButton.onClick.AddListener(() => JoinRoom(room.Name));
         }
+        Debug.Log("RoomList UI has been updated");
     }
+
+    
 
     private void JoinRoom(string roomName)
     {
-        PhotonNetwork.JoinRoom(roomName);
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers =2;
+        PhotonNetwork.JoinOrCreateRoom (roomName, roomOptions, TypedLobby.Default);
     }
 
 
@@ -120,36 +155,55 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnJoinedRoom()
     {
         Debug.Log ("You joined room: " + PhotonNetwork.CurrentRoom.Name );
-        scrollView.SetActive(false);
+        //helper.RoomConnect();
         roomContent.SetActive(true);
+        roomList.SetActive(false);
+        // if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers )
+        // {
+        //     Debug.Log("Helper - help!");
+        //     helper.RoomConnect();
+        // }
+        roomNameSpace.GetComponent<TMP_Text>().text= PhotonNetwork.CurrentRoom.Name;
+
+        //photonView.RPC("EnemyJoined", RpcTarget.OthersBuffered);
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
         Debug.Log("Failed to join room " + roomName.text);
     }
 
-    public void ExitButton()
+    public void LeaveRoomButton()
     {
         PhotonNetwork.LeaveRoom();
-        scrollView.SetActive(true);
+        roomList.SetActive(true);
         roomContent.SetActive(false);
+    }
+    public void ExitLobbyButton()
+    {
+        PhotonNetwork.LeaveLobby();
     }
 
     public override void OnLeftRoom()
     {
         Debug.Log("You left room");
     }
+    
+    //starts game if both player are ready
     public void StartGame()
     {
+        helper.UserIsReady();
+
         if(readyCheck)
         {
             readyCheck = false;
-            photonView.RPC("LoadScene", RpcTarget.All);
+            photonView.RPC("LoadScene", RpcTarget.All); //stars match if another player sent true value of readyCheck
         }
         else
         {
-            photonView.RPC("Ready", RpcTarget.Others);
+            photonView.RPC("Ready", RpcTarget.Others);  //sets value of readyCheck to true for another palyer
         }
+        loadingIcon.SetActive(false);
+        readyIcon.SetActive(true);
         Debug.Log ("You are ready");
     }
     [PunRPC]
@@ -162,8 +216,29 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public bool Ready()
     {
+        helper.EnemyIsReady();
         readyCheck=true;
         return readyCheck;
     }
+    [PunRPC]
+    public void EnemyJoin()
+    {
+        helper.RoomInit();
+        helper.RoomConnect();
+        Debug.Log("Helper - help!");
+        // //EnemyIcon.SetActive(true);
+        // LoadingHead.SetActive(false);
+        // enemyLoadingIcon.SetActive(true);
+        // enemyNickName = PhotonNetwork.NickName;
+    }
+    //     [PunRPC]
+    // public void EnemyLeft()
+    // {
+    //     //EnemyIcon.SetActive(false);
+    //     LoadingHead.SetActive(true);
+    //     enemyLoadingIcon.SetActive(false);
+    //     enemyNickName = null;
+    // }
+
 }
 

@@ -3297,7 +3297,16 @@ MonoBehaviour:
   buttonContainer: {fileID: 690056374}
   roomButtonPrefab: {fileID: 3509524954529318239, guid: 5e6f8375eeb31154d9ff02cacdb220ed, type: 3}
   roomContent: {fileID: 1804056696}
-  scrollView: {fileID: 1383571203}
+  roomList: {fileID: 664813899}
+  roomNameSpace: {fileID: 0}
+  LoadingHead: {fileID: 0}
+  enemyLoadingIcon: {fileID: 0}
+  loadingIcon: {fileID: 0}
+  readyIcon: {fileID: 0}
+  enemyReadyIcon: {fileID: 0}
+  nickName: 
+  enemyNickName: 
+  helper: {fileID: 712780207}
 --- !u!4 &1584616222
 Transform:
   m_ObjectHideFlags: 0
@@ -3788,9 +3797,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1265165997}
-        m_TargetAssemblyTypeName: ButtonScript, Assembly-CSharp
-        m_MethodName: ExitButton
+      - m_Target: {fileID: 150859311}
+        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
+        m_MethodName: LoadMainMenu
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3800,9 +3809,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 150859311}
-        m_TargetAssemblyTypeName: SceneLoader, Assembly-CSharp
-        m_MethodName: LoadMainMenu
+      - m_Target: {fileID: 1584616221}
+        m_TargetAssemblyTypeName: PhotonManager, Assembly-CSharp
+        m_MethodName: ExitLobbyButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
