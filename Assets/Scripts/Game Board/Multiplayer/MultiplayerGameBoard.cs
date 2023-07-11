@@ -500,8 +500,8 @@ public class MultiplayerGameBoard : MonoBehaviour
             case 1:
             UnitFlag.SetActive(true);
             flagText.SetActive(true);
-            tweens.AppearScale(flagText);
             tweens.AppearScale(UnitFlag);
+            tweens.AppearScaleDelay(buttonDone);
             setDoneInactive();
             break;
 
@@ -510,7 +510,6 @@ public class MultiplayerGameBoard : MonoBehaviour
             flagText.SetActive(false);
             UnitDecoy.SetActive(true);
             decoyText.SetActive(true);
-            tweens.AppearScale(decoyText);
             tweens.AppearScale(UnitDecoy);
             setDoneInactive();
             ApplyUnitSelection("Flag");
@@ -521,7 +520,6 @@ public class MultiplayerGameBoard : MonoBehaviour
             UnitDecoy.SetActive(false);
             decoyText.SetActive(false);
             reshuffleText.SetActive(true);
-            tweens.AppearScale(reshuffleText);
             tweens.AppearScale(arrowShuffle);
             
             buttonShuffle.SetActive(true);

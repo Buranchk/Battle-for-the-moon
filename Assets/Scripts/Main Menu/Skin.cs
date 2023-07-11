@@ -87,6 +87,7 @@ public class Skin : MonoBehaviour
         case 0:
         //mid to RIGHT
         SkinMove(3.362528f, -0.4885723f, 1.0f, 1.4f);
+        SkinDarken(1);
         // gameObject.transform.position = new Vector3(3.362527f, -0.4885723f, 1);
         // gameObject.transform.localScale = new Vector3(0.8621865f, 0.8621865f, 0.8621865f);
         break;
@@ -94,6 +95,7 @@ public class Skin : MonoBehaviour
         case 1:
         //right to BACK
         SkinMove(0.0f, -0.4885723f, 3.0f, 1f);
+        SkinDarken(2);
         // gameObject.transform.position = new Vector3(0.4885723f, -0.4885723f, 3);
         // gameObject.transform.localScale = new Vector3(0.574791f, 0.574791f, 0.574791f);
         break;
@@ -101,6 +103,7 @@ public class Skin : MonoBehaviour
         case 2:
         //back to LEFT
         SkinMove(-3.362528f, -0.4885723f, 1.0f, 1.4f);
+        SkinDarken(1);
         // gameObject.transform.position = new Vector3(-2.385383f, -0.4885723f, 1);
         // gameObject.transform.localScale = new Vector3(0.8621865f, 0.8621865f, 0.8621865f);
         break;
@@ -108,6 +111,7 @@ public class Skin : MonoBehaviour
         case 3:
         //left to MID
         SkinMove(0.0f, -0.4885723f, 0.0f, 1.8f);
+        SkinDarken(0);
         // gameObject.transform.position = new Vector3(0.4885723f, -0.4885723f, 0);
         // gameObject.transform.localScale = new Vector3(1.149582f, 1.149582f, 1.149582f);
         break;
@@ -123,6 +127,7 @@ public class Skin : MonoBehaviour
         case 0:
         //mid to left
         SkinMove(-3.362528f, -0.4885723f, 1f, 1.4f);
+        SkinDarken(1);
         // gameObject.transform.position = new Vector3(-2.385383f, -0.4885723f, 1);
         // gameObject.transform.localScale = new Vector3(0.8621865f, 0.8621865f, 0.8621865f);
         break;
@@ -130,6 +135,7 @@ public class Skin : MonoBehaviour
         case 1:
         //right to mid
         SkinMove(0.0f, -0.4885723f, 0f, 1.8f);
+        SkinDarken(0);
         // gameObject.transform.position = new Vector3(0.4885723f, -0.4885723f, 0);
         // gameObject.transform.localScale = new Vector3(1.149582f, 1.149582f, 1.149582f);
         break;
@@ -137,6 +143,7 @@ public class Skin : MonoBehaviour
         case 2:
         //back to right
         SkinMove(3.362528f, -0.4885723f, 1f, 1.4f);
+        SkinDarken(1);
         // gameObject.transform.position = new Vector3(3.362527f, -0.4885723f, 1);
         // gameObject.transform.localScale = new Vector3(0.8621865f, 0.8621865f, 0.8621865f);
         break;
@@ -144,6 +151,7 @@ public class Skin : MonoBehaviour
         case 3:
         //left to back
         SkinMove(0.0f, -0.4885723f, 3f, 1f);
+        SkinDarken(2);
         // gameObject.transform.position = new Vector3(0.4885723f, -0.4885723f, 3);
         // gameObject.transform.localScale = new Vector3(0.574791f, 0.574791f, 0.574791f);
         break;
@@ -156,6 +164,17 @@ public class Skin : MonoBehaviour
         LeanTween.move(MySelf, new Vector3(xPos, yPos, zPos), 0.4f).setEaseInOutQuint();
         LeanTween.scale(MySelf, new Vector2(allScale, allScale), 0.4f).setEaseInOutQuint();
         AudioManager.Instance.AirWhistleSoundFX();
+    }
+
+    public void SkinDarken(int intencity)
+    {
+        GameObject MySelf = gameObject;
+        if(intencity == 0)
+            LeanTween.color(MySelf, Color.white, 0.4f).setEaseInOutQuint();
+        else if (intencity == 1)
+            LeanTween.color(MySelf, Color.grey, 0.4f).setEaseInOutQuint();
+        else if (intencity == 2)
+            LeanTween.color(MySelf, Color.black, 0.4f).setEaseInOutQuint();
     }
 
 }

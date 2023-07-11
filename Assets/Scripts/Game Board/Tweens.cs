@@ -49,6 +49,20 @@ public class Tweens : MonoBehaviour
         LeanTween.scale(item, new Vector2(1.1f, 1.1f), 0.25f).setEaseOutCirc().setLoopPingPong(1);
     }
 
+    public void AppearScaleDelay(GameObject item)
+    {
+        StartCoroutine(ActivateAfterDelay(0.4f, item));
+        LeanTween.scale(item, new Vector2(0.8f, 0.8f), 0.25f).setEaseOutCirc().setDelay(0.4f).setLoopPingPong(1);
+    }
+
+
+
+    IEnumerator ActivateAfterDelay(float delay, GameObject item)
+    {
+        yield return new WaitForSeconds(delay);
+        item.SetActive(true);
+    }
+
     public void ScaleDownDisappear(GameObject item)
     {
         LeanTween.scale(item, new Vector2(0f, 0f), 0.1f).setEaseInCirc().setOnComplete(() =>
