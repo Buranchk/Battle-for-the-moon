@@ -3298,7 +3298,7 @@ MonoBehaviour:
   roomButtonPrefab: {fileID: 3509524954529318239, guid: 5e6f8375eeb31154d9ff02cacdb220ed, type: 3}
   roomContent: {fileID: 1804056696}
   roomList: {fileID: 664813899}
-  roomNameSpace: {fileID: 0}
+  roomNameSpace: {fileID: 516870706}
   LoadingHead: {fileID: 0}
   enemyLoadingIcon: {fileID: 0}
   loadingIcon: {fileID: 0}

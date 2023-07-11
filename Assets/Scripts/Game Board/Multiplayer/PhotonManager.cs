@@ -24,19 +24,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public GameObject roomList;
 
     public GameObject roomNameSpace;
-    public GameObject LoadingHead;
-    public GameObject enemyLoadingIcon;
-    public GameObject loadingIcon;
-    public GameObject readyIcon;
-    public GameObject enemyReadyIcon;
-    [SerializeField] string nickName;
+
     [SerializeField] string enemyNickName;
-
     public LobbyHelper helper;
-
-
-
-
     
 
     void Update()
@@ -202,8 +192,6 @@ private void RemoveRoom(string roomName)
         {
             photonView.RPC("Ready", RpcTarget.Others);  //sets value of readyCheck to true for another palyer
         }
-        loadingIcon.SetActive(false);
-        readyIcon.SetActive(true);
         Debug.Log ("You are ready");
     }
     [PunRPC]
@@ -226,19 +214,8 @@ private void RemoveRoom(string roomName)
         helper.RoomInit();
         helper.RoomConnect();
         Debug.Log("Helper - help!");
-        // //EnemyIcon.SetActive(true);
-        // LoadingHead.SetActive(false);
-        // enemyLoadingIcon.SetActive(true);
-        // enemyNickName = PhotonNetwork.NickName;
     }
-    //     [PunRPC]
-    // public void EnemyLeft()
-    // {
-    //     //EnemyIcon.SetActive(false);
-    //     LoadingHead.SetActive(true);
-    //     enemyLoadingIcon.SetActive(false);
-    //     enemyNickName = null;
-    // }
+
 
 }
 
