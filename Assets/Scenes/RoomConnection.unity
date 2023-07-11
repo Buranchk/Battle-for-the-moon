@@ -2452,7 +2452,7 @@ MonoBehaviour:
   XP: {fileID: 21300000, guid: a6ad069f4e05a914eb7c037e32439e4a, type: 3}
   Ruby: {fileID: 21300000, guid: 60451ff5fc1197f4cb1449618357ce80, type: 3}
   EnemyDark: {fileID: 21300000, guid: 499f6bbb04505974893157ae69c44420, type: 3}
-  EnemyBright: {fileID: 21300000, guid: 07fd843c9b8a8cf4d902330df47468f6, type: 3}
+  EnemyBright: {fileID: 21300000, guid: 2fbbe2364c065dc498ae7c91b84ae511, type: 3}
   soundIcon: {fileID: 409297329}
   noSoundIcon: {fileID: 1943244057}
   User: {fileID: 118758764}
