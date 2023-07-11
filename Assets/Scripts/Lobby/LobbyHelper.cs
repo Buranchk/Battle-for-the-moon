@@ -21,9 +21,9 @@ public class LobbyHelper : MonoBehaviour
     public GameObject noSoundIcon;
     public GameObject User;
     public GameObject Enemy;
-    public TextMeshProUGUI UserName;
-    public TextMeshProUGUI EnemyName;
-    public TextMeshProUGUI RoomName;
+    public GameObject UserName;
+    public GameObject EnemyName;
+    public GameObject RoomName;
 
 
     //NotAlways Active
@@ -102,13 +102,13 @@ public class LobbyHelper : MonoBehaviour
         Spin(LoadingHeadEnemy);
         Enemy.GetComponent<Image>().sprite = EnemyDark;
         SelectUserSkin();
-        UserName.text = DataMan.GetName();
-        // EnemyName.text =
-        // RoomName.text =
+        UserName.GetComponent<TMPro.TextMeshProUGUI>().text = DataMan.GetName();
+        // RoomName.GetComponent<TMPro.TextMeshProUGUI>().text =
     }
 
     public void RoomConnect()
     {
+        // EnemyName.GetComponent<TMPro.TextMeshProUGUI>().text =
         ReadyGo.SetActive(true);
         LoadingHeadEnemy.SetActive(false);
         Enemy.GetComponent<Image>().sprite = EnemyBright;
@@ -120,16 +120,26 @@ public class LobbyHelper : MonoBehaviour
         Spin(LoadingEnemy);
     }
 
-    public void UserReady()
+    public void EnemyDisconnect()
+    {
+        CloseActives();
+        RoomInit();
+    }
+
+    public void UserIsReady()
     {
         LoadingUser.SetActive(false);
         FastAppear(ReadyUser);
+
+        //Send RPC
     }
 
-    public void EnemyReady()
+    public void EnemyIsReady()
     {
         LoadingEnemy.SetActive(false);
         FastAppear(ReadyEnemy);
+
+        //Recive RPC
     }
 
     public void CloseActives()
@@ -142,6 +152,9 @@ public class LobbyHelper : MonoBehaviour
         StatusEnemyCircle.SetActive(false);
         LoadingEnemy.SetActive(false);
         ReadyEnemy.SetActive(false);
+
+        RoomName.GetComponent<TMPro.TextMeshProUGUI>().text = "";
+        EnemyName.GetComponent<TMPro.TextMeshProUGUI>().text = "";
     }
 
     public void Spin(GameObject Loading)

@@ -2445,9 +2445,9 @@ MonoBehaviour:
   noSoundIcon: {fileID: 1943244057}
   User: {fileID: 118758764}
   Enemy: {fileID: 354890698}
-  UserName: {fileID: 0}
-  EnemyName: {fileID: 0}
-  RoomName: {fileID: 0}
+  UserName: {fileID: 266124164}
+  EnemyName: {fileID: 2077343963}
+  RoomName: {fileID: 516870706}
   LoadingHeadEnemy: {fileID: 1858911994}
   ReadyGo: {fileID: 85889666}
   StatusUserCircle: {fileID: 159758863}
