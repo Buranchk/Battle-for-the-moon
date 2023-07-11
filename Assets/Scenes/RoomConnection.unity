@@ -417,7 +417,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1816594157}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999833
+  m_Size: 0.9999976
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -1446,7 +1446,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0.000008015481}
+  m_AnchoredPosition: {x: 0, y: 0.00006971282}
   m_SizeDelta: {x: 0, y: 121.84}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &690056375
@@ -2085,7 +2085,7 @@ MonoBehaviour:
   roomName: {fileID: 420877233}
   buttonContainer: {fileID: 690056374}
   roomButtonPrefab: {fileID: 3509524954529318239, guid: 5e6f8375eeb31154d9ff02cacdb220ed, type: 3}
-  roomContent: {fileID: 0}
+  roomContent: {fileID: 1804056696}
   scrollView: {fileID: 1383571203}
 --- !u!4 &1584616222
 Transform:

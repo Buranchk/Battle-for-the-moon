@@ -122,10 +122,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         Debug.Log ("You joined room: " + PhotonNetwork.CurrentRoom.Name );
         scrollView.SetActive(false);
         roomContent.SetActive(true);
-
-        //PhotonNetwork.LoadLevel("Multiplayer Game Board");
-        //photonView.RPC("LoadScene", RpcTarget.All);
-
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
