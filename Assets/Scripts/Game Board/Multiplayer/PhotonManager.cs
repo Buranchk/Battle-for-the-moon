@@ -92,7 +92,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         UpdateRoomListUI();
-        photonView.RPC("OpponentLeftRoom", RpcTarget.Others);
     }
 
     [PunRPC]
@@ -181,6 +180,7 @@ private void RemoveRoom(string roomName)
 
     public override void OnLeftRoom()
     {
+        photonView.RPC("OpponentLeftRoom", RpcTarget.Others);
         Debug.Log("You left room");
     }
     

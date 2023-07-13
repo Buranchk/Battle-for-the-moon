@@ -46,7 +46,7 @@ public class SceneLoader : MonoBehaviour
     public void LoadConnectRoom()
     {
         if(!PhotonNetwork.InLobby)
-        PhotonNetwork.JoinLobby();
+        PhotonNetwork.Disconnect();
         DataManager dataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         if(dataMan.GetPower() >= 20)
         {
