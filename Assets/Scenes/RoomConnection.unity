@@ -3214,7 +3214,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 1584616221}
         m_TargetAssemblyTypeName: PhotonManager, Assembly-CSharp
-        m_MethodName: ExitButton
+        m_MethodName: LeaveRoomButton
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -93,11 +93,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         //UpdateRoomListUI();
     }
 
-    [PunRPC]
-    public void OpponentLeftRoom()
-    {
-        helper.RoomInit();
-    }
 
     private void UpdateRoomListUI()
     {
@@ -124,12 +119,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     
 
-    private void JoinRoom(string roomName)
+    private void JoinRoom(string nameOfExistingRoom)
     {
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers =2;
-        //PhotonNetwork.JoinOrCreateRoom (roomName, roomOptions, TypedLobby.Default);
-        PhotonNetwork.JoinRoom(roomName);
+        PhotonNetwork.JoinOrCreateRoom (nameOfExistingRoom, roomOptions, TypedLobby.Default);
+        //PhotonNetwork.JoinRoom(nameOfExistingRoom);
     }
 
 
@@ -148,10 +143,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoomButton()
     {
+        photonView.RPC("OpponentLeftRoom", RpcTarget.Others);
         PhotonNetwork.LeaveRoom();
         roomList.SetActive(true);
         roomContent.SetActive(false);
     }
+    [PunRPC]
+    public void OpponentLeftRoom()
+    {
+
+        helper.RoomInit();
+        Debug.Log("RPC OpponentLeftRoom was sent");
+    }
+
     public void ExitLobbyButton()
     {
         //PhotonNetwork.LeaveLobby();
@@ -159,7 +163,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        photonView.RPC("OpponentLeftRoom", RpcTarget.Others);
         Debug.Log("You left room");
     }
     
@@ -198,7 +201,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         helper.RoomInit();
         helper.RoomConnect();
-        Debug.Log("Helper - help!");
+        Debug.Log("Enemy joined room!");
     }
 
 
