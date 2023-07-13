@@ -84,13 +84,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers )
         {
             photonView.RPC("EnemyJoin", RpcTarget.All);
-            UpdateRoomListUI();
+            //UpdateRoomListUI();
         }
 
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        UpdateRoomListUI();
+        //UpdateRoomListUI();
     }
 
     [PunRPC]
