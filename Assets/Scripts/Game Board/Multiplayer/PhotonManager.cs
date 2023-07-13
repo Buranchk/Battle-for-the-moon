@@ -92,8 +92,14 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         UpdateRoomListUI();
+        photonView.RPC("OpponentLeftRoom", RpcTarget.Others);
     }
 
+    [PunRPC]
+    public void OpponentLeftRoom()
+    {
+        helper.RoomInit();
+    }
 
 private void RemoveRoom(string roomName)
 {
@@ -215,6 +221,8 @@ private void RemoveRoom(string roomName)
         helper.RoomConnect();
         Debug.Log("Helper - help!");
     }
+
+
 
 
 }
