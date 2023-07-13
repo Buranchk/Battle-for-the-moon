@@ -153,7 +153,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     }
     public void ExitLobbyButton()
     {
-        PhotonNetwork.LeaveLobby();
+        //PhotonNetwork.LeaveLobby();
     }
 
     public override void OnLeftRoom()
