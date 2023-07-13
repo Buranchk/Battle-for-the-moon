@@ -84,7 +84,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers )
         {
             photonView.RPC("EnemyJoin", RpcTarget.All);
-            RemoveRoom(PhotonNetwork.CurrentRoom.Name);
             UpdateRoomListUI();
         }
 
@@ -99,19 +98,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         helper.RoomInit();
     }
-
-private void RemoveRoom(string roomName)
-{
-    Debug.Log (roomName);
-    RoomInfo roomToRemove = activeRooms.Find(room => room.Name == roomName);
-    if (roomToRemove != null)
-    {
-        activeRooms.Remove(roomToRemove);
-        Debug.Log(roomName+"Room has been removed from list");
-    }
-    else
-        Debug.Log("roomToRemove is null");
-}
 
     private void UpdateRoomListUI()
     {
@@ -150,17 +136,9 @@ private void RemoveRoom(string roomName)
     public override void OnJoinedRoom()
     {
         Debug.Log ("You joined room: " + PhotonNetwork.CurrentRoom.Name );
-        //helper.RoomConnect();
         roomContent.SetActive(true);
         roomList.SetActive(false);
-        // if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers )
-        // {
-        //     Debug.Log("Helper - help!");
-        //     helper.RoomConnect();
-        // }
         roomNameSpace.GetComponent<TMP_Text>().text= PhotonNetwork.CurrentRoom.Name;
-
-        //photonView.RPC("EnemyJoined", RpcTarget.OthersBuffered);
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
