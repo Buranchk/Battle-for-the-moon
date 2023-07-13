@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Photon.Pun;
 
 public class SceneLoader : MonoBehaviour
 {
@@ -44,6 +45,8 @@ public class SceneLoader : MonoBehaviour
 
     public void LoadConnectRoom()
     {
+        if(!PhotonNetwork.InLobby)
+        PhotonNetwork.JoinLobby();
         DataManager dataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         if(dataMan.GetPower() >= 20)
         {
