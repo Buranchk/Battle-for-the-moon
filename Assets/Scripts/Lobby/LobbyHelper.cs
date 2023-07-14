@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using Photon.Pun;
+
 
 
 public class LobbyHelper : MonoBehaviour
@@ -38,6 +40,9 @@ public class LobbyHelper : MonoBehaviour
 
     //DataMan
     private DataManager DataMan;
+
+    //References to Photon Manager
+    public string roomNameUI;
 
     void Start()
     {
@@ -103,7 +108,7 @@ public class LobbyHelper : MonoBehaviour
         Enemy.GetComponent<Image>().sprite = EnemyDark;
         SelectUserSkin();
         UserName.GetComponent<TMPro.TextMeshProUGUI>().text = DataMan.GetName();
-        // RoomName.GetComponent<TMPro.TextMeshProUGUI>().text =
+        RoomName.GetComponent<TMP_Text>().text= roomNameUI;
     }
 
     public void RoomConnect()

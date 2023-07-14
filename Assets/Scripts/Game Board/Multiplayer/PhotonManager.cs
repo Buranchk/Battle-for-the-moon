@@ -26,8 +26,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public GameObject roomNameSpace;
 
     [SerializeField] string enemyNickName;
-    public LobbyHelper helper;
-    
+
+    public LobbyHelper helper;    
 
     void Update()
     {
@@ -53,6 +53,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         RoomOptions roomOptions = new RoomOptions();
         roomOptions.MaxPlayers =2;
         PhotonNetwork.CreateRoom(roomName.text, roomOptions, TypedLobby.Default );
+        roomContent.SetActive(true);
         
     }
     
@@ -109,7 +110,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             Button roomButton = button.GetComponent<Button>();
 
             // Set button label to room name and number of players
-            roomButton.GetComponentInChildren<TMP_Text>().text = $"{room.Name} ({room.PlayerCount}/{room.MaxPlayers})";
+            roomButton.GetComponentInChildren<TMP_Text>().text = room.Name;
 
             // Add a click event to join the room
             roomButton.onClick.AddListener(() => JoinRoom(room.Name));
@@ -131,10 +132,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        string roomNameUI = PhotonNetwork.CurrentRoom.Name;
+        helper.roomNameUI = roomNameUI;
         Debug.Log ("You joined room: " + PhotonNetwork.CurrentRoom.Name );
         roomContent.SetActive(true);
         roomList.SetActive(false);
-        roomNameSpace.GetComponent<TMP_Text>().text= PhotonNetwork.CurrentRoom.Name;
+        roomNameSpace.GetComponent<TMP_Text>().text= roomNameUI;
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
@@ -151,18 +154,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void OpponentLeftRoom()
     {
-
+        readyCheck=false;
         helper.RoomInit();
         Debug.Log("RPC OpponentLeftRoom was sent");
     }
 
     public void ExitLobbyButton()
     {
-        //PhotonNetwork.LeaveLobby();
+        PhotonNetwork.LeaveRoom();
     }
 
     public override void OnLeftRoom()
     {
+        readyCheck=false;
         Debug.Log("You left room");
     }
     
@@ -196,6 +200,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         readyCheck=true;
         return readyCheck;
     }
+    public bool NotReady()
+    {
+        return readyCheck;
+    }
+
     [PunRPC]
     public void EnemyJoin()
     {
