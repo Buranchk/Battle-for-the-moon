@@ -43,6 +43,8 @@ public class LobbyHelper : MonoBehaviour
 
     //References to Photon Manager
     public string roomNameUI;
+    public string enemyNamePM;
+
 
     void Start()
     {
@@ -113,7 +115,7 @@ public class LobbyHelper : MonoBehaviour
 
     public void RoomConnect()
     {
-        // EnemyName.GetComponent<TMPro.TextMeshProUGUI>().text =
+        EnemyName.GetComponent<TMPro.TextMeshProUGUI>().text = enemyNamePM;
         ReadyGo.SetActive(true);
         LoadingHeadEnemy.SetActive(false);
         Enemy.GetComponent<Image>().sprite = EnemyBright;

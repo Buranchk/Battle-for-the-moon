@@ -11,6 +11,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] string region;
     [SerializeField] public TMP_InputField roomName;
     private PhotonView photonView;
+    private DataManager DataMan;
     private bool readyCheck=false;
 
 
@@ -34,8 +35,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     } 
 
-    void Start()
+    void Awake()
     {
+        DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         PhotonNetwork.ConnectUsingSettings();
         photonView = GetComponent<PhotonView>();
     }
@@ -46,6 +48,23 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if(!PhotonNetwork.InLobby)
         PhotonNetwork.JoinLobby();
     }
+
+    // public static PhotonManager Instance;
+
+    // private void Awake()
+    // {
+    //     if (Instance == null)
+    //     {
+    //         Instance = this;
+    //         DontDestroyOnLoad(gameObject);
+    //     }
+    //     else
+    //     {
+    //         Destroy(gameObject);
+    //     }
+
+    // }
+
 
  //Creates room with defined parametres
     public void CreateRoomButton()
@@ -112,13 +131,33 @@ public class PhotonManager : MonoBehaviourPunCallbacks
             // Set button label to room name and number of players
             roomButton.GetComponentInChildren<TMP_Text>().text = room.Name;
 
+            //Set random color for room button
+            Color randomColor = GetRandomColor();
+            roomButton.image.color = randomColor;
+
+
+
             // Add a click event to join the room
             roomButton.onClick.AddListener(() => JoinRoom(room.Name));
         }
         Debug.Log("RoomList UI has been updated");
     }
 
-    
+    private Color GetRandomColor()
+    {
+        float r = Random.Range(0f, 1f);
+        float g = Random.Range(0f, 1f);
+        float b = Random.Range(0f, 1f);
+        return new Color(r, g, b);
+    }
+
+
+    public void RefreshRoomList()
+    {
+        if (PhotonNetwork.InLobby)
+        PhotonNetwork.LeaveLobby();
+        PhotonNetwork.JoinLobby();
+    }
 
     private void JoinRoom(string nameOfExistingRoom)
     {
@@ -132,12 +171,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        //Sets roomname in room UI
         string roomNameUI = PhotonNetwork.CurrentRoom.Name;
         helper.roomNameUI = roomNameUI;
+        roomNameSpace.GetComponent<TMP_Text>().text= roomNameUI;
+
         Debug.Log ("You joined room: " + PhotonNetwork.CurrentRoom.Name );
+
+        //Set room UI in active state
         roomContent.SetActive(true);
         roomList.SetActive(false);
-        roomNameSpace.GetComponent<TMP_Text>().text= roomNameUI;
+
+        //Sets enemy name for other player in LobbyHelper
+        photonView.RPC("SendNickName", RpcTarget.OthersBuffered);
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
@@ -161,6 +207,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public void ExitLobbyButton()
     {
+        photonView.RPC("OpponentLeftRoom", RpcTarget.Others);
         PhotonNetwork.LeaveRoom();
     }
 
@@ -212,6 +259,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         helper.RoomConnect();
         Debug.Log("Enemy joined room!");
     }
+
+    [PunRPC]
+    public void SendNickName()
+    {
+        helper.enemyNamePM = DataMan.GetName();
+    }
+
 
 
 
