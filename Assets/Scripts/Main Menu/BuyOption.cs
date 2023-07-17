@@ -63,8 +63,7 @@ public class BuyOption : MonoBehaviour
         } else 
         {
             ShowFail();
-            //show option for donating sum money
-
+            GameObject.Find("Scene loader").GetComponent<SceneLoader>().LoadShop();
         }
     }
 

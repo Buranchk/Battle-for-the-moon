@@ -14,6 +14,8 @@ public class Timer : MonoBehaviour
 
     private bool timeState = true;
 
+    public bool playTime = true;
+
     private void Start()
     {
         timeLeft = timerLength;
@@ -34,7 +36,7 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        if(timeLeft >= 0)
+        if(timeLeft >= 0 || playTime)
         {
             timeLeft -= Time.deltaTime; // Subtract the time since last frame from the time remaining on the timer
 
@@ -74,6 +76,11 @@ public class Timer : MonoBehaviour
         timerText.color = Color.white;
         timerText.rectTransform.localScale = new Vector3(1.0f, 1.0f, 1.0f);
         LeanTween.cancel(timerText.gameObject, false);
+    }
+
+    public void PlayTime(bool state)
+    {
+        playTime = state;
     }
 
     public void ResetTimer15()

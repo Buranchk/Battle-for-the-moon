@@ -162,6 +162,8 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
         photonView.RPC("EnemySpawn", RpcTarget.Others, GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin(), matrix);
         print("sent RPC prekols!!!!!!");
+        if(gameStage < 4)
+            timer.PlayTime(false);
     }
 
     private void SelectUnitSkin()
@@ -537,6 +539,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             buttonDone.SetActive(false);
             StartCoroutine(StartGameFX());
             timer.ResetTimer();
+            timer.PlayTime(true);
             break;
 
             case 5:
@@ -1117,6 +1120,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     {
             buttonDone.GetComponent<Button>().interactable = false;
             buttonDone.GetComponent<Image>().sprite = buttonDoneInactive;
+            buttonDone.SetActive(false);
     }
 
     public void setDoneActive()

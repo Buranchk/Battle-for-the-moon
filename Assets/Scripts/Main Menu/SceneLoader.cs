@@ -48,7 +48,6 @@ public class SceneLoader : MonoBehaviour
         DataManager dataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         if(dataMan.GetPower() >= 20)
         {
-            dataMan.TakePower();
             SceneManager.LoadScene("RoomConnection");
         }
         else 
