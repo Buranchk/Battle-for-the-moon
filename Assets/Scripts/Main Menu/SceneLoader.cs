@@ -23,13 +23,17 @@ public class SceneLoader : MonoBehaviour
     public void LoadGame()
     {
         DataManager dataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
-        if(dataMan.GetPower() >= 20)
+        if(dataMan.GetPremiumStatus())
+        {
+            SceneManager.LoadScene("Game Board");
+        }
+        else if(dataMan.GetPower() >= 20)
         {
             dataMan.TakePower();
             SceneManager.LoadScene("Game Board");
             AudioMusic.Instance.GameMusic();
         }
-        else 
+        else if (dataMan.GetPower() < 20)
         {
             GameObject.Find("PlayOption").SetActive(false);
             GameObject battery = GameObject.Find("Battery");

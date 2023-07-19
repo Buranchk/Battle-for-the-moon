@@ -237,7 +237,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public void LoadScene()
     {
         PhotonNetwork.LoadLevel("Multiplayer Game Board");
-        DataMan.TakePower();
+        if(!DataMan.GetPremiumStatus())
+            DataMan.TakePower();
         AudioMusic.Instance.GameMusic();
 
     }

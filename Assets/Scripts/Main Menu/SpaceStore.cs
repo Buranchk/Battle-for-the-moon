@@ -156,7 +156,21 @@ public class SpaceStore : MonoBehaviour
 
     public void MonyNoAd()
     {
-        //some function
+        if(!DataMan.GetPremiumStatus())
+        {
+            if(true)
+            {
+                DataMan.SetPrivelageStatus();
+                ButtonPress(buttonNoAds, true);
+                DataMan.FillEnergy();
+                StartCoroutine(FillEnergy());
+            }
+        }
+        else
+        {
+            ButtonPress(buttonNoAds, false);
+            print("you already paid, dumbass");
+        }
     }
 
     public void MoneyToRuby()

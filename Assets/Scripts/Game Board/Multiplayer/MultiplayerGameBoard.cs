@@ -500,21 +500,21 @@ public class MultiplayerGameBoard : MonoBehaviour
             break;
 
             case 1:
+            setDoneInactive();
             UnitFlag.SetActive(true);
             flagText.SetActive(true);
             tweens.AppearScale(UnitFlag);
             tweens.AppearScaleDelay(buttonDone);
             tweens.PulsatingRoundButton(buttonDone);
-            setDoneInactive();
             break;
 
             case 2:
+            setDoneInactive();
             UnitFlag.SetActive(false);
             flagText.SetActive(false);
             UnitDecoy.SetActive(true);
             decoyText.SetActive(true);
             tweens.AppearScale(UnitDecoy);
-            setDoneInactive();
             ApplyUnitSelection("Flag");
             timer.ResetTimer15();
             break;
@@ -1119,9 +1119,9 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void setDoneInactive()
     {
+            buttonDone.SetActive(false);
             buttonDone.GetComponent<Button>().interactable = false;
             buttonDone.GetComponent<Image>().sprite = buttonDoneInactive;
-            buttonDone.SetActive(false);
     }
 
     public void setDoneActive()

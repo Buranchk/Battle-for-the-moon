@@ -67,6 +67,7 @@ public class DataManager : MonoBehaviour
         save.skins = new List<bool>(){true, false, false, false};
         save.selectedSkin = 0;
         save.soundSwitcher = true;
+        save.NoAds = false;
         SaveChanges();
     }
 
@@ -130,6 +131,12 @@ public class DataManager : MonoBehaviour
     {
         LoadSave();
         return save.soundSwitcher;
+    }
+
+    public bool GetPremiumStatus()
+    {
+        LoadSave();
+        return save.NoAds;
     }
     
     
@@ -208,6 +215,12 @@ public class DataManager : MonoBehaviour
     public void SetSound(bool state)
     {
         save.soundSwitcher = state;
+        SaveChanges();
+    }
+
+    public void SetPrivelageStatus()
+    {
+        save.NoAds = true;
         SaveChanges();
     }
 
@@ -342,4 +355,7 @@ public class Save
 
     //settings
     public bool soundSwitcher;
+
+    //other
+    public bool NoAds;
 }
