@@ -45,10 +45,13 @@ public class LobbyHelper : MonoBehaviour
     public string roomNameUI;
     public string enemyNamePM;
 
+    public Tweens tweens;
+    
 
     void Start()
     {
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
+        tweens = GameObject.Find("Tweens").GetComponent<Tweens>();
         SoundSwitch();
         SoundSwitch();
     }
@@ -125,6 +128,7 @@ public class LobbyHelper : MonoBehaviour
         LoadingEnemy.SetActive(true);
         Spin(LoadingUser);
         Spin(LoadingEnemy);
+        tweens.PulsatingRoundButton(ReadyGo);
     }
 
     public void EnemyDisconnect()

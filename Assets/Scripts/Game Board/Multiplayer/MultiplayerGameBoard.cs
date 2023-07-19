@@ -504,6 +504,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             flagText.SetActive(true);
             tweens.AppearScale(UnitFlag);
             tweens.AppearScaleDelay(buttonDone);
+            tweens.PulsatingRoundButton(buttonDone);
             setDoneInactive();
             break;
 

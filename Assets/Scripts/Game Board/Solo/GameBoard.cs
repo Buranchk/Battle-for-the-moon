@@ -49,6 +49,8 @@ public class GameBoard : MonoBehaviour
     public Tweens tweens;
     public Timer timer;
 
+    public FingerScript fingerScript;
+
     public int gameStage = 0;
 
     //private
@@ -211,6 +213,7 @@ public class GameBoard : MonoBehaviour
             }
         }
         NewStage();
+        fingerScript.StartPointing(units);
     }
 
     private void SelectUnitSkin()
@@ -237,6 +240,7 @@ public class GameBoard : MonoBehaviour
 
     public void SetFlagDecoy(GameObject Unit)
     {
+        fingerScript.StopPointing();
         AudioManager.Instance.FlagDecoyAppereance();
         if(gameStage == 1)
         {
@@ -484,11 +488,11 @@ public class GameBoard : MonoBehaviour
             UnitFlag.SetActive(true);
             flagText.SetActive(true);
             tweens.AppearScale(UnitFlag);
-            tweens.AppearScaleDelay(buttonDone);
-            setDoneInactive();
+            tweens.PulsatingRoundButton(buttonDone);
             break;
 
             case 2:
+            fingerScript.StartPointing(units);
             UnitFlag.SetActive(false);
             flagText.SetActive(false);
             UnitDecoy.SetActive(true);
@@ -911,15 +915,16 @@ public class GameBoard : MonoBehaviour
 
     public void setDoneInactive()
     {
-            buttonDone.GetComponent<Button>().interactable = false;
-            buttonDone.GetComponent<Image>().sprite = buttonDoneInactive;
+        buttonDone.SetActive(false);
+        buttonDone.GetComponent<Button>().interactable = false;
+        buttonDone.GetComponent<Image>().sprite = buttonDoneInactive;
     }
 
     public void setDoneActive()
     {
         buttonDone.SetActive(true);
-        buttonDone.GetComponent<Image>().sprite = buttonDoneActive;
         buttonDone.GetComponent<Button>().interactable = true;
+        buttonDone.GetComponent<Image>().sprite = buttonDoneActive;
     }
 
 

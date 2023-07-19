@@ -10,7 +10,7 @@ public class Tweens : MonoBehaviour
     Vector3 positionPlace;
     GameObject RPSstate;
     public GameObject explosionPrefab;
-    
+
 
     public void MoveShake(GameObject item, Vector3 place)
     {
@@ -157,6 +157,13 @@ public class Tweens : MonoBehaviour
     {
         button.transform.localScale = Vector3.one * 0.5f;
         LeanTween.scale(button, Vector3.one * 0.7f, 0.2f).setEaseOutQuad();
+    }
+
+
+    public void PulsatingRoundButton(GameObject button)
+    {
+        Vector3 size = button.transform.localScale;
+        LeanTween.scale(button, size * 1.15f, 0.6f).setEaseOutQuad().setLoopPingPong();
     }
 
 }
