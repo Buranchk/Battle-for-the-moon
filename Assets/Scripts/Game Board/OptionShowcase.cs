@@ -11,24 +11,24 @@ public class OptionShowcase : MonoBehaviour
     public GameObject myPick;
     public GameObject enemyPick;
 
-    public void SetRPSAnimation(string myStuff, string enemyStuff)
-    {
+    // public void SetRPSAnimation(string myStuff, string enemyStuff)
+    // {
 
 
-        if(myPick == enemyPick)
-        {
+    //     if(myPick == enemyPick)
+    //     {
 
-        }
-    }
+    //     }
+    // }
 
-    public void ChangeSprite(GameObject reciver, string exporter)
-    {  
-        switch(exporter)
-        {
-            case "rock":
-            reciver.GetComponent<SpriteRenderer>.sprite = rock;
-            break;
-        }
+    // public void ChangeSprite(GameObject reciver, string exporter)
+    // {  
+    //     switch(exporter)
+    //     {
+    //         case "rock":
+    //         reciver.GetComponent<SpriteRenderer>.sprite = rock;
+    //         break;
+    //     }
 
-    }
+    // }
 }
