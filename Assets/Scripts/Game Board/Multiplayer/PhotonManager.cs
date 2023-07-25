@@ -40,6 +40,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         PhotonNetwork.ConnectUsingSettings();
         photonView = GetComponent<PhotonView>();
+        if(!PhotonNetwork.InLobby)
+        PhotonNetwork.JoinLobby();
     }
 
     public override void OnConnectedToMaster()
@@ -233,6 +235,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         }
         Debug.Log ("You are ready");
     }
+
+
     [PunRPC]
     public void LoadScene()
     {

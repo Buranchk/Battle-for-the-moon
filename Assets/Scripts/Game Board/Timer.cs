@@ -16,6 +16,8 @@ public class Timer : MonoBehaviour
 
     public bool playTime = true;
 
+    public ButtonScript abortGame;
+
     private void Start()
     {
         timeLeft = timerLength;
@@ -30,8 +32,9 @@ public class Timer : MonoBehaviour
     {
         tween.AbortGame(AbortedGame);
         yield return new WaitForSeconds(1.5f);
-        SceneManager.LoadScene("Main Menu");
-        AudioMusic.Instance.MainMenuMusic();
+        abortGame.ExitGame();
+        // SceneManager.LoadScene("Main Menu");
+        // AudioMusic.Instance.MainMenuMusic();
     }
 
     private void Update()

@@ -4,6 +4,12 @@ using Photon.Pun;
 
 public class ButtonScript : MonoBehaviour
 {
+    private PhotonView photonView;
+    
+    void Start()
+    {
+        photonView = GetComponent<PhotonView>();
+    }
     public void OnClicButton1()
     {
         AudioManager.Instance.OnClicButton1();
@@ -33,9 +39,21 @@ public class ButtonScript : MonoBehaviour
         AudioManager.Instance.Mutebutton();
         AudioMusic.Instance.Mutebutton();
     }
-    public void ExitButton()
+    public void ExitGame()
     {
-        PhotonNetwork.LeaveRoom();
+        if(PhotonNetwork.InRoom)
+        {
+            Debug.Log("Exit button clicked");
+            photonView.RPC("GameAborted", RpcTarget.All);
+        }
     }
+    [PunRPC]
+    public void GameAborted()
+    {
+        PhotonNetwork.LoadLevel("Main Menu");
+        AudioMusic.Instance.MainMenuMusic();
+        Debug.Log("RPC GameAborted was sent");
+    }
+
 
 }
