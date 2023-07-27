@@ -48,6 +48,7 @@ public class GameBoard : MonoBehaviour
     public RPSMatch frameRPS;
     public Tweens tweens;
     public Timer timer;
+    public OptionShowcase fightDetails;
 
     public FingerScript fingerScript;
 
@@ -725,6 +726,7 @@ public class GameBoard : MonoBehaviour
             AudioManager.Instance.UnitMatch();
             windowRPS.SetActive(true);
             frameRPS.Appear();
+            fightDetails.SetRPSTieAnimation(fUnit.type, eUnit.transform.position);
         }
 
         if(RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //e
@@ -782,7 +784,7 @@ public class GameBoard : MonoBehaviour
     public bool RPS(string first, string second)
     {
         bool win = false;
-
+        //e f
         switch (first)
         {
             case "rock":
@@ -790,10 +792,12 @@ public class GameBoard : MonoBehaviour
             {
                 case "paper":
                 win = false;
+                fightDetails.SetRPSFightAnimation("rock", "paper", win, eUnit.transform.position);
                 break;
 
                 case "scissors":
                 win = true;
+                fightDetails.SetRPSFightAnimation("rock", "scissors", win, eUnit.transform.position);
                 break;
 
                 case "decoy":
@@ -809,10 +813,12 @@ public class GameBoard : MonoBehaviour
             {
                 case "rock":
                 win = true;
+                fightDetails.SetRPSFightAnimation("paper", "rock", win, eUnit.transform.position);
                 break;
 
                 case "scissors":
                 win = false;
+                fightDetails.SetRPSFightAnimation("paper", "scissors", win, eUnit.transform.position);
                 break;
 
                 case "decoy":
@@ -827,10 +833,12 @@ public class GameBoard : MonoBehaviour
             {
                 case "rock":
                 win = false;
+                fightDetails.SetRPSFightAnimation("scissors", "rock", win, eUnit.transform.position);
                 break;
 
                 case "paper":
                 win = true;
+                fightDetails.SetRPSFightAnimation("scissors", "paper", win, eUnit.transform.position);
                 break;
 
                 case "decoy":

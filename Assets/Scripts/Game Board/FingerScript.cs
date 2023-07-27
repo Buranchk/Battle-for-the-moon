@@ -7,7 +7,7 @@ public class FingerScript : MonoBehaviour
 
     private LTDescr scaleTween;
     private LTDescr alphaTween;
-    public float animationDuration = 1.8f;
+    public float animationDuration;
 
 
     public bool playingAnim = false;
@@ -36,7 +36,7 @@ public class FingerScript : MonoBehaviour
             transform.position = unit.transform.position;
 
             // Create LeanTween animations for scaling and opacity
-            scaleTween = LeanTween.scale(gameObject, Vector3.one * 1.08f, animationDuration * 0.2f).setLoopPingPong();
+            scaleTween = LeanTween.scale(gameObject, Vector3.one * 1.08f, animationDuration * 0.35f).setLoopPingPong();
             Image img = gameObject.GetComponent<Image>();
             alphaTween = LeanTween.value(gameObject, a => {
                     Color c = img.color;

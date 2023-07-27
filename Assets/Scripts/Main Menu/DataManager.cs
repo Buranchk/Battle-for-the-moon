@@ -64,10 +64,10 @@ public class DataManager : MonoBehaviour
         save.energy = 60;
         save.xp = 0;
         save.lvl = 0;
-        save.skins = new List<bool>(){true, false, false, false};
+        save.skins = new List<bool>(){true, true, false, false};
         save.selectedSkin = 0;
         save.soundSwitcher = true;
-        save.NoAds = false;
+        save.NoAds = true;
         SaveChanges();
     }
 
