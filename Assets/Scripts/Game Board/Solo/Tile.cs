@@ -10,6 +10,8 @@ public class Tile : MonoBehaviour
     public GameObject highlight;
     private GameBoard Board;
 
+    public TileArrowManager arrowManager;
+
 
     //condition
     public GameObject unitSuggestMove;
@@ -52,15 +54,44 @@ public class Tile : MonoBehaviour
     {
         highlight.SetActive(isActiveSelection);
         if (isActiveSelection)
+        {
             unitSuggestMove = unit;
+            arrowManager.gameObject.SetActive(true);
+            ArrowDirection(unit.transform.position.x, unit.transform.position.y);
+
+        }
         else if (!isActiveSelection)
+        {
             unitSuggestMove = null;
+            arrowManager.gameObject.SetActive(false);
+
+        }
+    }
+
+    public void ArrowDirection(float x, float y)
+    {
+        if(gameObject.transform.position.x > x)
+        {
+            arrowManager.SetDirection("right");
+        }
+        else if(gameObject.transform.position.x < x)
+        {
+            arrowManager.SetDirection("left");
+        }
+        else if(gameObject.transform.position.y > y)
+        {
+            arrowManager.SetDirection("up");
+        }
+        else if(gameObject.transform.position.y < y)
+        {
+            arrowManager.SetDirection("down");
+        }
     }
 
     void OnMouseEnter() 
     {
-        if(GetGameBoard().windowRPS.activeInHierarchy == false && GetGameBoard().gameStage >= 4)
-            highlight.SetActive(true);
+        // if(GetGameBoard().windowRPS.activeInHierarchy == false && GetGameBoard().gameStage >= 4)
+        //    highlight.SetActive(true);
     }
 
     void OnMouseExit()

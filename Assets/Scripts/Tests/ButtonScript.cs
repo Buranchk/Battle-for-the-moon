@@ -20,7 +20,7 @@ public class ButtonScript : MonoBehaviour
     }
     public void OnPlayButton()
     {
-        AudioManager.Instance.PlayButton();
+//        AudioManager.Instance.PlayButton();
     }
     public void OnBuyButton()
     {

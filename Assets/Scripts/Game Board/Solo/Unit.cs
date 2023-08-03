@@ -127,7 +127,7 @@ public class Unit : MonoBehaviour
     //Unit selection
     void OnMouseOver()
     {
-        if(GetGameBoard().windowRPS.activeInHierarchy == false)
+        if(GetGameBoard().windowRPS.activeInHierarchy == false && GetGameBoard().GetTutorialState() == false)
         {
             isOverTheUnit = true;
             if (Input.GetMouseButtonDown(0) && gameObject.name != "DecoyUnit" && gameObject.name != "FlagUnit")

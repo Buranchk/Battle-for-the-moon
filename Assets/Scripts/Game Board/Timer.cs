@@ -40,7 +40,7 @@ public class Timer : MonoBehaviour
 
     private void Update()
     {
-        if(timeLeft >= 0 || playTime)
+        if(timeLeft >= 0 && playTime)
         {
             timeLeft -= Time.deltaTime; // Subtract the time since last frame from the time remaining on the timer
 

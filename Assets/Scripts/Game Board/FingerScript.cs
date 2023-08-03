@@ -54,8 +54,8 @@ public class FingerScript : MonoBehaviour
     public void StopPointing()
     {
         // Finish the scale and opacity animations
-        LeanTween.cancel(scaleTween.id);
-        LeanTween.cancel(alphaTween.id);
+        //LeanTween.cancel(scaleTween.id);
+        //LeanTween.cancel(alphaTween.id);
 
         // Reset the scale and opacity to the end values
         gameObject.transform.localScale = Vector3.one;

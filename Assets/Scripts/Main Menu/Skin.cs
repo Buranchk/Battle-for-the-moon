@@ -13,6 +13,7 @@ public class Skin : MonoBehaviour
     public GameObject shopCanvas;
     public GameObject adProposition;
     public GameObject playOption;
+    public GameObject tutorial;
     public SkinManager skinManager;
     public int typeSkin;
 
@@ -29,7 +30,7 @@ public class Skin : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            if(!shopCanvas.active && !adProposition.active && !playOption.active){
+            if(!shopCanvas.active && !adProposition.active && !playOption.active && !tutorial.active){
                 if (queue == 0)
                 {
                     if (available)

@@ -34,11 +34,15 @@ public class GameBoard : MonoBehaviour
     public GameObject buttonShuffle;
     public GameObject arrowShuffle;
     public GameObject buttonDone;
+    public GameObject buttonDoneSide;
     public GameObject decoyText;
     public GameObject flagText;
     public GameObject reshuffleText;
     public GameObject startGameText;
     public GameObject gradient;
+
+    public GameObject PlayerSearch;
+    public GameObject Loading;
 
     public GameObject soundIcon;
     public GameObject noSoundIcon;
@@ -71,6 +75,9 @@ public class GameBoard : MonoBehaviour
 
     private DataManager DataMan;
 
+    public bool tutorialState = false;
+    public InGameTutorial TutorialInGame;
+
     void Start()
     {
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
@@ -81,6 +88,18 @@ public class GameBoard : MonoBehaviour
         GenerateGrid();
         gradient.SetActive(true);
         StartCoroutine(SpawnUnits());
+
+        if (PlayerPrefs.GetInt("TutorialStates") > 9)
+        {
+            tutorialState = true;
+            TutorialInGame.StartTutorial();
+            timer.PlayTime(false);
+            
+            NewStage();
+        }
+            else
+        StartCoroutine("FakeWait");
+
     }
 
     private void Update()
@@ -213,8 +232,16 @@ public class GameBoard : MonoBehaviour
                 yield return new WaitForSeconds(0.05f);
             }
         }
-        NewStage();
+        //NewStage();
+    }
+
+    IEnumerator FakeWait()
+    {
+        PlayerSearch.SetActive(true);
+        LeanTween.rotateAround(Loading, Vector3.back, 360f, 0.85f).setLoopClamp().setEase(LeanTweenType.linear);
+        yield return new WaitForSeconds(Random.Range(1.8f, 3.5f));
         fingerScript.StartPointing(units);
+        NewStage();
     }
 
     private void SelectUnitSkin()
@@ -242,9 +269,10 @@ public class GameBoard : MonoBehaviour
     public void SetFlagDecoy(GameObject Unit)
     {
         fingerScript.StopPointing();
-        AudioManager.Instance.FlagDecoyAppereance();
+//        AudioManager.Instance.FlagDecoyAppereance();
         if(gameStage == 1)
         {
+            TutorialInGame.NextStageFlag();
             PermFlag = Unit;
             Vector2 flagPos = Unit.transform.position;
             GameObject.Find("Flag").transform.position = flagPos;
@@ -256,6 +284,7 @@ public class GameBoard : MonoBehaviour
         {
             if(Unit.transform.position != PermFlag.transform.position)
             {
+                TutorialInGame.NextStageDecoy();
                 PermDecoy = Unit;
                 Vector2 decayPos = Unit.transform.position;
                 GameObject.Find("Decoy").transform.position = decayPos;
@@ -313,15 +342,6 @@ public class GameBoard : MonoBehaviour
 
 /* UI related functions */
 
-//TEMP!!!!
-    public void WIN()
-    {
-        NewStage();
-        NewStage();
-        NewStage();
-        NewStage();
-    }
-
     public void SoundSwitch()
     {
         if(DataMan.GetSound())
@@ -346,7 +366,6 @@ public class GameBoard : MonoBehaviour
             LeanTween.scale(soundIcon, new Vector3(0.85f, 0.85f, 0.85f), 0.1f).setEaseOutCirc();
         }
     }
-
 
     public void UnitRandomize()
     {
@@ -454,6 +473,20 @@ public class GameBoard : MonoBehaviour
 
 
 /* Usage functions */
+    public void StartFingerPointing()
+    {
+        fingerScript.StartPointing(units);
+    }
+    public bool GetTutorialState()
+    {
+        return tutorialState;
+    }
+
+    public void SetTutorialState(bool state)
+    {
+        tutorialState = state;
+    }
+
     public Tile GetTileAtPosition(Vector2 pos) 
     {
         if (tiles.TryGetValue(pos, out var tile)) return tile;
@@ -481,15 +514,17 @@ public class GameBoard : MonoBehaviour
         switch (gameStage)
         {
             case 0:
-            //time delay
+            
             break;
 
             case 1:
+            PlayerSearch.SetActive(false);
             UnitOutline();
             UnitFlag.SetActive(true);
             flagText.SetActive(true);
             tweens.AppearScale(UnitFlag);
             tweens.PulsatingRoundButton(buttonDone);
+            
             break;
 
             case 2:
@@ -507,20 +542,23 @@ public class GameBoard : MonoBehaviour
             case 3:
             UnitDecoy.SetActive(false);
             decoyText.SetActive(false);
+            buttonDone.SetActive(false);
+            buttonDoneSide.SetActive(true);
             reshuffleText.SetActive(true);
             tweens.AppearScale(arrowShuffle);
 
             buttonShuffle.SetActive(true);
             UnitRandomize();
-            setDoneActive();
             ApplyUnitSelection("Decoy");
             timer.ResetTimer15();
             break;
 
             case 4:
+            TutorialInGame.NextStage();
+            timer.PlayTime(true);
+            buttonDoneSide.SetActive(false);
             reshuffleText.SetActive(false);
             buttonShuffle.SetActive(false);
-            buttonDone.SetActive(false);
             StartCoroutine(StartGameFX());
             timer.ResetTimer();
             break;
@@ -556,8 +594,8 @@ public class GameBoard : MonoBehaviour
 /* Unit functions */
     public void SelectUnit(GameObject newSelectedUnit)
     {
+        TutorialInGame.NextStage();
         AudioManager.Instance.SelectionSoundFX();
-        //newSelectedUnit.GetComponent<Unit>().highlight.SetActive(true);
         newSelectedUnit.GetComponent<Unit>().PlayOneShotAnimation("jump", 0.6f);
         if (selectedUnit != newSelectedUnit && selectedUnit != null)
             ChangeUnit(newSelectedUnit);
@@ -851,6 +889,70 @@ public class GameBoard : MonoBehaviour
         return win;
     }
 
+    public bool RPSNoAnim(string first, string second)
+    {
+        bool win = false;
+        //e f
+        switch (first)
+        {
+            case "rock":
+            switch (second)
+            {
+                case "paper":
+                win = false;
+                break;
+
+                case "scissors":
+                win = true;
+                break;
+
+                case "decoy":
+                DecoyAlive = false;
+                win = true;
+                break;
+
+            }
+            break;
+
+            case "paper":
+            switch (second)
+            {
+                case "rock":
+                win = true;
+                break;
+
+                case "scissors":
+                win = false;
+                break;
+
+                case "decoy":
+                DecoyAlive = false;
+                win = true;
+                break;
+            }
+            break;
+
+            case "scissors":
+            switch (second)
+            {
+                case "rock":
+                win = false;
+                break;
+
+                case "paper":
+                win = true;
+                break;
+
+                case "decoy":
+                DecoyAlive = false;
+                win = true;
+                break;
+            }
+            break;
+        }
+        return win;
+    }
+
     IEnumerator FightAnimation(GameObject unit1, GameObject unit2, float pos1X, float pos1Y, float pos2X, float pos2Y, bool win)
     {
 
@@ -863,7 +965,7 @@ public class GameBoard : MonoBehaviour
             tweens.UnitsMeet(eUnit.gameObject, fUnit.gameObject, !win);
 
         print("Code is past Animation sector");
-
+        DeselectUnit();
         if(win)
         {
             winParticles.gameObject.transform.position = fightPlace;
@@ -877,9 +979,9 @@ public class GameBoard : MonoBehaviour
 
             
         print("BeforeTimePause");
+        
         yield return new WaitForSeconds(0.6f);
         print("AfterTimePause");
-        DeselectUnit();
         DestroyUnit(unit2);
         
         if(!crutchTurn)
@@ -1049,16 +1151,17 @@ public class GameBoard : MonoBehaviour
         if("myUnit" == $"{map[pX, pY]}")
         {
             if(GetUnitAtPosition(pX, pY).isOpen)
-            {
+            {  
                 //win RPS prediction
-                if(RPS(movingUnit.GetComponent<EnemyAI>().type, GetUnitAtPosition(pX, pY).type))
+                if(RPSNoAnim(movingUnit.GetComponent<EnemyAI>().type, GetUnitAtPosition(pX, pY).type))
                 {
                     fUnit = GetTileAtPosition(new Vector2(pX, pY)).unitLinked.GetComponent<Unit>(); //f
                     eUnit = movingUnit.GetComponent<EnemyAI>(); //e
+                    //RPS(movingUnit.GetComponent<EnemyAI>().type, GetUnitAtPosition(pX, pY).type);
                     UnitFight();
                     return true;
                 } 
-                else if(!RPS(movingUnit.GetComponent<EnemyAI>().type, GetUnitAtPosition(pX, pY).type))
+                else if(!RPSNoAnim(movingUnit.GetComponent<EnemyAI>().type, GetUnitAtPosition(pX, pY).type))
                 {
                     int posX =(int)movingUnit.transform.position.x;
                     int posY =(int)movingUnit.transform.position.y;
@@ -1070,6 +1173,7 @@ public class GameBoard : MonoBehaviour
                     {
                         fUnit = GetTileAtPosition(new Vector2(pX, pY)).unitLinked.GetComponent<Unit>(); //f
                         eUnit = movingUnit.GetComponent<EnemyAI>(); //e
+                        //RPS(movingUnit.GetComponent<EnemyAI>().type, GetUnitAtPosition(pX, pY).type);
                         UnitFight();
                         return true;
                     }

@@ -76,6 +76,8 @@ public class MultiplayerGameBoard : MonoBehaviour
     public Timer timer;
 
 
+    public int selectedskin;
+
     void Start()
     {
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
@@ -168,7 +170,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     private void SelectUnitSkin()
     {
-        int selectedskin = GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin();
+        selectedskin = GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin();
         switch (selectedskin){
             case 0:
             fUnit = spaceMan;
@@ -293,6 +295,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     public void EnemySpawn(int skin, string[] matrix)
     {
         print("recive RPC prekols!!!!!!");
+
         switch (skin)
         {
             case 0:
@@ -311,6 +314,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             eUnit = rubyE;
             break;
         }
+
 
         string[,] positionsArr = new string[width, 2];
 

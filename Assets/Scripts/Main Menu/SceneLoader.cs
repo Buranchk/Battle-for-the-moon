@@ -20,6 +20,13 @@ public class SceneLoader : MonoBehaviour
         SceneManager.LoadScene("Shop");
     }
 
+
+    public void SendNoTutorial()
+    {
+        PlayerPrefs.SetInt("TutorialStates", 0);
+    }
+
+
     public void LoadGame()
     {
         DataManager dataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();

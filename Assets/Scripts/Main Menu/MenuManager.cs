@@ -31,6 +31,8 @@ public class MenuManager : MonoBehaviour
     public GameObject soundIcon;
     public GameObject noSoundIcon;
 
+    public bool tutorialState = false;
+
     public GameObject Ruby;
     public GameObject XP;
 
@@ -53,8 +55,14 @@ public class MenuManager : MonoBehaviour
             SetSkinsActive(false);
             nameEntry.SetActive(true);
         }
+
+
     }
 
+    public void TutorialOff()
+    {
+        tutorialState = false;
+    }
 
     //remake this
     public void LoadMenuValues()
@@ -152,12 +160,12 @@ public class MenuManager : MonoBehaviour
 
     public void OpenInfo()
     {
-        Application.OpenURL("https://en.wikipedia.org/wiki/End-user_license_agreement");
+        //Application.OpenURL("https://en.wikipedia.org/wiki/End-user_license_agreement");
     }
 
     public void OpenLisenbartGameStudio()
     {
-        Application.OpenURL("http://lisenbart.com/");
+        //Application.OpenURL("http://lisenbart.com/");
     }
 
     public void SoundSwitch()

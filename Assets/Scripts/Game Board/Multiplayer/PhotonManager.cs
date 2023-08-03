@@ -135,7 +135,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
             //Set random color for room button
             Color randomColor = GetRandomColor();
-            roomButton.image.color = randomColor;
+            roomButton.GetComponentInChildren<TMP_Text>().color = randomColor;
 
 
 

@@ -63,7 +63,7 @@ public class BuyOption : MonoBehaviour
         } else 
         {
             ShowFail();
-            GameObject.Find("Scene loader").GetComponent<SceneLoader>().LoadShop();
+            //GameObject.Find("Scene loader").GetComponent<SceneLoader>().LoadShop();
         }
     }
 
