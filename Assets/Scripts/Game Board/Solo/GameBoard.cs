@@ -269,7 +269,7 @@ public class GameBoard : MonoBehaviour
     public void SetFlagDecoy(GameObject Unit)
     {
         fingerScript.StopPointing();
-//        AudioManager.Instance.FlagDecoyAppereance();
+        AudioManager.Instance.FlagDecoyAppereance();
         if(gameStage == 1)
         {
             TutorialInGame.NextStageFlag();
@@ -278,7 +278,7 @@ public class GameBoard : MonoBehaviour
             GameObject.Find("Flag").transform.position = flagPos;
             SelectUnselectUnit(Unit.GetComponent<Unit>(), true);
             setDoneActive();
-        } 
+        }
         
         else if (gameStage == 2)
         {
@@ -415,10 +415,16 @@ public class GameBoard : MonoBehaviour
         }
     }
 
+    public void Exit()
+    {
+        AudioMusic.Instance.MainMenuMusic();
+        SceneManager.LoadScene("Main Menu");
+    }
+
     public void GameResult()
     {
-        SceneManager.LoadScene("Game Result");
         AudioMusic.Instance.AmbientMusic();
+        SceneManager.LoadScene("Game Result");
     }
 
     IEnumerator StartGameFX()
@@ -477,6 +483,7 @@ public class GameBoard : MonoBehaviour
     {
         fingerScript.StartPointing(units);
     }
+
     public bool GetTutorialState()
     {
         return tutorialState;
@@ -536,10 +543,12 @@ public class GameBoard : MonoBehaviour
             tweens.AppearScale(UnitDecoy);
             setDoneInactive();
             ApplyUnitSelection("Flag");
-            timer.ResetTimer15();
+            timer.ResetTimer();
             break;
 
             case 3:
+            fingerScript.StopPointing();
+            Destroy(fingerScript.gameObject);
             UnitDecoy.SetActive(false);
             decoyText.SetActive(false);
             buttonDone.SetActive(false);
@@ -550,7 +559,7 @@ public class GameBoard : MonoBehaviour
             buttonShuffle.SetActive(true);
             UnitRandomize();
             ApplyUnitSelection("Decoy");
-            timer.ResetTimer15();
+            timer.ResetTimer();
             break;
 
             case 4:
@@ -594,7 +603,6 @@ public class GameBoard : MonoBehaviour
 /* Unit functions */
     public void SelectUnit(GameObject newSelectedUnit)
     {
-        TutorialInGame.NextStage();
         AudioManager.Instance.SelectionSoundFX();
         newSelectedUnit.GetComponent<Unit>().PlayOneShotAnimation("jump", 0.6f);
         if (selectedUnit != newSelectedUnit && selectedUnit != null)

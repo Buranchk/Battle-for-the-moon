@@ -32,13 +32,14 @@ public class SceneLoader : MonoBehaviour
         DataManager dataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         if(dataMan.GetPremiumStatus())
         {
+            AudioMusic.Instance.GameMusic();
             SceneManager.LoadScene("Game Board");
         }
         else if(dataMan.GetPower() >= 20)
         {
             dataMan.TakePower();
-            SceneManager.LoadScene("Game Board");
             AudioMusic.Instance.GameMusic();
+            SceneManager.LoadScene("Game Board");
         }
         else if (dataMan.GetPower() < 20)
         {

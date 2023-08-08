@@ -71,11 +71,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
  //Creates room with defined parametres
     public void CreateRoomButton()
     {
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers =2;
-        PhotonNetwork.CreateRoom(roomName.text, roomOptions, TypedLobby.Default );
-        roomContent.SetActive(true);
-        
+        if (roomName.text.Length > 0)
+        {
+            RoomOptions roomOptions = new RoomOptions();
+            roomOptions.MaxPlayers = 2;
+            PhotonNetwork.CreateRoom(roomName.text, roomOptions, TypedLobby.Default);
+            roomContent.SetActive(true);
+
+            GameObject.Find("Room").SetActive(true);
+            GameObject.Find("RoomList").SetActive(false);
+            GameObject.Find("Controller").GetComponent<LobbyHelper>().RoomInit();
+        }
+
     }
     
     //Joins existing room

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Skin : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class Skin : MonoBehaviour
     public bool available;
     public Sprite unlocked;
     public Sprite locked;
-    public GameObject outliner;
+    //public GameObject outliner;
     public GameObject shopCanvas;
     public GameObject adProposition;
     public GameObject playOption;
@@ -17,9 +18,16 @@ public class Skin : MonoBehaviour
     public SkinManager skinManager;
     public int typeSkin;
 
+    public GameObject selectButton;
+    public bool isSelcted = false;
+    public Sprite deSelect;
+    public Sprite select;
+
     private void Start()
     {
-        if(available)
+        if(queue == 0)
+            isSelcted = true;
+        if (available)
             gameObject.GetComponent<SpriteRenderer>().sprite = unlocked;
         else
             gameObject.GetComponent<SpriteRenderer>().sprite = locked;
@@ -71,14 +79,17 @@ public class Skin : MonoBehaviour
 
     public void Select()
     {
+        isSelcted = true;
         skinManager.SetCurrentSkin(gameObject.GetComponent<Skin>());
         print("new skin is selected");
-        outliner.SetActive(true);
+        SetSelect(true);
+        //outliner.SetActive(true);
     }
 
     public void Unselect()
     {
-        outliner.SetActive(false);
+        isSelcted = false;
+        //outliner.SetActive(false);
         //setactive backguy? (false)
     }
 
@@ -115,6 +126,7 @@ public class Skin : MonoBehaviour
         //left to MID
         SkinMove(0.0f, -0.4885723f, 0.0f, 1.8f);
         SkinDarken(0);
+        SetSelect(isSelcted);
         // gameObject.transform.position = new Vector3(0.4885723f, -0.4885723f, 0);
         // gameObject.transform.localScale = new Vector3(1.149582f, 1.149582f, 1.149582f);
         break;
@@ -139,6 +151,8 @@ public class Skin : MonoBehaviour
         //right to mid
         SkinMove(0.0f, -0.4885723f, 0f, 1.8f);
         SkinDarken(0);
+        SetSelect(isSelcted);
+        //
         // gameObject.transform.position = new Vector3(0.4885723f, -0.4885723f, 0);
         // gameObject.transform.localScale = new Vector3(1.149582f, 1.149582f, 1.149582f);
         break;
@@ -178,6 +192,18 @@ public class Skin : MonoBehaviour
             LeanTween.color(MySelf, Color.grey, 0.4f).setEaseInOutQuint();
         else if (intencity == 2)
             LeanTween.color(MySelf, Color.black, 0.4f).setEaseInOutQuint();
+    }
+
+    public void SetSelect(bool state)
+    {
+        if (state)
+        {
+            selectButton.GetComponent<Image>().sprite = select;
+        }
+        else
+        {
+            selectButton.GetComponent<Image>().sprite = deSelect;
+        }
     }
 
 }

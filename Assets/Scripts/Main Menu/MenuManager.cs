@@ -21,6 +21,8 @@ public class MenuManager : MonoBehaviour
     public GameObject ShopCanvasScaler;
     public GameObject DarkenClose;
 
+    public GameObject selectButton;
+    public GameObject tutorialButton;
 
     public GameObject Energy;
     public GameObject EnergyBar1;
@@ -53,6 +55,8 @@ public class MenuManager : MonoBehaviour
         else
         {
             SetSkinsActive(false);
+            selectButton.SetActive(false);
+            tutorialButton.SetActive(false);
             nameEntry.SetActive(true);
         }
 

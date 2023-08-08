@@ -16,6 +16,8 @@ public class SkinManager : MonoBehaviour
     public GameObject skin3;
     public GameObject skin4;
 
+    public GameObject selectButton;
+
     //set open and closed skins
     //rotation of the group
     //last selected skin
