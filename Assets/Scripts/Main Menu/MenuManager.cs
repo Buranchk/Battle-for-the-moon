@@ -54,6 +54,7 @@ public class MenuManager : MonoBehaviour
         }
         else
         {
+            DisableSound();
             SetSkinsActive(false);
             selectButton.SetActive(false);
             tutorialButton.SetActive(false);
@@ -61,6 +62,16 @@ public class MenuManager : MonoBehaviour
         }
 
 
+    }
+
+    public void DisableSound()
+    {
+        noSoundIcon.transform.localScale = noSoundIcon.transform.localScale * 1.3f;
+
+        soundIcon.SetActive(false);
+        noSoundIcon.SetActive(true);
+
+        LeanTween.scale(noSoundIcon, new Vector3(1.85f, 1.85f, 1.85f), 0.1f).setEaseOutCirc();
     }
 
     public void TutorialOff()

@@ -772,7 +772,7 @@ public class GameBoard : MonoBehaviour
             AudioManager.Instance.UnitMatch();
             windowRPS.SetActive(true);
             frameRPS.Appear();
-            fightDetails.SetRPSTieAnimation(fUnit.type, eUnit.transform.position);
+            //fightDetails.SetRPSTieAnimation(fUnit.type, eUnit.transform.position);
         }
 
         if(RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //e

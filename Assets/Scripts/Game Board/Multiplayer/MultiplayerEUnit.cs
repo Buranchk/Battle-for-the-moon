@@ -32,6 +32,8 @@ public class MultiplayerEUnit : MonoBehaviour
     public bool isOverTheUnit = false;
     public bool movedOn;
 
+    public Vector3 storedScale;
+
     //spine stuff
     SkeletonAnimation skeletonAnimation;
     Spine.AnimationState animationState;
@@ -45,9 +47,11 @@ public class MultiplayerEUnit : MonoBehaviour
     public void Init()
     {
         TrailSwitch(false);
+
+        storedScale = transform.localScale;
         gameObject.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
         movedOn = false;
-        gameObject.LeanScale(new Vector3(0.4f, 0.4f, 0.4f), 0.4f).setEaseOutCirc();
+        //gameObject.LeanScale(new Vector3(0.4f, 0.4f, 0.4f), 0.4f).setEaseOutCirc();
     }
 
    void Awake () {
@@ -203,7 +207,7 @@ public class MultiplayerEUnit : MonoBehaviour
     public void SpawnAnimation()
     {
         transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
-        LeanTween.scale(gameObject, new Vector3(0.4f, 0.4f), 0.7f).setEaseOutElastic();
+        LeanTween.scale(gameObject, storedScale, 0.7f).setEaseOutElastic();
     }
 
     //Unit highlight exit

@@ -32,10 +32,8 @@ public class Timer : MonoBehaviour
     {
         tween.AbortGame(AbortedGame);
         yield return new WaitForSeconds(1.5f);
-        //if(online)
-        //abortGame.ExitGame();
+        AudioMusic.Instance.MainMenuMusic();
         SceneManager.LoadScene("Main Menu");
-        // AudioMusic.Instance.MainMenuMusic();
     }
 
     private void Update()

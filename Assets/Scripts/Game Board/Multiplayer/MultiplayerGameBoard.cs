@@ -24,9 +24,10 @@ public class MultiplayerGameBoard : MonoBehaviour
     [SerializeField] private MultiplayerEUnit XPE;
     [SerializeField] private MultiplayerEUnit goldE;
     [SerializeField] private MultiplayerEUnit rubyE;
+    [SerializeField] private MultiplayerEUnit AlienE;
 
 
-//In game Data process
+    //In game Data process
     private MultiplayerUnit gameVarUnit;
     public GameObject selectedUnit;
     public MultiplayerEUnit eUnit;
@@ -74,6 +75,10 @@ public class MultiplayerGameBoard : MonoBehaviour
     public Tweens tweens;
     private PhotonView photonView;
     public Timer timer;
+    public OptionShowcase fightDetails;
+
+    public FingerScript fingerScript;
+
 
 
     public int selectedskin;
@@ -151,6 +156,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             }
         }
         NewStage();
+        fingerScript.StartPointing(units);
     }
 
     public void SendSpawnedUnits()
@@ -192,6 +198,7 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void SetFlagDecoy(GameObject Unit)
     {
+        fingerScript.StopPointing();
         AudioManager.Instance.FlagDecoyAppereance();
         if(gameStage == 1)
         {
@@ -314,6 +321,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             eUnit = rubyE;
             break;
         }
+
+        if (GameObject.Find("Data Manager").GetComponent<DataManager>().GetSelectedSkin() == skin)
+            eUnit = AlienE;
 
 
         string[,] positionsArr = new string[width, 2];
@@ -513,6 +523,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             break;
 
             case 2:
+            fingerScript.StartPointing(units);
             setDoneInactive();
             UnitFlag.SetActive(false);
             flagText.SetActive(false);
@@ -524,6 +535,9 @@ public class MultiplayerGameBoard : MonoBehaviour
             break;
 
             case 3:
+            fingerScript.StopPointing();
+            Destroy(fingerScript.gameObject);
+
             UnitDecoy.SetActive(false);
             decoyText.SetActive(false);
             reshuffleText.SetActive(true);
@@ -948,10 +962,13 @@ public class MultiplayerGameBoard : MonoBehaviour
         xe = width - xe - 1;
         ye = height - ye - 1;
 
+
         MultiplayerUnit myUnit = GetUnitAtPosition((int)x, (int)y);
         MultiplayerEUnit enemyUnit = GetEnemyAtPosition((int)xe, (int)ye);
 
-        if(!result)
+        CallCourotineFight(myUnit, enemyUnit, x, y, xe, ye, result);
+
+        if (!result)
         {
             if(!myUnit.isOpen)
             {
@@ -971,6 +988,44 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
         DeselectUnit();
 
+    }
+
+    public void CallCourotineFight(MultiplayerUnit myUnit, MultiplayerEUnit enemyUnit, float pos1X, float pos1Y, float pos2X, float pos2Y, bool win)
+    {
+        if (TurnCheck())
+            tweens.UnitsMeet(myUnit.gameObject, enemyUnit.gameObject, win);
+        else
+            tweens.UnitsMeet(enemyUnit.gameObject, myUnit.gameObject, !win);
+
+        StartCoroutine(FightAnimationReciever(pos1X, pos1Y, pos2X, pos2Y, win));
+    }
+
+    IEnumerator FightAnimationReciever(float pos1X, float pos1Y, float pos2X, float pos2Y, bool win)
+    {
+
+        Vector2 place = new Vector2(0, 15f);
+        Vector2 fightPlace = new Vector2(((pos1X + pos2X) / 2), ((pos1Y + pos2Y) / 2));
+
+        print("Code is past Animation sector");
+
+        if (!win)
+        {
+            winParticles.gameObject.transform.position = fightPlace;
+            winParticles.Play();
+        }
+        else
+        {
+            oopsParticles.gameObject.transform.position = fightPlace;
+            oopsParticles.Play();
+        }
+
+        print("BeforeTimePause");
+        yield return new WaitForSeconds(0.6f);
+        print("AfterTimePause");
+
+        yield return new WaitForSeconds(1f);
+        oopsParticles.gameObject.transform.position = place;
+        winParticles.gameObject.transform.position = place;
     }
 
     public void AttackEnemy(GameObject UnitOn)
@@ -994,10 +1049,12 @@ public class MultiplayerGameBoard : MonoBehaviour
             {
                 case "paper":
                 win = false;
+                fightDetails.SetRPSFightAnimation("rock", "paper", win, eUnit.transform.position);
                 break;
 
                 case "scissors":
                 win = true;
+                fightDetails.SetRPSFightAnimation("rock", "scissors", win, eUnit.transform.position);
                 break;
 
                 case "decoy":
@@ -1012,10 +1069,12 @@ public class MultiplayerGameBoard : MonoBehaviour
             {
                 case "rock":
                 win = true;
+                fightDetails.SetRPSFightAnimation("paper", "rock", win, eUnit.transform.position);
                 break;
 
                 case "scissors":
                 win = false;
+                fightDetails.SetRPSFightAnimation("paper", "scissors", win, eUnit.transform.position);
                 break;
 
                 case "decoy":
@@ -1029,10 +1088,12 @@ public class MultiplayerGameBoard : MonoBehaviour
             {
                 case "rock":
                 win = false;
+                fightDetails.SetRPSFightAnimation("scissors", "rock", win, eUnit.transform.position);
                 break;
 
                 case "paper":
                 win = true;
+                fightDetails.SetRPSFightAnimation("scissors", "paper", win, eUnit.transform.position);
                 break;
 
                 case "decoy":
@@ -1043,6 +1104,7 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
         return win;
     }
+
 
     IEnumerator FightAnimation(GameObject unit1, GameObject unit2, float pos1X, float pos1Y, float pos2X, float pos2Y, bool win)
     {
