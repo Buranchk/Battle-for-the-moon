@@ -44,8 +44,10 @@ public class ButtonScript : MonoBehaviour
         if(PhotonNetwork.InRoom)
         {
             Debug.Log("Exit button clicked");
-            photonView.RPC("GameAborted", RpcTarget.All);
+            photonView.RPC("GameAborted", RpcTarget.Others);
         }
+        PhotonNetwork.LoadLevel("Main Menu");
+        AudioMusic.Instance.MainMenuMusic();
     }
     [PunRPC]
     public void GameAborted()

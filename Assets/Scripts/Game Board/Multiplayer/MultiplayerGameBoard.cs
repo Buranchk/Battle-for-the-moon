@@ -433,8 +433,11 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
     }
 
-    public void GameResult()
+    public void GameResult(bool state)
     {
+        //if(state)
+        //    uWonSign
+        //U won, u lost
         SceneManager.LoadScene("Game Result");
         AudioMusic.Instance.AmbientMusic();
     }
@@ -584,7 +587,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             //     PlayerPrefs.SetInt("GameResult", 0);
             // }
             PhotonNetwork.LeaveRoom();
-            GameResult();
+            GameResult(gameWin);
             break;
         }
     }
