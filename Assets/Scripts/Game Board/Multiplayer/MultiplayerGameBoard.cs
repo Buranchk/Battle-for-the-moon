@@ -820,14 +820,17 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         if (eUnit.type == fUnit.type)
         {
+            frameRPS.MakeButtonsInteractable(true);
             AudioManager.Instance.UnitMatch();
             windowRPS.SetActive(true);
+
             frameRPS.Appear();
             photonView.RPC("OpenRPSSituation", RpcTarget.Others);
         }
 
         if(RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //e
         {
+            windowRPS.SetActive(false);
             AudioManager.Instance.UnitDeath();
             frameRPS.RegularRPS();
             if(!eUnit.isOpen)
@@ -842,9 +845,10 @@ public class MultiplayerGameBoard : MonoBehaviour
         }
         else if(!RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //f
         {
+            windowRPS.SetActive(false);
             AudioManager.Instance.UnitDeath();
             frameRPS.RegularRPS();
-            if(!fUnit.isOpen)
+            if (!fUnit.isOpen)
             {
                 fUnit.isOpen = true;
                 fUnit.ChangeType(fUnit.type);
@@ -890,6 +894,11 @@ public class MultiplayerGameBoard : MonoBehaviour
         enemyRPSpick = pick;
         if(myRPSpick != "empty")
         {
+            frameRPS.MakeButtonsInteractable(true);
+
+            photonView.RPC("MatchRPS", RpcTarget.Others);
+            frameRPS.Match();
+
             fUnit.ChangeType(myRPSpick);
             eUnit.ChangeType(enemyRPSpick);
 
@@ -921,12 +930,28 @@ public class MultiplayerGameBoard : MonoBehaviour
             GetUnitAtPosition((int)x, (int)y).ChangeType(type);
     }
 
+    [PunRPC]
+    public void RefreshRPS()
+    {
+        frameRPS.MakeButtonsInteractable(true);
+    }
+    [PunRPC]
+    public void MatchRPS()
+    {
+        frameRPS.Match();
+    }
+
     public void FightResultTieMine(string pick)
     {
         myRPSpick = pick;
+        photonView.RPC("RefreshRPS", RpcTarget.Others);
 
-        if(enemyRPSpick != "empty")
+        if (enemyRPSpick != "empty")
         {
+            frameRPS.MakeButtonsInteractable(true);
+            photonView.RPC("MatchRPS", RpcTarget.Others);
+            frameRPS.Match();
+
             fUnit.ChangeType(myRPSpick);
             eUnit.ChangeType(enemyRPSpick);
 
@@ -946,6 +971,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     [PunRPC]
     public void OpenRPSSituation()
     {
+        frameRPS.MakeButtonsInteractable(true);
         //opens square with RPS variants
         AudioManager.Instance.UnitMatch();
         windowRPS.SetActive(true);
@@ -956,6 +982,9 @@ public class MultiplayerGameBoard : MonoBehaviour
     [PunRPC]
     public void FightResult(float x, float y, float xe, float ye, bool result)
     {
+        frameRPS.RegularRPS();
+        windowRPS.SetActive(false);
+
         timer.ResetTimer();
         x = width - x - 1;
         y = height - y - 1;
@@ -1144,14 +1173,23 @@ public class MultiplayerGameBoard : MonoBehaviour
     }
 
 
+
+
 /*(UI related)*/
     public void pickRock()
     {
         timer.ResetTimer();
-        frameRPS.Match();
-        windowRPS.SetActive(false);
+        //frameRPS.Match();
+        //windowRPS.SetActive(false);
+        frameRPS.MakeButtonsInteractable(false);
 
-        if(!TurnCheck())
+        if(enemyRPSpick == "rock")
+        {
+            photonView.RPC("MatchRPS", RpcTarget.Others);
+            frameRPS.Match();
+        }
+
+        if (!TurnCheck())
             photonView.RPC("FightResultTie", RpcTarget.Others, "rock");
         else if(TurnCheck())
             FightResultTieMine("rock");
@@ -1159,11 +1197,18 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void pickPaper()
     {
-        timer.ResetTimer();
-        frameRPS.Match();
-        windowRPS.SetActive(false);
+        if (enemyRPSpick == "paper")
+        {
+            photonView.RPC("MatchRPS", RpcTarget.Others);
+            frameRPS.Match();
+        }
 
-        if(!TurnCheck())
+        timer.ResetTimer();
+        //frameRPS.Match();
+        //windowRPS.SetActive(false);
+        frameRPS.MakeButtonsInteractable(false);
+
+        if (!TurnCheck())
             photonView.RPC("FightResultTie", RpcTarget.Others, "paper");
         else if(TurnCheck())
             FightResultTieMine("paper");
@@ -1172,11 +1217,18 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void pickScissors()
     {
-        timer.ResetTimer();
-        frameRPS.Match();
-        windowRPS.SetActive(false);
+        if (enemyRPSpick == "scissors")
+        {
+            photonView.RPC("MatchRPS", RpcTarget.Others);
+            frameRPS.Match();
+        }
 
-        if(!TurnCheck())
+        timer.ResetTimer();
+        //frameRPS.Match();
+        //windowRPS.SetActive(false);
+        frameRPS.MakeButtonsInteractable(false);
+
+        if (!TurnCheck())
             photonView.RPC("FightResultTie", RpcTarget.Others, "scissors");
         else if(TurnCheck())
             FightResultTieMine("scissors");

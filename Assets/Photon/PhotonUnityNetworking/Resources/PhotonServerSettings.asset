@@ -54,6 +54,8 @@ MonoBehaviour:
   - OpponentLeftRoom
   - SendNickName
   - GameAborted
+  - RefreshRPS
+  - MatchRPS
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1

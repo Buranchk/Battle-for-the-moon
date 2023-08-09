@@ -14,6 +14,25 @@ public RPSObjects Scissors;
 public GameObject State;
 public Tweens tweens;
 
+    public void MakeButtonsInteractable(bool state)
+    {
+
+        Rock.gameObject.GetComponent<Button>().interactable = state;
+        Paper.gameObject.GetComponent<Button>().interactable = state;
+        Scissors.gameObject.GetComponent<Button>().interactable = state;
+        if(!state)
+        {
+            Rock.gameObject.GetComponent<Image>().color = Color.grey;
+            Paper.gameObject.GetComponent<Image>().color = Color.grey;
+            Scissors.gameObject.GetComponent<Image>().color = Color.grey;
+        } else
+        {
+            Rock.gameObject.GetComponent<Image>().color = Color.white;
+            Paper.gameObject.GetComponent<Image>().color = Color.white;
+            Scissors.gameObject.GetComponent<Image>().color = Color.white;
+        }
+}
+
     public void RegularRPS()
     {
         State.GetComponent<Image>().sprite = RegularSprite;
