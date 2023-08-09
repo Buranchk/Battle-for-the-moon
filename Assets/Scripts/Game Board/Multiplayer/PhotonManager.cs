@@ -134,20 +134,23 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         // Instantiate buttons for each active room
         foreach (RoomInfo room in activeRooms)
         {
-            GameObject button = Instantiate(roomButtonPrefab, buttonContainer);
-            Button roomButton = button.GetComponent<Button>();
+            if (room.PlayerCount!=2)
+            {
+                GameObject button = Instantiate(roomButtonPrefab, buttonContainer);
+                Button roomButton = button.GetComponent<Button>();
 
-            // Set button label to room name and number of players
-            roomButton.GetComponentInChildren<TMP_Text>().text = room.Name;
+                // Set button label to room name and number of players
+                roomButton.GetComponentInChildren<TMP_Text>().text = room.Name;
 
-            //Set random color for room button
-            Color randomColor = GetRandomColor();
-            roomButton.GetComponentInChildren<TMP_Text>().color = randomColor;
+                //Set random color for room button
+                Color randomColor = GetRandomColor();
+                roomButton.GetComponentInChildren<TMP_Text>().color = randomColor;
 
 
 
-            // Add a click event to join the room
-            roomButton.onClick.AddListener(() => JoinRoom(room.Name));
+                // Add a click event to join the room
+                roomButton.onClick.AddListener(() => JoinRoom(room.Name));
+            }
         }
         Debug.Log("RoomList UI has been updated");
     }
