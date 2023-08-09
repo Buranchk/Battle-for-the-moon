@@ -155,12 +155,43 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         Debug.Log("RoomList UI has been updated");
     }
 
+    private Color[] colorList = new Color[]
+    {
+        new Color(1f, 0f, 0f),          // Red
+        new Color(0f, 1f, 0f),          // Lime
+        new Color(0f, 0f, 1f),          // Blue
+        new Color(1f, 1f, 0f),          // Yellow
+        new Color(0f, 1f, 1f),          // Cyan
+        new Color(1f, 0f, 1f),          // Magenta / Fuchsia
+        new Color(1f, 0.27f, 0f),       // Orange Red
+        new Color(1f, 0.55f, 0f),       // Dark Orange
+        new Color(1f, 0.65f, 0f),       // Orange
+        new Color(1f, 0.84f, 0f),       // Gold
+        new Color(0.49f, 0.99f, 0f),    // Lawn Green
+        new Color(0.5f, 1f, 0f),        // Chartreuse
+        new Color(0.68f, 1f, 0.18f),    // Green Yellow
+        new Color(0f, 0.73f, 1f),       // Deep Sky Blue
+        new Color(0.12f, 0.57f, 1f),    // Dodger Blue
+        new Color(0.25f, 0.41f, 0.88f), // Royal Blue
+        new Color(0.54f, 0.17f, 0.89f), // Blue Violet
+        new Color(0.85f, 0.44f, 0.84f), // Orchid
+        new Color(0.78f, 0.08f, 0.52f), // Medium Violet Red
+        new Color(0.86f, 0.44f, 0.58f), // Pale Violet Red
+        new Color(1f, 0.08f, 0.58f),    // Deep Pink
+        new Color(1f, 0.41f, 0.71f),    // Hot Pink
+        new Color(0.82f, 0.41f, 0.12f), // Chocolate
+        new Color(0.8f, 0.52f, 0.25f),  // Peru
+        new Color(0.96f, 0.64f, 0.38f), // Sandy Brown
+        new Color(0.58f, 0f, 0.83f),    // Dark Violet
+        new Color(0.6f, 0.2f, 0.8f),    // Dark Orchid
+        new Color(0.73f, 0.33f, 0.83f), // Medium Orchid
+        new Color(0.5f, 0f, 0.5f)       // Purple
+    };
+
     private Color GetRandomColor()
     {
-        float r = Random.Range(0f, 1f);
-        float g = Random.Range(0f, 1f);
-        float b = Random.Range(0f, 1f);
-        return new Color(r, g, b);
+        int randomIndex = Random.Range(0, colorList.Length);
+        return colorList[randomIndex];
     }
 
 
