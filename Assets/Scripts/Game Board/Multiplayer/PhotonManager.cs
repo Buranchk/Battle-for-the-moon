@@ -23,17 +23,13 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     // Componets of UI that need to be shown/hide
     public GameObject roomContent;
     public GameObject roomList;
-
     public GameObject roomNameSpace;
 
     [SerializeField] string enemyNickName;
+    private string secondPlayerNick;
 
     public LobbyHelper helper;    
 
-    void Update()
-    {
-
-    } 
 
     void Awake()
     {
@@ -42,6 +38,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         photonView = GetComponent<PhotonView>();
         if(!PhotonNetwork.InLobby)
         PhotonNetwork.JoinLobby();
+        PhotonNetwork.NickName=DataMan.GetName();
     }
 
     public override void OnConnectedToMaster()
@@ -50,23 +47,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if(!PhotonNetwork.InLobby)
         PhotonNetwork.JoinLobby();
     }
-
-    // public static PhotonManager Instance;
-
-    // private void Awake()
-    // {
-    //     if (Instance == null)
-    //     {
-    //         Instance = this;
-    //         DontDestroyOnLoad(gameObject);
-    //     }
-    //     else
-    //     {
-    //         Destroy(gameObject);
-    //     }
-
-    // }
-
 
  //Creates room with defined parametres
     public void CreateRoomButton()
@@ -109,12 +89,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
      }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
-        // Check if the room is full
-        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers )
-        {
-            photonView.RPC("EnemyJoin", RpcTarget.All);
-            //UpdateRoomListUI();
-        }
+
 
     }
     public override void OnPlayerLeftRoom(Player otherPlayer)
@@ -225,8 +200,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         roomContent.SetActive(true);
         roomList.SetActive(false);
 
-        //Sets enemy name for other player in LobbyHelper
-        photonView.RPC("SendNickName", RpcTarget.OthersBuffered);
+        // Check if the room is full
+        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers )
+        {   
+            photonView.RPC("EnemyJoin", RpcTarget.All);
+        }
     }
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
@@ -235,7 +213,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public void LeaveRoomButton()
     {
-        photonView.RPC("OpponentLeftRoom", RpcTarget.Others);
+        photonView.RPC("OpponentLeftRoom", RpcTarget.Others); 
         PhotonNetwork.LeaveRoom();
         roomList.SetActive(true);
         roomContent.SetActive(false);
@@ -302,20 +280,17 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [PunRPC]
     public void EnemyJoin()
     {
+        //Sets enemy name for other player in LobbyHelper
+        foreach (var player in PhotonNetwork.PlayerListOthers)
+        {
+            helper.enemyNamePM = player.NickName;
+            break; 
+        }
+        
         helper.RoomInit();
         helper.RoomConnect();
         Debug.Log("Enemy joined room!");
     }
-
-    [PunRPC]
-    public void SendNickName()
-    {
-        helper.enemyNamePM = DataMan.GetName();
-    }
-
-
-
-
 
 }
 

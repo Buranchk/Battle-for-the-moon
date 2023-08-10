@@ -57,6 +57,7 @@ MonoBehaviour:
   - RefreshRPS
   - MatchRPS
   - CallExitGame
+  - SendNick1Player
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
