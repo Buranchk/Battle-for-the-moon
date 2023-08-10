@@ -40,8 +40,15 @@ public class MultiplayerGameBoard : MonoBehaviour
     public List<GameObject> units = new List<GameObject>();
     public List<GameObject> enemyUnits = new List<GameObject>();
     public bool gameWin = true;
+    private bool opponentLeft = false;
 
-//UI & Visuals
+    //UI & Visuals
+
+    public GameObject youWonSign;
+    public GameObject gameOverSign;
+    public GameObject opponentLeftSign;
+
+
     public RPSMatch frameRPS;
     [SerializeField] private GameObject explosion;
     [SerializeField] private ParticleSystem winParticles;
@@ -50,6 +57,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     [SerializeField] private GameObject buttonShuffle;
     [SerializeField] private GameObject arrowShuffle;
     [SerializeField] private GameObject buttonDone;
+    [SerializeField] private GameObject buttonDoneSide;
     [SerializeField] private GameObject decoyText;
     [SerializeField] private GameObject flagText;
     [SerializeField] private GameObject reshuffleText;
@@ -435,12 +443,55 @@ public class MultiplayerGameBoard : MonoBehaviour
 
     public void GameResult(bool state)
     {
-        //if(state)
-        //    uWonSign
-        //U won, u lost
-        SceneManager.LoadScene("Game Result");
-        AudioMusic.Instance.AmbientMusic();
+        if (opponentLeft == true)
+        {
+            print("GameResult: OpponentLeft = Win");
+            PlayerPrefs.SetInt("GameResult", 1);
+            StartCoroutine(FinishingAnimation("opponentLeft"));
+            return;
+        }
+        if (gameWin == true)
+        {
+            print("GameResult: Win");
+            PlayerPrefs.SetInt("GameResult", 1);
+            StartCoroutine(FinishingAnimation("youWon"));
+            return;
+        }
+        if (gameWin == false)
+        {
+            print("GameResult: Loose");
+            PlayerPrefs.SetInt("GameResult", 0);
+            StartCoroutine(FinishingAnimation("gameOver"));
+            return;
+        }
     }
+
+    IEnumerator FinishingAnimation(string state)
+    {
+        switch (state)
+        {
+            case "youWon":
+                tweens.AbortGame(youWonSign);
+                yield return new WaitForSeconds(1.5f);
+                SceneManager.LoadScene("Game Result");
+                AudioMusic.Instance.AmbientMusic();
+                break;
+            case "gameOver":
+                tweens.AbortGame(gameOverSign);
+                yield return new WaitForSeconds(1.5f);
+                SceneManager.LoadScene("Game Result");
+                AudioMusic.Instance.AmbientMusic();
+                break;
+            case "opponentLeft":
+                tweens.AbortGame(opponentLeftSign);
+                yield return new WaitForSeconds(1.5f);
+                SceneManager.LoadScene("Game Result");
+                AudioMusic.Instance.AmbientMusic();
+                break;
+        }
+    }
+
+    
 
     IEnumerator StartGameFX()
     {
@@ -507,6 +558,19 @@ public class MultiplayerGameBoard : MonoBehaviour
         return GetTileAtPosition(new Vector2(x, y)).unitLinked;
     }
 
+    public void CallOpponentLeft()
+    {
+        photonView.RPC("CallExitGame", RpcTarget.Others);
+    }
+
+    [PunRPC]
+    public void CallExitGame()
+    {
+        opponentLeft = true;
+        gameWin = true;
+        GameResult(gameWin);
+    }
+
     public void NewStage()
     {
         gameStage = gameStage + 1;
@@ -521,7 +585,6 @@ public class MultiplayerGameBoard : MonoBehaviour
             UnitFlag.SetActive(true);
             flagText.SetActive(true);
             tweens.AppearScale(UnitFlag);
-            tweens.AppearScaleDelay(buttonDone);
             tweens.PulsatingRoundButton(buttonDone);
             break;
 
@@ -534,10 +597,11 @@ public class MultiplayerGameBoard : MonoBehaviour
             decoyText.SetActive(true);
             tweens.AppearScale(UnitDecoy);
             ApplyUnitSelection("Flag");
-            timer.ResetTimer15();
+            timer.ResetTimer();
             break;
 
             case 3:
+            setDoneInactive();
             fingerScript.StopPointing();
             Destroy(fingerScript.gameObject);
 
@@ -548,14 +612,15 @@ public class MultiplayerGameBoard : MonoBehaviour
             
             buttonShuffle.SetActive(true);
             UnitRandomize();
-            setDoneActive();
+            buttonDoneSide.SetActive(true);
             ApplyUnitSelection("Decoy");
-            timer.ResetTimer15();
+            timer.ResetTimer();
             break;
 
             case 4:
             SendSpawnedUnits();
-            
+            buttonDoneSide.SetActive(false);
+
             reshuffleText.SetActive(false);
             buttonShuffle.SetActive(false);
             buttonDone.SetActive(false);
@@ -565,27 +630,6 @@ public class MultiplayerGameBoard : MonoBehaviour
             break;
 
             case 5:
-            if(gameWin == true)
-            {
-                print("GameResult: Win");
-                PlayerPrefs.SetInt("GameResult", 1);
-            }
-            if (gameWin == false)
-            {
-                print("GameResult: Loose");
-                PlayerPrefs.SetInt("GameResult", 0);
-            }
-
-            // if(enemyUnits.Count == 0)
-            // {
-            //     print("GameResult: Win");
-            //     PlayerPrefs.SetInt("GameResult", 1);
-            // }
-            // else if(units.Count == 0)
-            // {
-            //     print("GameResult: Loose");
-            //     PlayerPrefs.SetInt("GameResult", 0);
-            // }
             PhotonNetwork.LeaveRoom();
             GameResult(gameWin);
             break;
@@ -844,7 +888,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             eUnit.movedOn = false;
             DeselectUnit();
             StartCoroutine(FightAnimation(eUnitObj, fUnitObj, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false));
-            photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false);
+            photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, false, eUnit.type, fUnit.type);
         }
         else if(!RPS(eUnit.type, fUnit.type) && eUnit.type != fUnit.type) //f
         {
@@ -860,7 +904,7 @@ public class MultiplayerGameBoard : MonoBehaviour
             fUnit.movedOn = false;
             DeselectUnit();
             StartCoroutine(FightAnimation(fUnitObj, eUnitObj, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.gameObject.transform.position.y, true));
-            photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, true);
+            photonView.RPC("FightResult", RpcTarget.Others, eUnitObj.transform.position.x, eUnitObj.transform.position.y, fUnitObj.transform.position.x, fUnitObj.transform.position.y, true, eUnit.type, fUnit.type);
         }
     }
 
@@ -938,6 +982,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     {
         frameRPS.MakeButtonsInteractable(true);
     }
+    
     [PunRPC]
     public void MatchRPS()
     {
@@ -983,7 +1028,7 @@ public class MultiplayerGameBoard : MonoBehaviour
     }
 
     [PunRPC]
-    public void FightResult(float x, float y, float xe, float ye, bool result)
+    public void FightResult(float x, float y, float xe, float ye, bool result, string first, string second)
     {
         frameRPS.RegularRPS();
         windowRPS.SetActive(false);
@@ -997,6 +1042,9 @@ public class MultiplayerGameBoard : MonoBehaviour
 
         MultiplayerUnit myUnit = GetUnitAtPosition((int)x, (int)y);
         MultiplayerEUnit enemyUnit = GetEnemyAtPosition((int)xe, (int)ye);
+
+        eUnit = enemyUnit;
+        RPS(first, second);
 
         CallCourotineFight(myUnit, enemyUnit, x, y, xe, ye, result);
 
@@ -1241,8 +1289,8 @@ public class MultiplayerGameBoard : MonoBehaviour
     public void setDoneInactive()
     {
             buttonDone.SetActive(false);
-            buttonDone.GetComponent<Button>().interactable = false;
-            buttonDone.GetComponent<Image>().sprite = buttonDoneInactive;
+            //buttonDone.GetComponent<Button>().interactable = false;
+            //buttonDone.GetComponent<Image>().sprite = buttonDoneInactive;
     }
 
     public void setDoneActive()
