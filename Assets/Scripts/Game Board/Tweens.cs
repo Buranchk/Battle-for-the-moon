@@ -74,7 +74,7 @@ public class Tweens : MonoBehaviour
     public void AbortGame(GameObject item)
     {
         item.SetActive(true);
-        LeanTween.scale(item, new Vector2(1.3f, 1.3f), 1.4f).setEaseOutCirc();
+        LeanTween.scale(item, new Vector2(1.15f, 1.15f), 1f).setEaseOutCirc();
     }
 
     public void UnitsMeet(GameObject unit1, GameObject unit2, bool win)

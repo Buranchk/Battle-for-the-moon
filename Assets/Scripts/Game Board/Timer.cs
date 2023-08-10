@@ -30,10 +30,22 @@ public class Timer : MonoBehaviour
 
     IEnumerator AbortGame()
     {
-        tween.AbortGame(AbortedGame);
-        yield return new WaitForSeconds(1.5f);
-        AudioMusic.Instance.MainMenuMusic();
-        SceneManager.LoadScene("Main Menu");
+        if(GameObject.Find("Multiplayer Game Board") != null)
+        {
+            GameObject.Find("Multiplayer Game Board").GetComponent<MultiplayerGameBoard>().CallOpponentLeft();
+            tween.AbortGame(AbortedGame);
+            yield return new WaitForSeconds(1.5f);
+            AudioMusic.Instance.MainMenuMusic();
+            SceneManager.LoadScene("Main Menu");
+        }
+        else
+        {
+            tween.AbortGame(AbortedGame);
+            yield return new WaitForSeconds(1.5f);
+            AudioMusic.Instance.MainMenuMusic();
+            SceneManager.LoadScene("Main Menu");
+        }
+
     }
 
     private void Update()
