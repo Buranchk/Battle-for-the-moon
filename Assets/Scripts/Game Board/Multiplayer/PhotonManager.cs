@@ -86,6 +86,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         activeRooms.Clear();
         activeRooms.AddRange(roomList);
         UpdateRoomListUI();
+        //GameObject button = Instantiate(roomButtonPrefab, buttonContainer);
      }
     public override void OnPlayerEnteredRoom(Player newPlayer)
     {
