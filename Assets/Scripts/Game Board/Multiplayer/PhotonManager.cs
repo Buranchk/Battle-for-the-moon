@@ -34,7 +34,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     void Awake()
     {
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
-        PhotonNetwork.ConnectToRegion("eu");
+        PhotonNetwork.ConnectUsingSettings();
         photonView = GetComponent<PhotonView>();
         if(!PhotonNetwork.InLobby)
         PhotonNetwork.JoinLobby();
