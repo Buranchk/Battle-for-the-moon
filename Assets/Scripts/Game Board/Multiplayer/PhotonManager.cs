@@ -12,6 +12,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] public TMP_InputField roomName;
     private PhotonView photonView;
     private DataManager DataMan;
+    public LobbyHelper helper;    
     private bool readyCheck=false;
 
 
@@ -28,8 +29,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     [SerializeField] string enemyNickName;
     private string secondPlayerNick;
 
-    public LobbyHelper helper;    
-
+    public string roomCounter;
+    public int intRoomCounter=0;
 
     void Awake()
     {
@@ -44,8 +45,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log ("You connected to server");
+        GameObject.Find("ServerConnection").SetActive(true);
         if(!PhotonNetwork.InLobby)
         PhotonNetwork.JoinLobby();
+    }
+
+    public override void OnDisconnected(DisconnectCause cause)
+    {
+        GameObject.Find("ServerConnection").SetActive(false);       
+    }
+
+    public override void OnJoinedLobby()
+    {
+        GameObject.Find("LobbyConnection").SetActive(true);
     }
 
  //Creates room with defined parametres
@@ -53,6 +65,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         if (roomName.text.Length > 0)
         {
+                    GameObject.Find("ServerConnection").SetActive(true);
+
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 2;
             PhotonNetwork.CreateRoom(roomName.text, roomOptions, TypedLobby.Default);
@@ -74,7 +88,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         helper.RoomInit();
         Debug.Log("Created room with name: "+ PhotonNetwork.CurrentRoom.Name);
-        //PhotonNetwork.LoadLevel("Multiplayer Game Board");
     }
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
@@ -86,18 +99,9 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         activeRooms.Clear();
         activeRooms.AddRange(roomList);
         UpdateRoomListUI();
-        //GameObject button = Instantiate(roomButtonPrefab, buttonContainer);
+        intRoomCounter++;
+        GameObject.Find("romlist update counter").GetComponent<TMP_Text>().text = roomCounter;
      }
-    public override void OnPlayerEnteredRoom(Player newPlayer)
-    {
-
-
-    }
-    public override void OnPlayerLeftRoom(Player otherPlayer)
-    {
-        //UpdateRoomListUI();
-    }
-
 
     private void UpdateRoomListUI()
     {
@@ -190,6 +194,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
+        GameObject.Find("LobbyConnection").SetActive(true);
         //Sets roomname in room UI
         string roomNameUI = PhotonNetwork.CurrentRoom.Name;
         helper.roomNameUI = roomNameUI;
@@ -235,6 +240,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
+        GameObject.Find("LobbyConnection").SetActive(false);
         readyCheck=false;
         Debug.Log("You left room");
     }
