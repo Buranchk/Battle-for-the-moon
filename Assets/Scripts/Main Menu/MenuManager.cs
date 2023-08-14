@@ -51,10 +51,15 @@ public class MenuManager : MonoBehaviour
         {
             Data().LoadSave();
             LoadMenuValues();
+            if (PlayerPrefs.GetInt("FirstBoot") == 1)
+            {
+                PlayerPrefs.SetInt("FirstBoot", 0);
+                tutorialButton.GetComponent<Button>().onClick.Invoke();
+            }
         }
         else
         {
-            DisableSound();
+            PlayerPrefs.SetInt("FirstBoot", 1);
             SetSkinsActive(false);
             selectButton.SetActive(false);
             tutorialButton.SetActive(false);

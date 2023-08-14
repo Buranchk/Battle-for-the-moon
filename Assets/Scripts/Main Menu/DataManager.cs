@@ -66,7 +66,7 @@ public class DataManager : MonoBehaviour
         save.lvl = 0;
         save.skins = new List<bool>(){true, true, false, false};
         save.selectedSkin = 0;
-        save.soundSwitcher = true;
+        save.soundSwitcher = false;
         save.NoAds = true;
         SaveChanges();
     }
