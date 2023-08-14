@@ -25,6 +25,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public GameObject roomContent;
     public GameObject roomList;
     public GameObject roomNameSpace;
+    // TEST Componets of UI that need to be shown/hide
+    public GameObject ServerConnection;
+    public GameObject LobbyConnection;
+    public GameObject roomConnection;
+
 
     [SerializeField] string enemyNickName;
     private string secondPlayerNick;
@@ -32,10 +37,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public string roomCounter;
     public int intRoomCounter=0;
 
-    void Awake()
+    void Start()
     {
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         PhotonNetwork.ConnectUsingSettings();
+        PhotonNetwork.ConnectToRegion("eu");
         photonView = GetComponent<PhotonView>();
         if(!PhotonNetwork.InLobby)
         PhotonNetwork.JoinLobby();
@@ -45,19 +51,19 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log ("You connected to server");
-        GameObject.Find("ServerConnection").SetActive(true);
+        //ServerConnection.SetActive(true);
         if(!PhotonNetwork.InLobby)
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        GameObject.Find("ServerConnection").SetActive(false);       
+        ServerConnection.SetActive(false);       
     }
 
     public override void OnJoinedLobby()
     {
-        GameObject.Find("LobbyConnection").SetActive(true);
+        //LobbyConnection.SetActive(true);
     }
 
  //Creates room with defined parametres
@@ -65,8 +71,6 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         if (roomName.text.Length > 0)
         {
-                    GameObject.Find("ServerConnection").SetActive(true);
-
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 2;
             PhotonNetwork.CreateRoom(roomName.text, roomOptions, TypedLobby.Default);
@@ -194,8 +198,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnJoinedRoom()
     {
-        GameObject.Find("LobbyConnection").SetActive(true);
         //Sets roomname in room UI
+        //roomConnection.SetActive(true);
         string roomNameUI = PhotonNetwork.CurrentRoom.Name;
         helper.roomNameUI = roomNameUI;
         roomNameSpace.GetComponent<TMP_Text>().text= roomNameUI;
@@ -240,7 +244,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
 
     public override void OnLeftRoom()
     {
-        GameObject.Find("LobbyConnection").SetActive(false);
+        roomConnection.SetActive(false);
         readyCheck=false;
         Debug.Log("You left room");
     }

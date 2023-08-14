@@ -509,7 +509,7 @@ GameObject:
   m_Component:
   - component: {fileID: 134836119}
   - component: {fileID: 134836118}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: ServerConnection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2468,7 +2468,7 @@ GameObject:
   m_Component:
   - component: {fileID: 799362393}
   - component: {fileID: 799362392}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: LobbyConnection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3652,6 +3652,9 @@ MonoBehaviour:
   roomContent: {fileID: 1804056696}
   roomList: {fileID: 664813899}
   roomNameSpace: {fileID: 516870706}
+  ServerConnection: {fileID: 134836117}
+  LobbyConnection: {fileID: 799362391}
+  roomConnection: {fileID: 1933497138}
   enemyNickName: 
   roomCounter: 
   intRoomCounter: 0
@@ -4633,7 +4636,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1933497140}
   - component: {fileID: 1933497139}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: romm connection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
