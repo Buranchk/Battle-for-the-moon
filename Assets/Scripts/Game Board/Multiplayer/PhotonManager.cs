@@ -5,37 +5,33 @@ using Photon.Pun;
 using Photon.Realtime;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.Purchasing;
 
 public class PhotonManager : MonoBehaviourPunCallbacks
 {
-    [SerializeField] string region;
-    [SerializeField] public TMP_InputField roomName;
     private PhotonView photonView;
     private DataManager DataMan;
-    public LobbyHelper helper;    
-    private bool readyCheck=false;
-
+    public LobbyHelper helper;
 
     public Transform buttonContainer; // The parent transform of the room buttons
     public GameObject roomButtonPrefab; // Prefab for the room button
+    private List<RoomInfo> activeRooms = new List<RoomInfo>(); // List of rooms in lobby
 
-    private List<RoomInfo> activeRooms = new List<RoomInfo>();
-
-    // Componets of UI that need to be shown/hide
+    // Componets of UI 
+    [SerializeField] public TMP_InputField roomName;
     public GameObject roomContent;
     public GameObject roomList;
     public GameObject roomNameSpace;
+
     // TEST Componets of UI that need to be shown/hide
     public GameObject ServerConnection;
     public GameObject LobbyConnection;
     public GameObject roomConnection;
 
-
+    private bool readyCheck=false;
     [SerializeField] string enemyNickName;
     private string secondPlayerNick;
-
-    public string roomCounter;
-    public int intRoomCounter=0;
+    public string fakeRoomName= "Fake Room";
 
     void Start()
     {
@@ -51,19 +47,18 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     public override void OnConnectedToMaster()
     {
         Debug.Log ("You connected to server");
-        //ServerConnection.SetActive(true);
         if(!PhotonNetwork.InLobby)
         PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(DisconnectCause cause)
     {
-        ServerConnection.SetActive(false);       
+
     }
 
     public override void OnJoinedLobby()
     {
-        //LobbyConnection.SetActive(true);
+
     }
 
  //Creates room with defined parametres
@@ -88,23 +83,87 @@ public class PhotonManager : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.JoinRoom(roomName.text );
     }
+
     public override void OnCreatedRoom()
     {
         helper.RoomInit();
         Debug.Log("Created room with name: "+ PhotonNetwork.CurrentRoom.Name);
     }
+
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
         Debug.LogError("Failed to create room");
     }
+
+    private void JoinRoom(string nameOfExistingRoom)
+    {
+        RoomOptions roomOptions = new RoomOptions();
+        roomOptions.MaxPlayers =2;
+        PhotonNetwork.JoinOrCreateRoom (nameOfExistingRoom, roomOptions, TypedLobby.Default);
+    }
+
+    public override void OnJoinedRoom()
+    {
+        //Sets roomname in room UI
+        string roomNameUI = PhotonNetwork.CurrentRoom.Name;
+        helper.roomNameUI = roomNameUI;
+        roomNameSpace.GetComponent<TMP_Text>().text= roomNameUI;
+
+        Debug.Log ("You joined room: " + PhotonNetwork.CurrentRoom.Name );
+
+        //Set room UI in active state
+        roomContent.SetActive(true);
+        roomList.SetActive(false);
+
+        // Check if the room is full
+        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers )
+        {   
+            photonView.RPC("EnemyJoin", RpcTarget.All);
+        }
+    }
+
+    public override void OnJoinRoomFailed(short returnCode, string message)
+    {
+        Debug.Log("Failed to join room " + roomName.text);
+    }
+
+    public void LeaveRoomButton()
+    {
+        photonView.RPC("OpponentLeftRoom", RpcTarget.Others); 
+        PhotonNetwork.LeaveRoom();
+        roomList.SetActive(true);
+        roomContent.SetActive(false);
+    }
+
+    //resets room UI into "waiting for oponent" state
+    [PunRPC]
+    public void OpponentLeftRoom()
+    {
+        readyCheck=false;
+        helper.RoomInit();
+        Debug.Log("RPC OpponentLeftRoom was sent");
+    }
+
+    public void ExitLobbyButton()
+    {
+        photonView.RPC("OpponentLeftRoom", RpcTarget.Others);
+        PhotonNetwork.LeaveRoom();
+    }
+
+    //resets roomConnection UI into initial state
+    public override void OnLeftRoom()
+    {
+        roomConnection.SetActive(false);
+        readyCheck=false;
+        Debug.Log("You left room");
+    }
+    
     
      public override void OnRoomListUpdate(List<RoomInfo> roomList)
      {
         activeRooms.Clear();
         activeRooms.AddRange(roomList);
         UpdateRoomListUI();
-        intRoomCounter++;
-        GameObject.Find("romlist update counter").GetComponent<TMP_Text>().text = roomCounter;
      }
 
     private void UpdateRoomListUI()
@@ -123,18 +182,37 @@ public class PhotonManager : MonoBehaviourPunCallbacks
                 GameObject button = Instantiate(roomButtonPrefab, buttonContainer);
                 Button roomButton = button.GetComponent<Button>();
 
-                // Set button label to room name and number of players
+                // Set button label to room name 
                 roomButton.GetComponentInChildren<TMP_Text>().text = room.Name;
 
                 //Set random color for room button
                 Color randomColor = GetRandomColor();
                 roomButton.GetComponentInChildren<TMP_Text>().color = randomColor;
 
-
-
                 // Add a click event to join the room
                 roomButton.onClick.AddListener(() => JoinRoom(room.Name));
             }
+        }
+
+        //Creates fake rooms if there is not enough
+        if (activeRooms.Count<5)
+        {
+            for (int i = 0; i < (6-activeRooms.Count); i++)
+        {
+                GameObject button = Instantiate(roomButtonPrefab, buttonContainer);
+                Button roomButton = button.GetComponent<Button>();
+
+                // Set button label to random room 
+                roomButton.GetComponentInChildren<TMP_Text>().text = fakeRoomName;
+
+                //Set random color for room button
+                Color randomColor = GetRandomColor();
+                roomButton.GetComponentInChildren<TMP_Text>().color = randomColor;
+
+                // Add a click event to start solo game
+                roomButton.onClick.AddListener(() => StartSoloGame());
+        }
+
         }
         Debug.Log("RoomList UI has been updated");
     }
@@ -186,69 +264,12 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         PhotonNetwork.JoinLobby();
     }
 
-    private void JoinRoom(string nameOfExistingRoom)
+    public void StartSoloGame()
     {
-        RoomOptions roomOptions = new RoomOptions();
-        roomOptions.MaxPlayers =2;
-        PhotonNetwork.JoinOrCreateRoom (nameOfExistingRoom, roomOptions, TypedLobby.Default);
-        //PhotonNetwork.JoinRoom(nameOfExistingRoom);
+        AudioMusic.Instance.GameMusic();
+        PhotonNetwork.LoadLevel("Game Board");
     }
 
-
-
-    public override void OnJoinedRoom()
-    {
-        //Sets roomname in room UI
-        //roomConnection.SetActive(true);
-        string roomNameUI = PhotonNetwork.CurrentRoom.Name;
-        helper.roomNameUI = roomNameUI;
-        roomNameSpace.GetComponent<TMP_Text>().text= roomNameUI;
-
-        Debug.Log ("You joined room: " + PhotonNetwork.CurrentRoom.Name );
-
-        //Set room UI in active state
-        roomContent.SetActive(true);
-        roomList.SetActive(false);
-
-        // Check if the room is full
-        if (PhotonNetwork.CurrentRoom.PlayerCount == PhotonNetwork.CurrentRoom.MaxPlayers )
-        {   
-            photonView.RPC("EnemyJoin", RpcTarget.All);
-        }
-    }
-    public override void OnJoinRoomFailed(short returnCode, string message)
-    {
-        Debug.Log("Failed to join room " + roomName.text);
-    }
-
-    public void LeaveRoomButton()
-    {
-        photonView.RPC("OpponentLeftRoom", RpcTarget.Others); 
-        PhotonNetwork.LeaveRoom();
-        roomList.SetActive(true);
-        roomContent.SetActive(false);
-    }
-    [PunRPC]
-    public void OpponentLeftRoom()
-    {
-        readyCheck=false;
-        helper.RoomInit();
-        Debug.Log("RPC OpponentLeftRoom was sent");
-    }
-
-    public void ExitLobbyButton()
-    {
-        photonView.RPC("OpponentLeftRoom", RpcTarget.Others);
-        PhotonNetwork.LeaveRoom();
-    }
-
-    public override void OnLeftRoom()
-    {
-        roomConnection.SetActive(false);
-        readyCheck=false;
-        Debug.Log("You left room");
-    }
-    
     //starts game if both player are ready
     public void StartGame()
     {
@@ -274,8 +295,8 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         if(!DataMan.GetPremiumStatus())
             DataMan.TakePower();
         AudioMusic.Instance.GameMusic();
-
     }
+
     [PunRPC]
     public bool Ready()
     {
@@ -283,6 +304,7 @@ public class PhotonManager : MonoBehaviourPunCallbacks
         readyCheck=true;
         return readyCheck;
     }
+
     public bool NotReady()
     {
         return readyCheck;
