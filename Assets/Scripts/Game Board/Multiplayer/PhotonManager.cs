@@ -202,8 +202,11 @@ public class PhotonManager : MonoBehaviourPunCallbacks
                 GameObject button = Instantiate(roomButtonPrefab, buttonContainer);
                 Button roomButton = button.GetComponent<Button>();
 
+                //add json magic
+                //GameObject.Find("JsonDatabase").GetComponent<JsonDatabase>().ReturnName();
+
                 // Set button label to random room 
-                roomButton.GetComponentInChildren<TMP_Text>().text = fakeRoomName;
+                roomButton.GetComponentInChildren<TMP_Text>().text = GameObject.Find("JsonDatabase").GetComponent<JsonDatabase>().ReturnName();
 
                 //Set random color for room button
                 Color randomColor = GetRandomColor();
