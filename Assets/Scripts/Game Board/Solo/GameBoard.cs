@@ -77,12 +77,15 @@ public class GameBoard : MonoBehaviour
 
     public bool tutorialState = false;
     public InGameTutorial TutorialInGame;
+    public AdmobAdsScript ads;
 
     void Start()
     {
         DataMan = GameObject.Find("Data Manager").GetComponent<DataManager>();
         SoundSwitch();
         SoundSwitch();
+
+        ads.LoadBannerAd();
 
 
         GenerateGrid();

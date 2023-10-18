@@ -23,6 +23,9 @@ public class GameResult : MonoBehaviour
 
     public Slider XPSlider;
     private float updXP;
+    public AdmobAdsScript ads;
+
+
 
     private Save sv = new Save();
 
@@ -30,6 +33,9 @@ public class GameResult : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
+        CheckAdState();
+
         Data = GameObject.Find("Data Manager").GetComponent<DataManager>();
         int gameResult = PlayerPrefs.GetInt("GameResult");
 
@@ -49,6 +55,24 @@ public class GameResult : MonoBehaviour
             LogoResult.SetActive(true);
             Data.EndGame(false, Data.GetSelectedSkin());
         }
+
+    }
+
+    private void CheckAdState()
+    {
+        int games = PlayerPrefs.GetInt("PlayCount");
+        print(games);
+        if(games < 1)
+        {
+            games++;
+            PlayerPrefs.SetInt("PlayCount", games);
+        }
+        else if (games == 1)
+        {
+            PlayerPrefs.SetInt("PlayCount", 0);
+            ads.LoadInterstitialAd();
+        }
+        print(games);
     }
 
     private void RewardCalculation(int gameResult)
@@ -131,7 +155,7 @@ public class GameResult : MonoBehaviour
         {
             AudioManager.Instance.XPSoundFX(); //XP fill SFX
             LeanTween.value(XPSlider.gameObject, XPSlider.value, XPSlider.value + xp, 3.5f).setEase(LeanTweenType.easeInOutQuad).setOnUpdate((float val) => {
-                print(val);
+//                print(val);
                 updXP = val;
                 if(val >= XPSlider.maxValue)
                 {
