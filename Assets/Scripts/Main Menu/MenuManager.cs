@@ -180,12 +180,12 @@ public class MenuManager : MonoBehaviour
 
     public void OpenInfo()
     {
-        //Application.OpenURL("https://en.wikipedia.org/wiki/End-user_license_agreement");
+        Application.OpenURL("https://www.lisenbart.com/battleforthemoon/bftm-privaci-policy/");
     }
 
     public void OpenLisenbartGameStudio()
     {
-        //Application.OpenURL("http://lisenbart.com/");
+        Application.OpenURL("https://www.lisenbart.com/battleforthemoon/");
     }
 
     public void SoundSwitch()
