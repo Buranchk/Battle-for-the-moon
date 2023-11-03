@@ -8,12 +8,12 @@ public class AdmobAdsScript : MonoBehaviour
 {
     public TextMeshProUGUI totalCoinsTxt;
 
-    public string appId = "ca-app-pub-1385093244148841~5602672977";// "ca-app-pub-3940256099942544~3347511713";
+    public string appId = "ca-app-pub-2512402949853443~6065072283";// "ca-app-pub-3940256099942544~3347511713";
 
 
 #if UNITY_ANDROID
-    string bannerId = "ca-app-pub-1385093244148841/2952458907";
-    string interId = "ca-app-pub-3940256099942544/1033173712";
+    string bannerId = "ca-app-pub-2512402949853443/1548023020";//ca-app-pub-1385093244148841/2952458907
+    string interId = "ca-app-pub-2512402949853443/9426513045";//ca-app-pub-3940256099942544/1033173712
     string rewardedId = "ca-app-pub-3940256099942544/5224354917";
     string nativeId = "ca-app-pub-3940256099942544/2247696110";
 
