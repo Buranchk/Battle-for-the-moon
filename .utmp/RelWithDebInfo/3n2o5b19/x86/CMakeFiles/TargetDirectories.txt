@@ -1,0 +1,5 @@
+C:/Users/juven/Desktop/NewVer/Battle-for-the-moon/.utmp/RelWithDebInfo/3n2o5b19/x86/CMakeFiles/edit_cache.dir
+C:/Users/juven/Desktop/NewVer/Battle-for-the-moon/.utmp/RelWithDebInfo/3n2o5b19/x86/CMakeFiles/rebuild_cache.dir
+C:/Users/juven/Desktop/NewVer/Battle-for-the-moon/.utmp/RelWithDebInfo/3n2o5b19/x86/FramePacing/CMakeFiles/swappywrapper.dir
+C:/Users/juven/Desktop/NewVer/Battle-for-the-moon/.utmp/RelWithDebInfo/3n2o5b19/x86/FramePacing/CMakeFiles/edit_cache.dir
+C:/Users/juven/Desktop/NewVer/Battle-for-the-moon/.utmp/RelWithDebInfo/3n2o5b19/x86/FramePacing/CMakeFiles/rebuild_cache.dir

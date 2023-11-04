@@ -18,8 +18,8 @@ public class AdmobAdsScript : MonoBehaviour
     string nativeId = "ca-app-pub-3940256099942544/2247696110";
 
 #elif UNITY_IPHONE
-    string bannerId = "ca-app-pub-3940256099942544/2934735716";
-    string interId = "ca-app-pub-3940256099942544/4411468910";
+    string bannerId = "ca-app-pub-2512402949853443/5418785586";
+    string interId = "ca-app-pub-2512402949853443/6703947096";
     string rewardedId = "ca-app-pub-3940256099942544/1712485313";
     string nativeId = "ca-app-pub-3940256099942544/3986624511";
 
